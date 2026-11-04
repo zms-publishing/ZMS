@@ -77,18 +77,19 @@
 				<div class="form-control" readonly="readonly" 
 					style="user-select:none;background:#f5f5f5;white-space:nowrap;overflow:hidden;text-overflow: ellipsis;"
 					ondblclick="javascript:$('a#nav-link-properties').click();$('#basepath').focus()"
-					tal:content="python:here.get_conf_basepath('')">
+					tal:attributes="title python:here.get_conf_basepath('')"
+					tal:content="python:here.get_conf_property('ZMS.conf.path')">
 				</div>
 			</div>
 		</div>
 		<tal:block tal:content="structure python:here.manage_main_diff(here,request,
-				ids_name='ids',
-				providers=providers,
-				ignore=here.get_ignore_orphans(),
-				direction=here.get_update_direction(),
-				remote={x:here.get_modelfileset_from_disk(x) for x in providers},
-				local={x:repositoryutil.get_modelfileset_from_zodb(here,x) for x in providers}
-				)">
+			ids_name='ids',
+			providers=providers,
+			ignore=here.get_ignore_orphans(),
+			direction=here.get_update_direction(),
+			remote={x:here.get_modelfileset_from_disk(x) for x in providers},
+			local={x:repositoryutil.get_modelfileset_from_zodb(here,x) for x in providers}
+			)">
 			the diff
 		</tal:block>
 		</form>
@@ -102,16 +103,18 @@
 				</label>
 				<div class="col-sm-10"
 					tal:define="paths python:zmscontext.getConfProperty('ZMS.conf.paths')">
-					 <input id="basepath" name="basepath" class="form-control" type="text"
-							tal:condition="python:paths is None"
-							tal:attributes="value python:here.get_conf_basepath('')"/>
-					 <select id="basepath" name="basepath" class="form-control"
-					 		tal:condition="python:paths is not None">
-						 <option tal:repeat="path python:map(lambda x: x.strip(), paths.split(','))"
-								 tal:attributes="value path; selected python:path==zmscontext.getConfProperty('ZMS.conf.path');"
-								 tal:content="path"></option>
-					 </select>
-				</div><!-- .col-sm-10 -->
+					<input id="basepath" name="basepath" class="form-control" type="text"
+						tal:condition="python:paths is None"
+						tal:attributes="
+							value python:zmscontext.getConfProperty('ZMS.conf.path');
+							title python:here.get_conf_basepath('')" />
+					<select id="basepath" name="basepath" class="form-control"
+						tal:condition="python:paths is not None">
+						<option tal:repeat="path python:map(lambda x: x.strip(), paths.split(','))"
+							tal:attributes="value path; selected python:path==zmscontext.getConfProperty('ZMS.conf.path');"
+							tal:content="path"></option>
+					</select>
+				</div>
 				<div class="help d-none" data-for="basepath"
 					tal:define="systemprops python:'%s/manage_customize?lang=%s'%(zmscontext.breadcrumbs_obj_path()[0].absolute_url(), request['lang']);">
 					<div class="well">The path of the used repository is stored as system property

@@ -4,7 +4,7 @@ ZMSObjectSet:
   enabled: 0
   name: ZMSObjectSet
   package: com.zms.foundation
-  revision: 6.0.0
+  revision: 6.0.1
   type: ZMSObject
   Attrs:
     - id: icon_clazz

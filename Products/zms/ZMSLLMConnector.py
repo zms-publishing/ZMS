@@ -2,7 +2,8 @@
 ZMSLLMConnector.py - ZMS LLM Connector for AI/LLM Integration
 
 Provides ZMSLLMConnector as a Zope object that bridges ZMS content management
-with large language model providers (OpenAI, Ollama, RAG with Qdrant).
+with large language model providers (OpenAI, Anthropic Claude, Ollama, and RAG
+with Qdrant).
 
 The connector stores its own configuration as ZODB-persisted properties and is
 retrieved from any ZMS context via getLLMConnector(). It can contain ZMSCustom
@@ -10,6 +11,7 @@ child objects for richer 3rd-view UI extensions.
 
 Multiple providers are supported through llmapi.py:
   - OpenAI (gpt-4o-mini, gpt-4, gpt-3.5-turbo, ...)
+  - Anthropic Claude
   - Ollama (local LLM deployment)
   - RAG with Qdrant + Ollama (retrieval-augmented generation)
 

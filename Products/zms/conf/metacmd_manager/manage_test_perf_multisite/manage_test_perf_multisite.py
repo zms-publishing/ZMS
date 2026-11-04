@@ -120,14 +120,14 @@ $(function() {
 					.attr('target','_blank')
 					.attr('href',href_manage)
 					.attr('title',href_manage);
-				var uid = '{'+'$'+phys_path.substring(1).replace(/\/content/gi,'@')+'}'; // $a.attr('data-uid');
+				var uid = '{'+'$'+phys_path.substring(1).replace(/\\/content/gi,'@')+'}'; // $a.attr('data-uid');
 				$a.before('<input name="home_ids:list" type="checkbox" title="'+uid+'" value="'+uid+'" checked="checked" /> ');
 			});
 		},
 	});
 	$('#zmsindex .zmi-sitemap-container').removeClass('loading');
 });
-             
+
 // //////////////////////////////////////////////////////////////////////             
 // Start / Stop Button             
 // //////////////////////////////////////////////////////////////////////             

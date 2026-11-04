@@ -17,6 +17,7 @@ import ZPublisher.HTTPRequest
 import copy
 import io
 import time
+import zipfile
 # Product Imports.
 from Products.zms import standard
 from Products.zms import zopeutil
@@ -1163,6 +1164,12 @@ class ZMSMetaobjManager(object):
             oldObId = oldId.split('/')[-1]
             zopeutil.removeObject(oldContainer, oldObId)
         # Insert Zope-Object.
+        folderZipData = None
+        if newType == 'Folder':
+          if isinstance(newCustom, _blobfields.MyBlob):
+            folderZipData = newCustom.getData()
+          elif isinstance(newCustom, bytes):
+            folderZipData = newCustom
         if isinstance(newCustom,_blobfields.MyBlob): newCustom = newCustom.getData()
         # Line-breaks.
         if isinstance(newCustom, str): newCustom = newCustom.replace('\r', '')
@@ -1190,9 +1197,8 @@ class ZMSMetaobjManager(object):
         # Change Zope-Object (special).
         newOb = zopeutil.getObject(container, newObId)
         if newType == 'Folder':
-          if isinstance( newCustom, _blobfields.My) and len(newCustom.getData()) > 0:
-            newOb.manage_delObjects(ids=newOb.objectIds())
-            _ziputil.importZip2Zodb( newOb, newCustom.getData())
+          if folderZipData and zipfile.is_zipfile(io.BytesIO(folderZipData)):
+            _ziputil.importZip2Zodb( newOb, folderZipData)
       
       # Assign attributes to meta-object.
       self.model[id] = ob
@@ -1415,8 +1421,9 @@ class ZMSMetaobjManager(object):
                     syncZopeMetaobjAttr( self, newValue, savedAttr)
                     if savedAttr.get('ob'):
                       filename = savedAttr['ob'].title
-                      data = bytes(zopeutil.readData(savedAttr['ob']))
-                      newCustom = _blobfields.createBlobField( self, _blobfields.MyFile, {'filename':filename,'data':data})
+                      if zopeutil.readData(savedAttr['ob']):
+                        data = bytes(zopeutil.readData(savedAttr['ob']))
+                        newCustom = _blobfields.createBlobField( self, _blobfields.MyFile, {'filename':filename,'data':data})
             # Change attribute.
             message += self.setMetaobjAttr( id, old_id, attr_id, newName, newMandatory, newMultilang, newRepetitive, newType, newKeys, newCustom, newDefault)
           # Return with message.

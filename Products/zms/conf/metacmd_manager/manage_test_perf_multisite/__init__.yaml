@@ -8,7 +8,7 @@ manage_test_perf_multisite:
   name: Test Performance Multisite
   nodes: '{$}'
   package: com.zms.test.performance.multisite
-  revision: 0.0.1
+  revision: 0.0.2
   roles:
     - ZMSAdministrator
   title: Test Performance Multisite

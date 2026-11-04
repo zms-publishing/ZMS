@@ -1,9 +1,8 @@
 {
 	"folders": [
 		{
-			"name": "ZMS-Docker",
-			"path": "/home/zope/"
-		},
+			"path": "../"
+		}
 	],
 	"settings": {
 		"python.defaultInterpreterPath": "/home/zope/venv/bin/python",

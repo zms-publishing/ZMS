@@ -167,6 +167,7 @@ function openWindow(url) {
 </div><!-- .card -->
 
 <script>
+//<!--
 function set_progress( v, func_name ) {
 	var perc = Math.round(v * 10000) / 100;
 	var bar_type_dict = {'reindex':'primary','test':'primary','resync':'danger'};
@@ -315,6 +316,7 @@ $(function() {
 	});
 	$('#zmsindex .zmi-sitemap-container').removeClass('loading');
 });
+//-->
 </script>
 
 </tal:block>

@@ -30,9 +30,11 @@
 		<link charset="UTF-8" tal:attributes="href python:'%s/css/style.css'%theme_common" rel="stylesheet">
 		<link charset="UTF-8" tal:attributes="href python:'%s/added/web.css'%theme_common" rel="stylesheet">
 		<!-- ZMI core JS -->
-		<script type="text/javascript" charset="UTF-8" tal:attributes="src python:zmscontext.getConfProperty('plugins.zmi.js')"></script>
-		<link charset="UTF-8" tal:attributes="href python:'%s/js/script.js'%theme_common" rel="stylesheet">
-		<link charset="UTF-8" tal:attributes="href python:'%s/added/web.js'%theme_common" rel="stylesheet">
+		<tal:block tal:repeat="src python:here.getConfProperty('plugins.zmi.js','').split(',')"
+			><script type="text/javascript" charset="UTF-8" tal:attributes="src python:src.endswith('zmi.js') and '%s?hash=%s'%(src,here.getConfProperty('js_zmi.hash')) or src"></script>
+		</tal:block>
+		<script type="text/javascript" charset="UTF-8" tal:attributes="src python:'%s/js/script.js'%theme_common"></script>
+		<script type="text/javascript" charset="UTF-8" tal:attributes="src python:'%s/added/web.js'%theme_common"></script>
 
 		<!-- ZMS Assets -->
 		<script src="/++resource++zms_/zmi.js"></script>

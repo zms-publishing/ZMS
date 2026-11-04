@@ -558,29 +558,32 @@ def buildZipArchive( files, get_data=True):
   @rtype: C{bytes} or C{str}
   """
   
-  # Create temporary zip-file.
-  zipfilename = tempfile.mktemp() + '.zip'
-  
-  # Write filtered files to zip-file.
-  files = getOSPath( files)
-  path = getFilePath( files)
-  filter = extractFilename( files)
-  zf = zipfile.ZipFile( zipfilename, 'w')
-  writeZipFile( zf, path, path, filter)
-  zf.close()
-  
-  # Read data from zip-file as return value.
-  data = zipfilename
-  if get_data:
-    f = open( zipfilename, 'rb')
-    data = f.read()
-    f.close()
-  
-    # Remove temporary zip-file.
-    os.remove( zipfilename)
-  
-  # Returns filename or data of zip-file.
-  return data
+  # Create temporary zip-file safely.
+  fd, zipfilename = tempfile.mkstemp(suffix='.zip')
+  os.close(fd)
+  keep_file = False
+
+  try:
+    # Write filtered files to zip-file.
+    files = getOSPath(files)
+    path = getFilePath(files)
+    filter = extractFilename(files)
+    with zipfile.ZipFile(zipfilename, 'w') as zf:
+      writeZipFile(zf, path, path, filter)
+
+    # Read data from zip-file as return value.
+    if get_data:
+      with open(zipfilename, 'rb') as f:
+        return f.read()
+
+    keep_file = True
+    return zipfilename
+  finally:
+    if not keep_file:
+      try:
+        os.remove(zipfilename)
+      except FileNotFoundError:
+        pass
 
 
 def tail_lines(filename,linesback=10,returnlist=0):

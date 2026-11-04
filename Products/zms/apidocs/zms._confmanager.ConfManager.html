@@ -650,16 +650,6 @@
         
 
         
-            <div class="itemName"><code><a href="#customize_manage_options__roles__" class="internal-link" title="zms._confmanager.ConfManager.customize_manage_options__roles__">customize<wbr></wbr>_manage<wbr></wbr>_options<wbr></wbr>_<wbr></wbr>_roles__</a></code>
-            </div>
-        
-
-    </li><li class="">
-        
-        
-        
-
-        
             <div class="itemName"><code><a href="#default_conf_properties" class="internal-link" title="zms._confmanager.ConfManager.default_conf_properties">default<wbr></wbr>_conf<wbr></wbr>_properties</a></code>
             </div>
         
@@ -878,7 +868,7 @@
         </div>
 
         <div class="extrasDocstring">
-          <p class="class-signature"><code><span class="py-keyword">class</span> <span class="py-defname">ConfManager</span>(_multilangmanager.MultiLanguageManager): <a href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_confmanager.py#L162" class="sourceLink">(source)</a></code></p><p>Implements interfaces: Products.zms.IZMSFormatProvider.IZMSFormatProvider, Products.zms.IZMSMetamodelProvider.IZMSMetamodelProvider</p>
+          <p class="class-signature"><code><span class="py-keyword">class</span> <span class="py-defname">ConfManager</span>(_multilangmanager.MultiLanguageManager): <a href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_confmanager.py#L163" class="sourceLink">(source)</a></code></p><p>Implements interfaces: Products.zms.IZMSFormatProvider.IZMSFormatProvider, Products.zms.IZMSMetamodelProvider.IZMSMetamodelProvider</p>
           <p><a href="classIndex.html#zms._confmanager.ConfManager">View In Hierarchy</a></p>
         </div>
 
@@ -1148,11 +1138,6 @@
   </tr><tr class="classvariable">
     
     <td>Class Variable</td>
-    <td><code><a href="#customize_manage_options__roles__" class="internal-link" title="zms._confmanager.ConfManager.customize_manage_options__roles__">customize<wbr></wbr>_manage<wbr></wbr>_options<wbr></wbr>_<wbr></wbr>_roles__</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
-  </tr><tr class="classvariable">
-    
-    <td>Class Variable</td>
     <td><code><a href="#default_conf_properties" class="internal-link" title="zms._confmanager.ConfManager.default_conf_properties">default<wbr></wbr>_conf<wbr></wbr>_properties</a></code></td>
     <td><span class="undocumented">Undocumented</span></td>
   </tr><tr class="classvariable">
@@ -1216,7 +1201,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">customize_manage_options</span><span class="function-signature">(self)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_confmanager.py#L555">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_confmanager.py#L558">
       
       (source)
     </a>
@@ -1243,9 +1228,9 @@
   </a>
   <div class="functionHeader">
     
-    
+    @zpublish(<wbr></wbr>False)<br />
     <span class="py-keyword">def</span> <span class="py-defname">delConfProperty</span><span class="function-signature">(self, key)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_confmanager.py#L619">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_confmanager.py#L622">
       
       (source)
     </a>
@@ -1272,7 +1257,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">get_conf_properties</span><span class="function-signature">(self)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_confmanager.py#L590">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_confmanager.py#L593">
       
       (source)
     </a>
@@ -1297,9 +1282,9 @@
   </a>
   <div class="functionHeader">
     
-    
+    @zpublish(<wbr></wbr>False)<br />
     <span class="py-keyword">def</span> <span class="py-defname">get_conf_property</span><span class="function-signature">(self, *args, **kwargs)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_confmanager.py#L631">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_confmanager.py#L635">
       
       (source)
     </a>
@@ -1328,7 +1313,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getCatalogAdapter</span><span class="function-signature">(self)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_confmanager.py#L1494">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_confmanager.py#L1502">
       
       (source)
     </a>
@@ -1357,7 +1342,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getCharFormats</span><span class="function-signature">(self)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_confmanager.py#L1481">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_confmanager.py#L1489">
       
       (source)
     </a>
@@ -1386,7 +1371,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getConfFiles</span><span class="function-signature">(self, pattern=None, REQUEST=None, RESPONSE=None)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_confmanager.py#L352">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_confmanager.py#L355">
       
       (source)
     </a>
@@ -1418,7 +1403,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getConfManager</span><span class="function-signature">(self)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_confmanager.py#L585">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_confmanager.py#L588">
       
       (source)
     </a>
@@ -1445,7 +1430,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getConfProperties</span><span class="function-signature">(self, prefix=None, inherited=False, REQUEST=None)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_confmanager.py#L596">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_confmanager.py#L599">
       
       (source)
     </a>
@@ -1472,7 +1457,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getConfProperty</span><span class="function-signature">(self, key, default=None, REQUEST=None)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_confmanager.py#L675">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_confmanager.py#L680">
       
       (source)
     </a>
@@ -1497,9 +1482,9 @@
   </a>
   <div class="functionHeader">
     
-    
+    @zpublish(<wbr></wbr>False)<br />
     <span class="py-keyword">def</span> <span class="py-defname">getConfXmlFile</span><span class="function-signature">(self, file)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_confmanager.py#L258">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_confmanager.py#L259">
       
       (source)
     </a>
@@ -1533,7 +1518,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getFilterManager</span><span class="function-signature">(self)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_confmanager.py#L1083">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_confmanager.py#L1091">
       
       (source)
     </a>
@@ -1562,7 +1547,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getFormatManager</span><span class="function-signature">(self)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_confmanager.py#L1424">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_confmanager.py#L1432">
       
       (source)
     </a>
@@ -1591,7 +1576,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getLLMConnector</span><span class="function-signature">(self)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_confmanager.py#L1518">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_confmanager.py#L1526">
       
       (source)
     </a>
@@ -1620,7 +1605,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getMediaDb</span><span class="function-signature">(self)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_confmanager.py#L441">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_confmanager.py#L444">
       
       (source)
     </a>
@@ -1647,7 +1632,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getMetaCmd</span><span class="function-signature">(self, id)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_confmanager.py#L1352">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_confmanager.py#L1360">
       
       (source)
     </a>
@@ -1674,7 +1659,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getMetaCmdDescription</span><span class="function-signature">(self, id)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_confmanager.py#L1347">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_confmanager.py#L1355">
       
       (source)
     </a>
@@ -1701,7 +1686,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getMetaCmdIds</span><span class="function-signature">(self, sort=1)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_confmanager.py#L1357">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_confmanager.py#L1365">
       
       (source)
     </a>
@@ -1728,7 +1713,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getMetacmdManager</span><span class="function-signature">(self)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_confmanager.py#L1293">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_confmanager.py#L1301">
       
       (source)
     </a>
@@ -1757,7 +1742,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getMetaCmds</span><span class="function-signature">(self, context=None, stereotype=<span class="rst-variable-quote">'</span><span class="rst-variable-string"></span><span class="rst-variable-quote">'</span>, sort=True)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_confmanager.py#L1362">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_confmanager.py#L1370">
       
       (source)
     </a>
@@ -1784,7 +1769,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getMetaobj</span><span class="function-signature">(self, id)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_confmanager.py#L1250">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_confmanager.py#L1258">
       
       (source)
     </a>
@@ -1811,7 +1796,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getMetaobjAttr</span><span class="function-signature">(self, id, attr_id, sync=True)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_confmanager.py#L1265">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_confmanager.py#L1273">
       
       (source)
     </a>
@@ -1838,7 +1823,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getMetaobjAttrIdentifierId</span><span class="function-signature">(self, meta_id)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_confmanager.py#L1270">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_confmanager.py#L1278">
       
       (source)
     </a>
@@ -1865,7 +1850,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getMetaobjAttrIds</span><span class="function-signature">(self, meta_id, types=[])</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_confmanager.py#L1255">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_confmanager.py#L1263">
       
       (source)
     </a>
@@ -1892,7 +1877,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getMetaobjAttrs</span><span class="function-signature">(self, meta_id, types=[])</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_confmanager.py#L1260">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_confmanager.py#L1268">
       
       (source)
     </a>
@@ -1919,7 +1904,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getMetaobjId</span><span class="function-signature">(self, name)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_confmanager.py#L1240">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_confmanager.py#L1248">
       
       (source)
     </a>
@@ -1946,7 +1931,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getMetaobjIds</span><span class="function-signature">(self, sort=None, excl_ids=[])</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_confmanager.py#L1245">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_confmanager.py#L1253">
       
       (source)
     </a>
@@ -1973,7 +1958,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getMetaobjManager</span><span class="function-signature">(self)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_confmanager.py#L1157">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_confmanager.py#L1165">
       
       (source)
     </a>
@@ -2002,7 +1987,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getMetaobjRevision</span><span class="function-signature">(self, id)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_confmanager.py#L1230">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_confmanager.py#L1238">
       
       (source)
     </a>
@@ -2029,7 +2014,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getResourceFolders</span><span class="function-signature">(self)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_confmanager.py#L472">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_confmanager.py#L475">
       
       (source)
     </a>
@@ -2058,7 +2043,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getSequence</span><span class="function-signature">(self)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_confmanager.py#L407">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_confmanager.py#L410">
       
       (source)
     </a>
@@ -2087,7 +2072,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getStylesheet</span><span class="function-signature">(self, id=None)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_confmanager.py#L503">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_confmanager.py#L506">
       
       (source)
     </a>
@@ -2116,7 +2101,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getStylesheets</span><span class="function-signature">(self)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_confmanager.py#L525">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_confmanager.py#L528">
       
       (source)
     </a>
@@ -2145,7 +2130,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getTextFormat</span><span class="function-signature">(self, id, REQUEST)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_confmanager.py#L1449">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_confmanager.py#L1457">
       
       (source)
     </a>
@@ -2174,7 +2159,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getTextFormatDefault</span><span class="function-signature">(self)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_confmanager.py#L1436">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_confmanager.py#L1444">
       
       (source)
     </a>
@@ -2203,7 +2188,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getTextFormats</span><span class="function-signature">(self, REQUEST)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_confmanager.py#L1466">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_confmanager.py#L1474">
       
       (source)
     </a>
@@ -2232,7 +2217,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getThemes</span><span class="function-signature">(self)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_confmanager.py#L454">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_confmanager.py#L457">
       
       (source)
     </a>
@@ -2261,7 +2246,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getWfActivities</span><span class="function-signature">(self)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_confmanager.py#L1004">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_confmanager.py#L1012">
       
       (source)
     </a>
@@ -2290,7 +2275,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getWfActivitiesIds</span><span class="function-signature">(self)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_confmanager.py#L1020">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_confmanager.py#L1028">
       
       (source)
     </a>
@@ -2317,7 +2302,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getWfActivity</span><span class="function-signature">(self, id)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_confmanager.py#L1035">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_confmanager.py#L1043">
       
       (source)
     </a>
@@ -2344,7 +2329,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getWfTransition</span><span class="function-signature">(self, id)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_confmanager.py#L1066">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_confmanager.py#L1074">
       
       (source)
     </a>
@@ -2371,7 +2356,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getWfTransitions</span><span class="function-signature">(self)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_confmanager.py#L1051">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_confmanager.py#L1059">
       
       (source)
     </a>
@@ -2398,7 +2383,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getWorkflowManager</span><span class="function-signature">(self)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_confmanager.py#L1366">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_confmanager.py#L1374">
       
       (source)
     </a>
@@ -2427,7 +2412,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getZMSIndex</span><span class="function-signature">(self)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_confmanager.py#L982">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_confmanager.py#L990">
       
       (source)
     </a>
@@ -2454,7 +2439,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getZMSSysConf</span><span class="function-signature">(self)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_confmanager.py#L961">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_confmanager.py#L969">
       
       (source)
     </a>
@@ -2483,7 +2468,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">importConf</span><span class="function-signature">(self, file, syncIfNecessary=True)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_confmanager.py#L304">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_confmanager.py#L307">
       
       (source)
     </a>
@@ -2518,7 +2503,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">importConfPackage</span><span class="function-signature">(self, file)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_confmanager.py#L233">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_confmanager.py#L234">
       
       (source)
     </a>
@@ -2547,7 +2532,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">manage_customizeDesign</span><span class="function-signature">(self, btn, lang, REQUEST, RESPONSE)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_confmanager.py#L868">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_confmanager.py#L876">
       
       (source)
     </a>
@@ -2576,7 +2561,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">manage_customizeSystem</span><span class="function-signature">(self, btn, key, lang, REQUEST, RESPONSE=None)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_confmanager.py#L711">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_confmanager.py#L719">
       
       (source)
     </a>
@@ -2605,7 +2590,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">notifyMetaobjAttrAboutValue</span><span class="function-signature">(self, meta_id, key, value)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_confmanager.py#L1275">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_confmanager.py#L1283">
       
       (source)
     </a>
@@ -2630,9 +2615,9 @@
   </a>
   <div class="functionHeader">
     
-    
+    @zpublish(<wbr></wbr>False)<br />
     <span class="py-keyword">def</span> <span class="py-defname">setConfProperty</span><span class="function-signature">(self, key, value)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_confmanager.py#L690">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_confmanager.py#L695">
       
       (source)
     </a>
@@ -2649,33 +2634,6 @@
 </div><div class="baseclassvariable">
   
   
-  <a name="zms._confmanager.ConfManager.customize_manage_options__roles__">
-    
-  </a>
-  <a name="customize_manage_options__roles__">
-    
-  </a>
-  <div class="functionHeader">
-    
-    <span class="py-defname">customize_manage_options__roles__</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_confmanager.py#L554">
-      
-      (source)
-    </a>
-    <a class="headerLink" href="#customize_manage_options__roles__" title="zms._confmanager.ConfManager.customize_manage_options__roles__">
-      
-      
-      ¶
-    </a>
-  </div>
-  <div class="functionBody">
-    
-    <div><p class="undocumented">Undocumented</p></div>
-    
-  </div>
-</div><div class="baseclassvariable">
-  
-  
   <a name="zms._confmanager.ConfManager.default_conf_properties">
     
   </a>
@@ -2685,7 +2643,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">default_conf_properties</span>: <code>list</code> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_confmanager.py#L183">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_confmanager.py#L184">
       
       (source)
     </a>
@@ -2712,7 +2670,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">manage_customize</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_confmanager.py#L170">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_confmanager.py#L171">
       
       (source)
     </a>
@@ -2739,7 +2697,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">manage_customize_diff</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_confmanager.py#L174">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_confmanager.py#L175">
       
       (source)
     </a>
@@ -2766,7 +2724,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">manage_customizeDesignForm</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_confmanager.py#L173">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_confmanager.py#L174">
       
       (source)
     </a>
@@ -2793,7 +2751,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">manage_customizeInstalledProducts</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_confmanager.py#L171">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_confmanager.py#L172">
       
       (source)
     </a>
@@ -2820,7 +2778,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">manage_customizeLanguagesForm</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_confmanager.py#L172">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_confmanager.py#L173">
       
       (source)
     </a>
@@ -2847,7 +2805,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">manage_main_diff</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_confmanager.py#L175">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_confmanager.py#L176">
       
       (source)
     </a>
@@ -2874,7 +2832,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">security</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_confmanager.py#L168">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_confmanager.py#L169">
       
       (source)
     </a>
@@ -2901,7 +2859,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">__attr_conf_dict__</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_confmanager.py#L708">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_confmanager.py#L714">
       
       (source)
     </a>

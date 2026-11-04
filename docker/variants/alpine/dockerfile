@@ -1,5 +1,5 @@
-FROM python:3.14.4-alpine
-ENV ZOPE_VERSION=6.1
+FROM python:3.15-alpine
+ENV ZOPE_VERSION=6.3
 ENV ZMS_BRANCH=main
 
 ENV VIRTUAL_ENV=/home/zope/venv

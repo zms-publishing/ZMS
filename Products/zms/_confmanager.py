@@ -45,6 +45,7 @@ import operator
 import os
 import zExceptions
 from zope.interface import implementer, providedBy
+from ZPublisher import zpublish
 # Product imports.
 from .IZMSConfigurationProvider import IZMSConfigurationProvider
 from Products.zms import standard
@@ -60,7 +61,26 @@ from Products.zms import zmsindex
 from Products.zms import zmslog
 
 
-UNINHERITED_PROPERTIES = ['ASP','Portal']
+UNINHERITED_PROPERTIES = [
+    'ASP',
+    'Portal'
+    ]
+
+PRIVATE_PROPERTIES = [
+    'ZMS.private',
+    'ZMS.security',
+    'ZMS.conf',
+    'ZMS.localfs',
+    'ZMSRepository.',
+    'ZMSAdministrator.',
+    'ZMSFormulator.',
+    'Google.',
+    'opensearch.',
+    'KSL.',
+    'UniBE.',
+    'zopeutil.',
+    'ExtensionPoint.'
+    ]
 
 class ConfDict(object):
 
@@ -99,25 +119,25 @@ class ConfDict(object):
 
     @classmethod
     def forName(cls, name):
-      """
-      Import and return a class object identified by a fully-qualified dotted
-      name relative to the C{Products.zms} namespace.
+        """
+        Import and return a class object identified by a fully-qualified dotted
+        name relative to the C{Products.zms} namespace.
 
-      The name is expected to be in the form C{modulename.ClassName}.  The
-      module is imported with C{importlib.import_module} and the class is
-      retrieved with C{getattr}.
+        The name is expected to be in the form C{modulename.ClassName}.  The
+        module is imported with C{importlib.import_module} and the class is
+        retrieved with C{getattr}.
 
-      @param name: Dotted qualified name, e.g. C{'ZMSFilterManager.ZMSFilterManager'}.
-      @type name: C{str}
-      @return: The class object found at the given name.
-      @rtype: C{type}
-      """
-      d = name.rfind(".")
-      modulname = name[:d]
-      clazzname = name[d+1:len(name)]
-      mod = importlib.import_module('Products.zms.'+modulname)
-      clazz = getattr(mod, clazzname)
-      return clazz
+        @param name: Dotted qualified name, e.g. C{'ZMSFilterManager.ZMSFilterManager'}.
+        @type name: C{str}
+        @return: The class object found at the given name.
+        @rtype: C{type}
+        """
+        d = name.rfind(".")
+        modulname = name[:d]
+        clazzname = name[d+1:len(name)]
+        mod = importlib.import_module('Products.zms.'+modulname)
+        clazz = getattr(mod, clazzname)
+        return clazz
 
 
 def initConf(self, pattern):
@@ -231,1310 +251,1326 @@ class ConfManager(_multilangmanager.MultiLanguageManager):
       ]
 
     def importConfPackage(self, file):
-      """
-      Import a zipped configuration package and delegate each contained file
-      to L{importConf}.
+        """
+        Import a zipped configuration package and delegate each contained file
+        to L{importConf}.
 
-      If C{file} is a string starting with C{http://} or C{https://}, the
-      archive is fetched via HTTP first.  Otherwise the string is treated as a
-      local filesystem path.  Every non-directory entry in the ZIP archive is
-      passed to C{importConf} one by one.
+        If C{file} is a string starting with C{http://} or C{https://}, the
+        archive is fetched via HTTP first.  Otherwise the string is treated as a
+        local filesystem path.  Every non-directory entry in the ZIP archive is
+        passed to C{importConf} one by one.
 
-      @param file: Local file path, HTTP(S) URL, or file-like object of the
-        ZIP archive to import.
-      @type file: C{str} or file-like object
-      """
-      if isinstance(file, str):
-        if file.startswith('http://') or file.startswith('https://'):
-          file = StringIO( self.http_import(file))
-        else:
-          file = open(_fileutil.getOSPath(file), 'rb')
-      files = _fileutil.getZipArchive( file)
-      for f in files:
-        if not f.get('isdir'):
-          self.importConf(f)
+        @param file: Local file path, HTTP(S) URL, or file-like object of the
+          ZIP archive to import.
+        @type file: C{str} or file-like object
+        """
+        if isinstance(file, str):
+            if file.startswith('http://') or file.startswith('https://'):
+                file = StringIO( self.http_import(file))
+            else:
+                file = open(_fileutil.getOSPath(file), 'rb')
+        files = _fileutil.getZipArchive( file)
+        for f in files:
+            if not f.get('isdir'):
+                self.importConf(f)
 
 
+    @zpublish(False)
     def getConfXmlFile(self, file):
-      """
-      Resolve a configuration reference to a C{(filename, xmlfile)} pair.
+        """
+        Resolve a configuration reference to a C{(filename, xmlfile)} pair.
 
-      Three input forms are handled:
+        Three input forms are handled:
 
-        - C{dict} — the dict has C{'filename'} and C{'data'} keys (e.g. entry
-          from a ZIP archive); the data is wrapped in a C{StringIO}.
-        - C{str} starting with C{'conf:'} — the remainder is treated as a
-          repository path inside the ZMS conf base directory.  The repository
-          model is read and translated to XML by the matching container object.
-        - Any other C{str} — treated as a plain filesystem path; the file is
-          opened in binary mode.
+          - C{dict} — the dict has C{'filename'} and C{'data'} keys (e.g. entry
+            from a ZIP archive); the data is wrapped in a C{StringIO}.
+          - C{str} starting with C{'conf:'} — the remainder is treated as a
+            repository path inside the ZMS conf base directory.  The repository
+            model is read and translated to XML by the matching container object.
+          - Any other C{str} — treated as a plain filesystem path; the file is
+            opened in binary mode.
 
-      @param file: Configuration reference — dict entry, C{'conf:'}-prefixed
-          path, or a plain filesystem path string.
-      @type file: C{dict} or C{str}
-      @return: Tuple of C{(filename, xmlfile)} where C{filename} is the bare
-          filename and C{xmlfile} is a readable file-like object.
-      @rtype: C{tuple}
-      """
-      if isinstance(file, dict):
-          filename = file['filename']
-          xml = file['data']
-          xmlfile = StringIO( xml)
-      # Get conf not from a xml-package but from the ZMS-conf folder.
-      elif isinstance(file, str) and (file.startswith('conf:')):
-          filename = file[file.find(':')+1:]
-          basepath = repositoryutil.get_system_conf_basepath()
-          path = os.path.join(basepath, filename)
-          r = repositoryutil.get_models_from_disk(self, path)
-          container_id = filename.split('/')[0]
-          container = zopeutil.getObject(self,container_id)
-          if container is not None:
-              l = container.translateRepositoryModel(r)
-              xml = standard.toXmlString(self, l)
-              xml = bytes(xml, "utf-8")
-              xmlfile = io.BytesIO( xml)
-          else:
-              standard.writeError(self,'[getConfXmlFile]: container %s not found'%container_id)
-      else:
-          filename = _fileutil.extractFilename(file)
-          xmlfile = open(_fileutil.getOSPath(file), 'rb')
-      return filename, xmlfile
+        @param file: Configuration reference — dict entry, C{'conf:'}-prefixed
+            path, or a plain filesystem path string.
+        @type file: C{dict} or C{str}
+        @return: Tuple of C{(filename, xmlfile)} where C{filename} is the bare
+            filename and C{xmlfile} is a readable file-like object.
+        @rtype: C{tuple}
+        """
+        if isinstance(file, dict):
+            filename = file['filename']
+            xml = file['data']
+            xmlfile = StringIO( xml)
+        # Get conf not from a xml-package but from the ZMS-conf folder.
+        elif isinstance(file, str) and (file.startswith('conf:')):
+            filename = file[file.find(':')+1:]
+            basepath = repositoryutil.get_system_conf_basepath()
+            path = os.path.join(basepath, filename)
+            r = repositoryutil.get_models_from_disk(self, path)
+            container_id = filename.split('/')[0]
+            container = zopeutil.getObject(self,container_id)
+            if container is not None:
+                l = container.translateRepositoryModel(r)
+                xml = standard.toXmlString(self, l)
+                xml = bytes(xml, "utf-8")
+                xmlfile = io.BytesIO( xml)
+            else:
+                standard.writeError(self,'[getConfXmlFile]: container %s not found'%container_id)
+        else:
+            filename = _fileutil.extractFilename(file)
+            xmlfile = open(_fileutil.getOSPath(file), 'rb')
+        return filename, xmlfile
 
 
+    security.declareProtected('ZMS Administrator', 'importConf')
     def importConf(self, file, syncIfNecessary=True):
-      """
-      Imports configuration from the given file and processes 
-      it in the context according to its filename.
+        """
+        Imports configuration from the given file and processes 
+        it in the context according to its filename.
 
-      @param file: The path to the configuration file to be imported.
-      @type file: C{str}
-      @param syncIfNecessary: Flag indicating whether to synchronize object attributes if necessary. Defaults to True.
-      @type syncIfNecessary: C{bool}, optional
-      @return: A message indicating the result of the import operation.
-      @rtype: C{str}
+        @param file: The path to the configuration file to be imported.
+        @type file: C{str}
+        @param syncIfNecessary: Flag indicating whether to synchronize object attributes if necessary. Defaults to True.
+        @type syncIfNecessary: C{bool}, optional
+        @return: A message indicating the result of the import operation.
+        @rtype: C{str}
 
-      Notes:
-        - The method identifies the type of configuration file based on its filename and processes it accordingly.
-        - Hidden files created by MacOSX (starting with '._') are ignored.
-        - If the filename contains specific substrings (e.g., '.charfmt.', '.filter.', etc.), the corresponding import method is called.
-        - If synchronization is necessary and the syncIfNecessary flag is True, the object's attributes are synchronized.
-      """
-      message = ''
-      syncNecessary = False
-      filename, xmlfile = self.getConfXmlFile( file)
-      standard.writeBlock( self, '[importConf]: filename='+filename)
-      if not filename.startswith('._'): # ignore hidden files in ZIP created by MacOSX
-        if filename.find('.charfmt.') > 0:
-          self.format_manager.importCharformatXml(xmlfile)
-        elif filename.find('.filter.') > 0 or filename.startswith('filter_manager'):
-          self.getFilterManager().importXml(xmlfile)
-        elif filename.find('.metadict.') > 0:
-          self.getMetaobjManager().importMetadictXml(xmlfile)
-          syncNecessary = True
-        elif filename.find('.metaobj.') > 0 or filename.startswith('metaobj_manager'):
-          self.getMetaobjManager().importMetaobjXml(xmlfile)
-          syncNecessary = True
-        elif filename.find('.workflow.') > 0 or filename.startswith('workflow_manager'):
-          self.getWorkflowManager().importXml(xmlfile)
-        elif filename.find('.metacmd.') > 0 or filename.startswith('metacmd_manager'):
-          self.getMetacmdManager().importXml(xmlfile)
-        elif filename.find('.langdict.') > 0:
-          _multilangmanager.importXml(self, xmlfile)
-        elif filename.find('.textfmt.') > 0:
-          self.format_manager.importTextformatXml(xmlfile)
-        xmlfile.close()
-      if syncIfNecessary and syncNecessary:
-        self.synchronizeObjAttrs()
-      return message
+        Notes:
+          - The method identifies the type of configuration file based on its filename and processes it accordingly.
+          - Hidden files created by MacOSX (starting with '._') are ignored.
+          - If the filename contains specific substrings (e.g., '.charfmt.', '.filter.', etc.), the corresponding import method is called.
+          - If synchronization is necessary and the syncIfNecessary flag is True, the object's attributes are synchronized.
+        """
+        message = ''
+        syncNecessary = False
+        filename, xmlfile = self.getConfXmlFile( file)
+        standard.writeBlock( self, '[importConf]: filename='+filename)
+        if not filename.startswith('._'): # ignore hidden files in ZIP created by MacOSX
+            if filename.find('.charfmt.') > 0:
+                self.format_manager.importCharformatXml(xmlfile)
+            elif filename.find('.filter.') > 0 or filename.startswith('filter_manager'):
+                self.getFilterManager().importXml(xmlfile)
+            elif filename.find('.metadict.') > 0:
+                self.getMetaobjManager().importMetadictXml(xmlfile)
+                syncNecessary = True
+            elif filename.find('.metaobj.') > 0 or filename.startswith('metaobj_manager'):
+                self.getMetaobjManager().importMetaobjXml(xmlfile)
+                syncNecessary = True
+            elif filename.find('.workflow.') > 0 or filename.startswith('workflow_manager'):
+                self.getWorkflowManager().importXml(xmlfile)
+            elif filename.find('.metacmd.') > 0 or filename.startswith('metacmd_manager'):
+                self.getMetacmdManager().importXml(xmlfile)
+            elif filename.find('.langdict.') > 0:
+                _multilangmanager.importXml(self, xmlfile)
+            elif filename.find('.textfmt.') > 0:
+                self.format_manager.importTextformatXml(xmlfile)
+            xmlfile.close()
+        if syncIfNecessary and syncNecessary:
+            self.synchronizeObjAttrs()
+        return message
 
 
     security.declareProtected('ZMS Administrator', 'getConfFiles')
     def getConfFiles(self, pattern=None, REQUEST=None, RESPONSE=None):
-      """
-      Retrieve configuration files from the ZMS distribution code:
-      1. Product/zms/conf: Sets of singular configuration files (repository-manager style, pattern-prefix 'conf:').
-      2. Product/zms/import: Classical zipped XML packages, e.g. for importing as single file via web-frontend.
+        """
+        Retrieve configuration files from the ZMS distribution code:
+        1. Product/zms/conf: Sets of singular configuration files (repository-manager style, pattern-prefix 'conf:').
+        2. Product/zms/import: Classical zipped XML packages, e.g. for importing as single file via web-frontend.
 
-      @param pattern: string, optional, pattern to filter filenames.
-      @param REQUEST: C{ZPublisher.HTTPResponse}, optional.
-      @param RESPONSE: C{ZPublisher.HTTPRequest}, optional, if provided, the method will return a JSON response.
-      """
-      filenames = {}
-      # Import-Folder.
-      filepath = package_home(globals())+'/import/'
-      for filename in os.listdir(filepath):
-          path = filepath + filename
-          if os.path.isfile(path):
-              if path not in filenames:
-                  filenames[path] = filename
-      # Filter.
-      if pattern is not None:
-        lk = list(filenames)
-        for k in lk:
-          if k.find(pattern) < 0:
-            del filenames[k]
-          else:
-            v = filenames[k]
-            i = v.find(' ')
-            if i < 0:
-              i = len(v)
-            v = v[:v.find(pattern)]+v[i:]
-            filenames[k] = v
-      # Repository.
-      basepath = repositoryutil.get_system_conf_basepath()
-      for filename in os.listdir(basepath):
-          path = os.path.join(basepath, filename)
-          if os.path.isdir(path):
-              if pattern is None or filename.startswith(pattern[1:-1]):
-                  r = repositoryutil.get_models_from_disk(self, path, deep=False)
-                  for k in r:
-                      v = r[k]
-                      # Get qualified name.
-                      qn = k
-                      package = v.get('package','')
-                      if package and not qn.startswith(package):
-                        qn = '%s.%s'%(package,qn)
-                      revision = v.get('revision','0.0.0')
-                      filenames['conf:%s/%s'%(filename,k)] = '%s-%s'%(qn,revision)   
-      # Return.
-      if RESPONSE is not None:
-          RESPONSE.setHeader('Content-Type', 'application/json')
-          RESPONSE.setHeader('Cache-Control', 'no-cache')
-          RESPONSE.setHeader('Pragma', 'no-cache')
-          return json.dumps( filenames)
-      return filenames
+        @param pattern: string, optional, pattern to filter filenames.
+        @param REQUEST: C{ZPublisher.HTTPResponse}, optional.
+        @param RESPONSE: C{ZPublisher.HTTPRequest}, optional, if provided, the method will return a JSON response.
+        """
+        filenames = {}
+        # Import-Folder.
+        filepath = package_home(globals())+'/import/'
+        for filename in os.listdir(filepath):
+            path = filepath + filename
+            if os.path.isfile(path):
+                if path not in filenames:
+                    filenames[path] = filename
+        # Filter.
+        if pattern is not None:
+            lk = list(filenames)
+            for k in lk:
+                if k.find(pattern) < 0:
+                    del filenames[k]
+                else:
+                    v = filenames[k]
+                    i = v.find(' ')
+                    if i < 0:
+                      i = len(v)
+                    v = v[:v.find(pattern)]+v[i:]
+                    filenames[k] = v
+        # Repository.
+        basepath = repositoryutil.get_system_conf_basepath()
+        for filename in os.listdir(basepath):
+            path = os.path.join(basepath, filename)
+            if os.path.isdir(path):
+                if pattern is None or filename.startswith(pattern[1:-1]):
+                    r = repositoryutil.get_models_from_disk(self, path, deep=False)
+                    for k in r:
+                        v = r[k]
+                        # Get qualified name.
+                        qn = k
+                        package = v.get('package','')
+                        if package and not qn.startswith(package):
+                          qn = '%s.%s'%(package,qn)
+                        revision = v.get('revision','0.0.0')
+                        filenames['conf:%s/%s'%(filename,k)] = '%s-%s'%(qn,revision)   
+        # Return.
+        if RESPONSE is not None:
+            RESPONSE.setHeader('Content-Type', 'application/json')
+            RESPONSE.setHeader('Cache-Control', 'no-cache')
+            RESPONSE.setHeader('Pragma', 'no-cache')
+            return json.dumps( filenames)
+        return filenames
 
     def getSequence(self):
-      """
-      Return the site-wide sequence counter object used for generating unique
-      numeric IDs.
+        """
+        Return the site-wide sequence counter object used for generating unique
+        numeric IDs.
 
-      If a portal master is configured the sequence counter is kept on the
-      master node so that all client portals draw from a single shared counter.
-      In that case any local counter is removed and its current value is
-      transferred to the master to avoid gaps.  If no master exists the local
-      counter is created on demand.
+        If a portal master is configured the sequence counter is kept on the
+        master node so that all client portals draw from a single shared counter.
+        In that case any local counter is removed and its current value is
+        transferred to the master to avoid gaps.  If no master exists the local
+        counter is created on demand.
 
-      @return: The C{Sequence} object whose C{.value} attribute is the next ID.
-      @rtype: C{_sequence.Sequence}
-      """
-      id = 'acl_sequence'
-      exists = id in self.objectIds(['Sequence'])
-      portalMaster = self.getPortalMaster()
-      if portalMaster is not None:
-        startvalue = 0
-        if exists:
-          ob = getattr(self, id)
-          startvalue = ob.value
-          self.manage_delObjects(ids=[id])
-        ob = portalMaster.getSequence()
-        if ob.value < startvalue:
-          ob.value = startvalue
-      else:
-        if not exists:
-          sequence = _sequence.Sequence()
-          self._setObject(sequence.id, sequence)
-        ob = getattr(self, id)
-      return ob
+        @return: The C{Sequence} object whose C{.value} attribute is the next ID.
+        @rtype: C{_sequence.Sequence}
+        """
+        id = 'acl_sequence'
+        exists = id in self.objectIds(['Sequence'])
+        portalMaster = self.getPortalMaster()
+        if portalMaster is not None:
+            startvalue = 0
+            if exists:
+                ob = getattr(self, id)
+                startvalue = ob.value
+                self.manage_delObjects(ids=[id])
+            ob = portalMaster.getSequence()
+            if ob.value < startvalue:
+                ob.value = startvalue
+        else:
+            if not exists:
+                sequence = _sequence.Sequence()
+                self._setObject(sequence.id, sequence)
+            ob = getattr(self, id)
+        return ob
 
 
     def getMediaDb(self):
-      """
-      Return the MediaDb storage object attached to the document element, or
-      C{None} if no MediaDb has been configured.
+        """
+        Return the MediaDb storage object attached to the document element, or
+        C{None} if no MediaDb has been configured.
 
-      @return: The MediaDb object, or C{None}.
-      @rtype: C{_mediadb.MediaDb} or C{None}
-      """
-      for ob in self.getDocumentElement().objectValues(['MediaDb']):
-        return ob
-      return None
+        @return: The MediaDb object, or C{None}.
+        @rtype: C{_mediadb.MediaDb} or C{None}
+        """
+        for ob in self.getDocumentElement().objectValues(['MediaDb']):
+            return ob
+        return None
 
 
     def getThemes(self):
-      """
-      Return the list of theme folder objects available at the site home.
+        """
+        Return the list of theme folder objects available at the site home.
 
-      A folder qualifies as a theme when it contains a C{standard_html} object.
-      Both the direct home and the absolute home are scanned; duplicates (same
-      ID) are excluded.
+        A folder qualifies as a theme when it contains a C{standard_html} object.
+        Both the direct home and the absolute home are scanned; duplicates (same
+        ID) are excluded.
 
-      @return: Distinct list of Zope folder objects that serve as theme folders.
-      @rtype: C{list}
-      """
-      obs = []
-      for ob in standard.distinct_list(self.getHome().objectValues() + self.getAbsoluteHome().objectValues()):
-        if isinstance(ob, Folder) and ( ob.getId() not in [x.getId() for x in obs] ) and 'standard_html' in ob.objectIds():
-          obs.append(ob)
-      return obs
+        @return: Distinct list of Zope folder objects that serve as theme folders.
+        @rtype: C{list}
+        """
+        obs = []
+        for ob in standard.distinct_list(self.getHome().objectValues() + self.getAbsoluteHome().objectValues()):
+            if isinstance(ob, Folder) and ( ob.getId() not in [x.getId() for x in obs] ) and 'standard_html' in ob.objectIds():
+                obs.append(ob)
+        return obs
 
 
     def getResourceFolders(self):
-      """
-      Return the ordered list of resource-container folders used by the current
-      theme.
+        """
+        Return the ordered list of resource-container folders used by the current
+        theme.
 
-      The folder IDs to include are read from the C{'ZMS.resourceFolders'}
-      configuration property (comma-separated, default C{'instance,common'}).
-      A wildcard C{'*'} entry expands to all sub-folders of the theme home.
-      Folders that contain ZMS content nodes are excluded so that only pure
-      resource containers are returned.
+        The folder IDs to include are read from the C{'ZMS.resourceFolders'}
+        configuration property (comma-separated, default C{'instance,common'}).
+        A wildcard C{'*'} entry expands to all sub-folders of the theme home.
+        Folders that contain ZMS content nodes are excluded so that only pure
+        resource containers are returned.
 
-      @return: List of Zope folder objects serving as resource containers.
-      @rtype: C{list}
-      """
-      obs = []
-      ids = self.getConfProperty('ZMS.resourceFolders', 'instance,common').split(',')
-      home = self.getHome()
-      if len(self.getConfProperty('ZMS.theme', '')) > 0:
-        home = getattr(home, self.getConfProperty('ZMS.theme', ''))
-      if '*' in ids:
-        ids.extend([x.id for x in home.objectValues(['Folder', 'Filesystem Directory View']) if x.id not in ids])
-      for id in ids:
-        if id == '*':
-          obs.append(home)
-        else:
-          container = getattr( home, id, None)
-          if container is not None and len(container.objectValues(['ZMS']))==0:
-            obs.append(container)
-      return obs
+        @return: List of Zope folder objects serving as resource containers.
+        @rtype: C{list}
+        """
+        obs = []
+        ids = self.getConfProperty('ZMS.resourceFolders', 'instance,common').split(',')
+        home = self.getHome()
+        if len(self.getConfProperty('ZMS.theme', '')) > 0:
+            home = getattr(home, self.getConfProperty('ZMS.theme', ''))
+        if '*' in ids:
+            ids.extend([x.id for x in home.objectValues(['Folder', 'Filesystem Directory View']) if x.id not in ids])
+        for id in ids:
+            if id == '*':
+                obs.append(home)
+            else:
+                container = getattr( home, id, None)
+                if container is not None and len(container.objectValues(['ZMS']))==0:
+                    obs.append(container)
+        return obs
 
 
     def getStylesheet(self, id=None):
-      """
-      Return a single stylesheet object from the available stylesheets.
+        """
+        Return a single stylesheet object from the available stylesheets.
 
-      If C{id} is C{None} the first (primary) stylesheet is returned.
-      Otherwise the stylesheet whose C{getId()} matches C{id} is returned, or
-      C{None} if no match is found.
+        If C{id} is C{None} the first (primary) stylesheet is returned.
+        Otherwise the stylesheet whose C{getId()} matches C{id} is returned, or
+        C{None} if no match is found.
 
-      @param id: Stylesheet object ID to look up, or C{None} for the primary.
-      @type id: C{str} or C{None}
-      @return: The matching stylesheet file object, or C{None}.
-      @rtype: file-like Zope object or C{None}
-      """
-      stylesheets = self.getStylesheets()
-      if id is None:
-        return stylesheets[0]
-      else:
-        for css in stylesheets:
-          if css.getId() == id:
-            return css
+        @param id: Stylesheet object ID to look up, or C{None} for the primary.
+        @type id: C{str} or C{None}
+        @return: The matching stylesheet file object, or C{None}.
+        @rtype: file-like Zope object or C{None}
+        """
+        stylesheets = self.getStylesheets()
+        if id is None:
+            return stylesheets[0]
+        else:
+            for css in stylesheets:
+                if css.getId() == id:
+                    return css
 
 
     def getStylesheets(self):
-      """
-      Return the ordered list of all CSS stylesheet objects found in the
-      configured resource folders.
+        """
+        Return the ordered list of all CSS stylesheet objects found in the
+        configured resource folders.
 
-      The method walks each resource folder's optional C{css} sub-folder and
-      then the folder itself, collecting File and DTML objects whose path
-      contains a C{.css} component.  The stylesheet configured as
-      C{'ZMS.stylesheet'} (default C{'style.css'}) is promoted to the front.
+        The method walks each resource folder's optional C{css} sub-folder and
+        then the folder itself, collecting File and DTML objects whose path
+        contains a C{.css} component.  The stylesheet configured as
+        C{'ZMS.stylesheet'} (default C{'style.css'}) is promoted to the front.
 
-      @return: Ordered list of stylesheet objects, primary stylesheet first.
-      @rtype: C{list}
-      """
-      ids = []
-      obs = []
-      for container in self.getResourceFolders():
-        for folder in [ getattr( container, 'css', None), container]:
-          if folder is not None:
-            for ob in folder.objectValues(['DTML Method', 'DTML Document', 'File', 'Filesystem File','Filesystem DTML Method']):
-              id = ob.getId()
-              path = ob.getPhysicalPath()
-              if len([x for x in path if x.endswith('css')]) > 0 and id not in ids:
-                ids.append( id)
-                if id == self.getConfProperty('ZMS.stylesheet', 'style.css'):
-                  obs.insert( 0, ob)
-                else:
-                  obs.append( ob)
-      return obs
+        @return: Ordered list of stylesheet objects, primary stylesheet first.
+        @rtype: C{list}
+        """
+        ids = []
+        obs = []
+        for container in self.getResourceFolders():
+            for folder in [ getattr( container, 'css', None), container]:
+                if folder is not None:
+                    for ob in folder.objectValues(['DTML Method', 'DTML Document', 'File', 'Filesystem File','Filesystem DTML Method']):
+                        id = ob.getId()
+                        path = ob.getPhysicalPath()
+                        if len([x for x in path if x.endswith('css')]) > 0 and id not in ids:
+                            ids.append( id)
+                            if id == self.getConfProperty('ZMS.stylesheet', 'style.css'):
+                                obs.insert( 0, ob)
+                            else:
+                                obs.append( ob)
+        return obs
 
-    customize_manage_options__roles__ = None
+    security.declarePublic('customize_manage_options')
     def customize_manage_options(self):
-      """
-      Build and return the ordered list of ZMI management tab descriptors for
-      this ZMS instance.
+        """
+        Build and return the ordered list of ZMI management tab descriptors for
+        this ZMS instance.
 
-      Each descriptor is a C{dict} with C{'label'} and C{'action'} keys
-      compatible with Zope's C{manage_options} convention.  The list always
-      starts with the main view and user tab, followed by any tabs contributed
-      by installed C{IZMSConfigurationProvider} sub-objects, and ends with the
-      design tab.  When the current request is a management request, tabs that
-      cannot be traversed are filtered out.
+        Each descriptor is a C{dict} with C{'label'} and C{'action'} keys
+        compatible with Zope's C{manage_options} convention.  The list always
+        starts with the main view and user tab, followed by any tabs contributed
+        by installed C{IZMSConfigurationProvider} sub-objects, and ends with the
+        design tab.  When the current request is a management request, tabs that
+        cannot be traversed are filtered out.
 
-      @return: List of tab descriptor dicts with C{'label'} and C{'action'}.
-      @rtype: C{list}
-      """
-      l = []
-      l.append({'label':'<i class="%s"></i>'%self.zmi_icon(),'action':'manage_main'})
-      l.append({'label':'TAB_USERS','action':'manage_users'})
-      l.append({'label':'TAB_SYSTEM','action':'manage_customize'})
-      l.append({'label':'TAB_LANGUAGES','action':'manage_customizeLanguagesForm'})
-      for ob in self.objectValues():
-        if IZMSConfigurationProvider in list(providedBy(ob)):
-          for d in ob.manage_sub_options():
-            l.append(self.operator_setitem(d.copy(), 'action', ob.id+'/'+d['action']))
-      l.append({'label':'TAB_DESIGN','action':'manage_customizeDesignForm'})
-      p = self.REQUEST['URL'].split('/')[-1].startswith('manage')
-      if p:
-        l = [x for x in l if self.restrictedTraverse(x['action'], None) is not None]
-      return l
+        @return: List of tab descriptor dicts with C{'label'} and C{'action'}.
+        @rtype: C{list}
+        """
+        l = []
+        l.append({'label':'<i class="%s"></i>'%self.zmi_icon(),'action':'manage_main'})
+        l.append({'label':'TAB_USERS','action':'manage_users'})
+        l.append({'label':'TAB_SYSTEM','action':'manage_customize'})
+        l.append({'label':'TAB_LANGUAGES','action':'manage_customizeLanguagesForm'})
+        for ob in self.objectValues():
+            if IZMSConfigurationProvider in list(providedBy(ob)):
+                for d in ob.manage_sub_options():
+                    l.append(self.operator_setitem(d.copy(), 'action', ob.id+'/'+d['action']))
+        l.append({'label':'TAB_DESIGN','action':'manage_customizeDesignForm'})
+        p = self.REQUEST['URL'].split('/')[-1].startswith('manage')
+        if p:
+            l = [x for x in l if self.restrictedTraverse(x['action'], None) is not None]
+        return l
 
     def getConfManager(self):
-      """Return confmanager."""
-      return self
+        """Return confmanager."""
+        return self
 
 
     def get_conf_properties(self):
-      """Return conf properties."""
-      self.getZMSSysConf()
-      return getattr( self, '__attr_conf_dict__', {})
+        """Return conf properties."""
+        self.getZMSSysConf()
+        return getattr( self, '__attr_conf_dict__', {})
 
     
     def getConfProperties(self, prefix=None, inherited=False, REQUEST=None):
-      """
-      Returns properties from configuration.
+        """
+        Returns properties from configuration.
 
-      @return: A dictionary of configuration properties, optionally filtered by a prefix and including inherited properties from the portal master if specified.
-      @rtype: C{dict}
-      """
-      d = self.get_conf_properties()
-      if REQUEST is not None:
-        prefix = str(base64.b64decode(prefix),'utf-8')
-        r = {x:d[x] for x in d if x.startswith(prefix+'.')}
-        return json.dumps(r)
-      if inherited:
-        d = list(d)
-        portalMaster = self.getPortalMaster()
-        if portalMaster is not None:
-          l = portalMaster.getConfProperties(prefix,inherited,REQUEST)
-          l = [x for x in l if x not in d and x[:x.find('.')] not in UNINHERITED_PROPERTIES]
-          d.extend(l)
-      return d
+        @return: A dictionary of configuration properties, optionally filtered by a prefix and including inherited properties from the portal master if specified.
+        @rtype: C{dict}
+        """
+        d = self.get_conf_properties()
+        if REQUEST is not None:
+            prefix = str(base64.b64decode(prefix),'utf-8')
+            r = {x:d[x] for x in d if x.startswith(prefix+'.')}
+            return json.dumps(r)
+        if inherited:
+            d = list(d)
+            portalMaster = self.getPortalMaster()
+            if portalMaster is not None:
+                l = portalMaster.getConfProperties(prefix,inherited,REQUEST)
+                l = [x for x in l if x not in d and x[:x.find('.')] not in UNINHERITED_PROPERTIES]
+                d.extend(l)
+        if 'getConfProperties' in str(self.REQUEST.get('ACTUAL_URL', '')):
+            d = {k:v for k,v in d.items() if not any([k.lower().startswith(p.lower()) for p in PRIVATE_PROPERTIES])}
+        return d
 
 
 
+    @zpublish(False)
     def delConfProperty(self, key):
-      """
-      Removes property from configuration.
-      
-      @param key: The key.
-      @type key: C{string}
-      @return None
-      """
-      self.setConfProperty(key, None)
+        """
+        Removes property from configuration.
+        
+        @param key: The key.
+        @type key: C{string}
+        @return None
+        """
+        self.setConfProperty(key, None)
 
 
 
+    @zpublish(False)
     def get_conf_property(self, *args, **kwargs):
-      """
-      Return a configuration value, resolving local and inherited defaults.
+        """
+        Return a configuration value, resolving local and inherited defaults.
 
-      Positional arguments are mapped in order to C{key}, C{default}, and
-      C{REQUEST}. Keyword arguments are supported with the same names.
+        Positional arguments are mapped in order to C{key}, C{default}, and
+        C{REQUEST}. Keyword arguments are supported with the same names.
 
-      @keyword key: Configuration key to resolve.
-      @type key: C{str}
-      @keyword default: Fallback value when the key is not configured.
-      @type default: C{any}
-      @keyword REQUEST: Triggering request used for optional base64 decoding of
-        C{key}.
-      @type REQUEST: ZPublisher.HTTPRequest
-      @return: Resolved configuration value.
-      @rtype: C{any}
-      """
-      params = ('key', 'default', 'REQUEST')
-      [operator.setitem(kwargs, params[x], args[x]) for x in range(len(args))]
-      key = kwargs['key']
-      default = kwargs.get('default')
-      REQUEST = kwargs.get('REQUEST')
-      if REQUEST is not None:
-        key = str(base64.b64decode(key),'utf-8')
-      if hasattr(OFS.misc_.misc_,'zms'):
-        if key in OFS.misc_.misc_.zms['confdict']:
-          default = OFS.misc_.misc_.zms['confdict'].get(key)
-      value = default
-      confdict = self.getConfProperties()
-      if key in confdict:
-        value = confdict.get(key)
-      elif key is not None and not key[:key.find('.')] in UNINHERITED_PROPERTIES and not key in ['UniBE.Alias', 'UniBE.Server']:
-        portalMaster = self.getPortalMaster()
-        if portalMaster is not None:
-          value = portalMaster.getConfProperty( key)
-        if value is None:
-          if 'default' in kwargs:
-            value = default
-          else:
-            for default in [x for x in self.default_conf_properties if x['key'] == key]:
-              value = default.get('default', None)
-      return value 
+        @keyword key: Configuration key to resolve.
+        @type key: C{str}
+        @keyword default: Fallback value when the key is not configured.
+        @type default: C{any}
+        @keyword REQUEST: Triggering request used for optional base64 decoding of
+          C{key}.
+        @type REQUEST: ZPublisher.HTTPRequest
+        @return: Resolved configuration value.
+        @rtype: C{any}
+        """
+        params = ('key', 'default', 'REQUEST')
+        [operator.setitem(kwargs, params[x], args[x]) for x in range(len(args))]
+        key = kwargs['key']
+        default = kwargs.get('default')
+        REQUEST = kwargs.get('REQUEST')
+        if REQUEST is not None:
+            key = str(base64.b64decode(key),'utf-8')
+            if 'getConfProperty' in str(self.REQUEST.get('ACTUAL_URL', '')) and \
+                any([key.lower().startswith(p.lower()) for p in PRIVATE_PROPERTIES]):
+                return '*****'
+        if hasattr(OFS.misc_.misc_,'zms'):
+            if key in OFS.misc_.misc_.zms['confdict']:
+                default = OFS.misc_.misc_.zms['confdict'].get(key)
+        value = default
+        confdict = self.getConfProperties()
+        if key in confdict:
+            value = confdict.get(key)
+        elif key is not None and not key[:key.find('.')] in UNINHERITED_PROPERTIES and not key in ['UniBE.Alias', 'UniBE.Server']:
+            portalMaster = self.getPortalMaster()
+            if portalMaster is not None:
+                value = portalMaster.getConfProperty( key)
+            if value is None:
+                if 'default' in kwargs:
+                    value = default
+                else:
+                    for default in [x for x in self.default_conf_properties if x['key'] == key]:
+                        value = default.get('default', None)
+        return value 
 
 
     def getConfProperty(self, key, default=None, REQUEST=None):
-      """
-      Returns property from configuration.
+        """
+        Returns property from configuration.
 
-      @param key: The key.
-      @type key: C{string}
-      @param default: The default-value.
-      @type default: C{any}
-      @var REQUEST: the triggering request
-      @type REQUEST: ZPublisher.HTTPRequest
-      @rtype: C{any}
-      """
-      return self.get_conf_property(key, default, REQUEST)
+        @param key: The key.
+        @type key: C{string}
+        @param default: The default-value.
+        @type default: C{any}
+        @var REQUEST: the triggering request
+        @type REQUEST: ZPublisher.HTTPRequest
+        @rtype: C{any}
+        """
+        return self.get_conf_property(key, default, REQUEST)
 
 
+    @zpublish(False)
     def setConfProperty(self, key, value):
-      """
-      Sets property into configuration.
-      
-      @param key: The key.
-      @type key: C{string}
-      @param value: The value.
-      @type value: C{any}
-      @return None
-      """
-      if key.startswith("Portal"):
-        self.clearReqBuff()
-      d = self.getConfProperties()
-      if value is None:
-        if key in d:
-          del d[key]
-      else:
-        d[key] = value
-      self.__attr_conf_dict__ = d
-      self.__attr_conf_dict__ = self.__attr_conf_dict__.copy()
+        """
+        Sets property into configuration.
+        
+        @param key: The key.
+        @type key: C{string}
+        @param value: The value.
+        @type value: C{any}
+        @return None
+        """
+        if key.startswith("Portal"):
+            self.clearReqBuff()
+        d = self.getConfProperties()
+        if value is None:
+            if key in d:
+                del d[key]
+        else:
+            d[key] = value
+        self.__attr_conf_dict__ = d
+        self.__attr_conf_dict__ = self.__attr_conf_dict__.copy()
 
+
+    security.declareProtected('ZMS Administrator', 'manage_customizeSystem')
     def manage_customizeSystem(self, btn, key, lang, REQUEST, RESPONSE=None):
-      """
-      Manage the system customization.
+        """
+        Manage the system customization.
 
-      The method handles various system customization actions based on the 
-      provided key and button parameters. It processes configuration changes, 
-      imports, history management, client management, media database operations, 
-      and custom configuration properties.
-      
-      @param btn: The button that was clicked to trigger the action.
-      @type btn: C{string}
-      @param key: The key indicating the type of action to perform (e.g., 'Import', 'History', 'Clients', 'MediaDb', 'Custom', 'Configuration', 'Manager').
-      @type key: C{string}
-      @param lang: The language code for localization purposes.
-      @type lang: C{string}
-      @param REQUEST: The HTTP request object containing form data and other request information.
-      @type REQUEST: ZPublisher.HTTPRequest
-      @param RESPONSE: The HTTP response object for sending responses.
-      @type RESPONSE: ZPublisher.HTTPResponse
-      @return: A message indicating the result of the customization action.
-      @rtype: C{string}
-      """
-      
-      message = ''
-      params = []
-      
-      ##### Import ####
-      if key == 'Import':
-        if btn == 'Import':
-          f = REQUEST.get('file')
-          if f:
-            filename = f.filename
-            self.importConfPackage(f)
-          elif REQUEST.get('init'):
-            filename = REQUEST.get('init')
-            self.importConfPackage(filename)
-          else:
-            filename = 'ERROR: No File found!'
-          message = self.getZMILangStr('MSG_IMPORTED')%('<i>%s</i>'%filename)
-      
-      ##### History ####
-      elif key == 'History':
-        old_active = self.getConfProperty('ZMS.Version.active', 0)
-        new_active = REQUEST.get('active', 0)
-        old_nodes = self.getConfProperty('ZMS.Version.nodes', ['{$}'])
-        new_nodes = standard.string_list(REQUEST.get('nodes', ''))
-        self.setConfProperty('ZMS.Version.active', new_active)
-        self.setConfProperty('ZMS.Version.nodes', new_nodes)
-        nodes = []
-        if old_active == 1 and new_active == 0:
-          nodes = old_nodes
-        if old_active == 1 and new_active == 1:
-          nodes = standard.difference_list( old_nodes, self.getConfProperty('ZMS.Version.nodes', ['{$}']))
-        for node in nodes:
-          ob = self.getLinkObj( node)
-          if ob is not None:
-            message += '[%s: %i]'%(node, ob.packHistory())
-        message = self.getZMILangStr('MSG_CHANGED')+message
-      
-      # Clients
-      elif key == 'Clients':
-        if btn == 'Change':
-          home = self.getHome()
-          s = REQUEST.get('portal_master', '').strip()
-          if s != home.id:
-            self.setConfProperty('Portal.Master', s)
-          l = []
-          portal_clients = REQUEST.get('portal_clients', [])
-          if not isinstance(portal_clients, list):
-            portal_clients  = [portal_clients]
-          portal_clients = sorted([(int(x[:x.find(':')]), x[x.find(':')+1:]) for x in portal_clients])
-          portal_clients = [x[1] for x in portal_clients]
-          for id in portal_clients:
-            folder = getattr(home, id, None)
-            if folder is not None:
-              for node in folder.objectValues('ZMS'):
-                node.setConfProperty('Portal.Master', home.id)
-                l.append(id)
-          self.setConfProperty('Portal.Clients', l)
-          message = self.getZMILangStr('MSG_CHANGED')
-      
-      # MediaDb
-      elif key == 'MediaDb':
-        if btn == 'Create':
-          location = REQUEST['mediadb_location'].strip()
-          _mediadb.manage_addMediaDb(self, location)
-          message = self.getZMILangStr('MSG_CHANGED')
-        elif btn == 'Change':
-          structure = int(REQUEST['mediadb_structure'])
-          message = _mediadb.manage_structureMediaDb(self,structure)
-        elif btn == 'Pack':
-          message = _mediadb.manage_packMediaDb(self)
-        elif btn == 'Remove':
-          message = _mediadb.manage_delMediaDb(self)
-      
-      # Custom
-      elif key == 'Custom':
-        k = REQUEST.get( 'conf_key', '')
-        if btn == 'Change':
-          v = REQUEST.get( 'conf_value', '')
-          if type(v) is str:
-            if (v.startswith('{') and not v.startswith('{$') and v.endswith('}')) or (v.startswith('[') and v.endswith(']')):
-              try:
-                from ast import literal_eval
-                v = literal_eval(v)
-              except:
-                standard.writeError(self,'can\'t eval conf-property %s'%key)
-          self.setConfProperty( k, v)
-          if REQUEST.get('portal_clients'):
-            for portalClient in self.getPortalClients():
-              portalClient.setConfProperty( k, v)
-          params.append('conf_key')
-          message = self.getZMILangStr('MSG_CHANGED')
-        elif btn == 'Delete':
-          self.delConfProperty( k)
-          if REQUEST.get('portal_clients'):
-            for portalClient in self.getPortalClients():
-              portalClient.delConfProperty( k)
-          message = self.getZMILangStr('MSG_DELETED')%int(1)
-      
-      # Configuration
-      elif key == 'Configuration':
-        if btn == 'Change':
-          self.setConfProperty('InstalledProducts.lesscss', REQUEST.get('lesscss', ''))
-          self.setConfProperty('InstalledProducts.pil.thumbnail.max', REQUEST.get('pil_thumbnail_max', self.getConfProperty('InstalledProducts.pil.thumbnail.max')))
-          self.setConfProperty('InstalledProducts.pil.hires.thumbnail.max', REQUEST.get('pil_hires_thumbnail_max', self.getConfProperty('InstalledProducts.pil.hires.thumbnail.max')))
-          message = self.getZMILangStr('MSG_CHANGED')
-      
-      # Manager
-      elif key == 'Manager':
-        if btn == 'Add':
-          meta_type = REQUEST.get('meta_type', '')
-          if meta_type == 'Sequence':
-            obj = _sequence.Sequence()
-          elif meta_type == 'ZMSLog':
-            obj = zmslog.ZMSLog()
-          elif meta_type == 'ZMSIndex':
-            obj = zmsindex.ZMSIndex()
-          else:
-            obj = ConfDict.forName(meta_type+'.'+meta_type)()
-          self._setObject(obj.id, obj)
-          message = 'Added '+meta_type
-        elif btn == 'Remove':
-          ids = REQUEST.get('ids', [])
-          if ids:
-            message = 'Removed '+', '.join(ids)
-            self.manage_delObjects(ids=ids)
-      
-      # Return with message.
-      if RESPONSE:
-        d = {'lang': lang,'manage_tabs_message': message}
-        for param in params:
-          d[param] = REQUEST.get( param, '')
-        return RESPONSE.redirect( standard.url_append_params( 'manage_customize', d) + '#%s'%key)
-      return message
+        The method handles various system customization actions based on the 
+        provided key and button parameters. It processes configuration changes, 
+        imports, history management, client management, media database operations, 
+        and custom configuration properties.
+        
+        @param btn: The button that was clicked to trigger the action.
+        @type btn: C{string}
+        @param key: The key indicating the type of action to perform (e.g., 'Import', 'History', 'Clients', 'MediaDb', 'Custom', 'Configuration', 'Manager').
+        @type key: C{string}
+        @param lang: The language code for localization purposes.
+        @type lang: C{string}
+        @param REQUEST: The HTTP request object containing form data and other request information.
+        @type REQUEST: ZPublisher.HTTPRequest
+        @param RESPONSE: The HTTP response object for sending responses.
+        @type RESPONSE: ZPublisher.HTTPResponse
+        @return: A message indicating the result of the customization action.
+        @rtype: C{string}
+        """
+        
+        message = ''
+        params = []
+        
+        ##### Import ####
+        if key == 'Import':
+            if btn == 'Import':
+                f = REQUEST.get('file')
+                if f:
+                    filename = f.filename
+                    self.importConfPackage(f)
+                elif REQUEST.get('init'):
+                    filename = REQUEST.get('init')
+                    self.importConfPackage(filename)
+                else:
+                    filename = 'ERROR: No File found!'
+                message = self.getZMILangStr('MSG_IMPORTED')%('<i>%s</i>'%filename)
+        
+        ##### History ####
+        elif key == 'History':
+            old_active = self.getConfProperty('ZMS.Version.active', 0)
+            new_active = REQUEST.get('active', 0)
+            old_nodes = self.getConfProperty('ZMS.Version.nodes', ['{$}'])
+            new_nodes = standard.string_list(REQUEST.get('nodes', ''))
+            self.setConfProperty('ZMS.Version.active', new_active)
+            self.setConfProperty('ZMS.Version.nodes', new_nodes)
+            nodes = []
+            if old_active == 1 and new_active == 0:
+                nodes = old_nodes
+            if old_active == 1 and new_active == 1:
+                nodes = standard.difference_list( old_nodes, self.getConfProperty('ZMS.Version.nodes', ['{$}']))
+            for node in nodes:
+                ob = self.getLinkObj( node)
+                if ob is not None:
+                    message += '[%s: %i]'%(node, ob.packHistory())
+            message = self.getZMILangStr('MSG_CHANGED')+message
+        
+        # Clients
+        elif key == 'Clients':
+            if btn == 'Change':
+                home = self.getHome()
+                s = REQUEST.get('portal_master', '').strip()
+                if s != home.id:
+                    self.setConfProperty('Portal.Master', s)
+                l = []
+                portal_clients = REQUEST.get('portal_clients', [])
+                if not isinstance(portal_clients, list):
+                    portal_clients  = [portal_clients]
+                portal_clients = sorted([(int(x[:x.find(':')]), x[x.find(':')+1:]) for x in portal_clients])
+                portal_clients = [x[1] for x in portal_clients]
+                for id in portal_clients:
+                    folder = getattr(home, id, None)
+                    if folder is not None:
+                        for node in folder.objectValues('ZMS'):
+                            node.setConfProperty('Portal.Master', home.id)
+                            l.append(id)
+                self.setConfProperty('Portal.Clients', l)
+                message = self.getZMILangStr('MSG_CHANGED')
+        
+        # MediaDb
+        elif key == 'MediaDb':
+            if btn == 'Create':
+                location = REQUEST['mediadb_location'].strip()
+                _mediadb.manage_addMediaDb(self, location)
+                message = self.getZMILangStr('MSG_CHANGED')
+            elif btn == 'Change':
+                structure = int(REQUEST['mediadb_structure'])
+                message = _mediadb.manage_structureMediaDb(self,structure)
+            elif btn == 'Pack':
+                message = _mediadb.manage_packMediaDb(self)
+            elif btn == 'Remove':
+                message = _mediadb.manage_delMediaDb(self)
+        
+        # Custom
+        elif key == 'Custom':
+            k = REQUEST.get( 'conf_key', '')
+            if btn == 'Change':
+                v = REQUEST.get( 'conf_value', '')
+                if type(v) is str:
+                    if (v.startswith('{') and not v.startswith('{$') and v.endswith('}')) or (v.startswith('[') and v.endswith(']')):
+                        try:
+                            from ast import literal_eval
+                            v = literal_eval(v)
+                        except:
+                            standard.writeError(self,'can\'t eval conf-property %s'%key)
+                self.setConfProperty( k, v)
+                if REQUEST.get('portal_clients'):
+                    for portalClient in self.getPortalClients():
+                        portalClient.setConfProperty( k, v)
+                params.append('conf_key')
+                message = self.getZMILangStr('MSG_CHANGED')
+            elif btn == 'Delete':
+                self.delConfProperty( k)
+                if REQUEST.get('portal_clients'):
+                    for portalClient in self.getPortalClients():
+                        portalClient.delConfProperty( k)
+                message = self.getZMILangStr('MSG_DELETED')%int(1)
+        
+        # Configuration
+        elif key == 'Configuration':
+            if btn == 'Change':
+                self.setConfProperty('InstalledProducts.lesscss', REQUEST.get('lesscss', ''))
+                self.setConfProperty('InstalledProducts.pil.thumbnail.max', REQUEST.get('pil_thumbnail_max', self.getConfProperty('InstalledProducts.pil.thumbnail.max')))
+                self.setConfProperty('InstalledProducts.pil.hires.thumbnail.max', REQUEST.get('pil_hires_thumbnail_max', self.getConfProperty('InstalledProducts.pil.hires.thumbnail.max')))
+                message = self.getZMILangStr('MSG_CHANGED')
+        
+        # Manager
+        elif key == 'Manager':
+            if btn == 'Add':
+                meta_type = REQUEST.get('meta_type', '')
+                if meta_type == 'Sequence':
+                    obj = _sequence.Sequence()
+                elif meta_type == 'ZMSLog':
+                    obj = zmslog.ZMSLog()
+                elif meta_type == 'ZMSIndex':
+                    obj = zmsindex.ZMSIndex()
+                else:
+                    obj = ConfDict.forName(meta_type+'.'+meta_type)()
+                self._setObject(obj.id, obj)
+                message = 'Added '+meta_type
+            elif btn == 'Remove':
+                ids = REQUEST.get('ids', [])
+                if ids:
+                    message = 'Removed '+', '.join(ids)
+                    self.manage_delObjects(ids=ids)
+        
+        # Return with message.
+        if RESPONSE:
+            d = {'lang': lang,'manage_tabs_message': message}
+            for param in params:
+                d[param] = REQUEST.get( param, '')
+            return RESPONSE.redirect( standard.url_append_params( 'manage_customize', d) + '#%s'%key)
+        return message
 
 
     def manage_customizeDesign(self, btn, lang, REQUEST, RESPONSE):
-      """
-      Customize design properties.
+        """
+        Customize design properties.
 
-      The method handles various design customization actions based on 
-      the provided button parameter. It processes actions related to 
-      saving CSS, saving themes, deleting themes, copying themes, 
-      importing themes, and inserting new themes. The method also constructs 
-      appropriate messages based on the actions performed and redirects the 
-      user to the design customization form with the relevant message.
+        The method handles various design customization actions based on 
+        the provided button parameter. It processes actions related to 
+        saving CSS, saving themes, deleting themes, copying themes, 
+        importing themes, and inserting new themes. The method also constructs 
+        appropriate messages based on the actions performed and redirects the 
+        user to the design customization form with the relevant message.
 
-      @param btn: The button that was clicked to trigger the action.
-      @type btn: C{string}
-      @param lang: The language code for localization purposes.
-      @type lang: C{string}
-      @param REQUEST: The HTTP request object containing form data and other request information.
-      @type REQUEST: ZPublisher.HTTPRequest
-      @param RESPONSE: The HTTP response object for sending responses.
-      @type RESPONSE: ZPublisher.HTTPResponse
-      @return: A message indicating the result of the design customization action.
-      @rtype: C{string}
-      """
-      message = ''
-      home = self.getHome()
-      section = REQUEST.get('section','')
-      
-      # Save css.
-      # -----
-      if btn == 'BTN_SAVE' and section == 'added':
-        added_id = REQUEST.get('id', '')
-        fname= '%s.%s'%(added_id.split('.')[-1],added_id.split('.')[-2])
-        href = self.getConfProperty(added_id,'%s/%scommon/added/%s'%(self.getHome().id,[self.getConfProperty('ZMS.theme','')+'/',''][len(self.getConfProperty('ZMS.theme',''))==0],fname))
-        href = href.replace('$ZMS_HOME',self.getHome().id)
-        href = href.replace('$ZMS_THEME/',[self.getConfProperty('ZMS.theme','')+'/',''][len(self.getConfProperty('ZMS.theme',''))==0])
-        # Traverse to get object.
-        ob = self.getHome()
-        for id in href.split('/'):
-          ob = getattr(ob,id,None)
-          if ob is None:
-            break
-        # Set object
-        if ob is not None:
-          ob.manage_edit(title=ob.title, content_type=ob.content_type, filedata=REQUEST[added_id])
-        message = self.getZMILangStr('MSG_CHANGED')
-      
-      # Save theme.
-      # -----
-      elif btn == 'BTN_SAVE':
-        id = REQUEST.get('id', '')
-        self.setConfProperty('ZMS.theme', id)
-        message = self.getZMILangStr('MSG_CHANGED')
-      
-      # Delete theme.
-      # -------
-      elif btn == 'BTN_DELETE':
-        ids = REQUEST.get('ids', [])
-        home.manage_delObjects(ids)
-        message = self.getZMILangStr('MSG_DELETED')%int(len(ids))
-      
-      # Copy theme.
-      # -----
-      elif btn == 'BTN_COPY':
-        id = REQUEST.get('id', '')
-        self.metaobj_manager.importTheme(id)
-        message = self.getZMILangStr('MSG_IMPORTED')%('<code class="alert-success">'+id+'</code>')
-      
-      # Import theme.
-      # -------
-      elif btn == 'BTN_IMPORT':
-        file = REQUEST['file']
-        filename = _fileutil.extractFilename(file.filename)
-        id = filename[:filename.rfind('.')]
-        filepath = standard.getINSTANCE_HOME()+'/import/'+filename
-        _fileutil.exportObj( file, filepath)
-        home.manage_importObject(filename)
-        _fileutil.remove( filepath)
-        message = self.getZMILangStr('MSG_IMPORTED')%('<code class="alert-success">'+filename+'</code>')
-      
-      # Insert theme.
-      # -------
-      elif btn == 'BTN_INSERT':
-        newId = REQUEST['newId']
-        newTitle = REQUEST['newTitle']
-        home.manage_addFolder(id=newId, title=newTitle)
-        folder = getattr(home, newId)
-        zopeutil.addPageTemplate(folder, id='standard_html', title='', data='<!DOCTYPE html>\n<html tal:define="zmscontext options/zmscontext">\n</html>')
-        message = self.getZMILangStr('MSG_INSERTED')%newId
-      
-      # Return with message.
-      message = standard.url_quote(message)
-      return RESPONSE.redirect('manage_customizeDesignForm?lang=%s&manage_tabs_message=%s'%(lang, message))
+        @param btn: The button that was clicked to trigger the action.
+        @type btn: C{string}
+        @param lang: The language code for localization purposes.
+        @type lang: C{string}
+        @param REQUEST: The HTTP request object containing form data and other request information.
+        @type REQUEST: ZPublisher.HTTPRequest
+        @param RESPONSE: The HTTP response object for sending responses.
+        @type RESPONSE: ZPublisher.HTTPResponse
+        @return: A message indicating the result of the design customization action.
+        @rtype: C{string}
+        """
+        message = ''
+        home = self.getHome()
+        section = REQUEST.get('section','')
+        
+        # Save css.
+        # -----
+        if btn == 'BTN_SAVE' and section == 'added':
+            added_id = REQUEST.get('id', '')
+            fname= '%s.%s'%(added_id.split('.')[-1],added_id.split('.')[-2])
+            href = self.getConfProperty(added_id,'%s/%scommon/added/%s'%(self.getHome().id,[self.getConfProperty('ZMS.theme','')+'/',''][len(self.getConfProperty('ZMS.theme',''))==0],fname))
+            href = href.replace('$ZMS_HOME',self.getHome().id)
+            href = href.replace('$ZMS_THEME/',[self.getConfProperty('ZMS.theme','')+'/',''][len(self.getConfProperty('ZMS.theme',''))==0])
+            # Traverse to get object.
+            ob = self.getHome()
+            for id in href.split('/'):
+                ob = getattr(ob,id,None)
+                if ob is None:
+                    break
+            # Set object
+            if ob is not None:
+                ob.manage_edit(title=ob.title, content_type=ob.content_type, filedata=REQUEST[added_id])
+            message = self.getZMILangStr('MSG_CHANGED')
+        
+        # Save theme.
+        # -----
+        elif btn == 'BTN_SAVE':
+            id = REQUEST.get('id', '')
+            self.setConfProperty('ZMS.theme', id)
+            message = self.getZMILangStr('MSG_CHANGED')
+        
+        # Delete theme.
+        # -------
+        elif btn == 'BTN_DELETE':
+            ids = REQUEST.get('ids', [])
+            home.manage_delObjects(ids)
+            message = self.getZMILangStr('MSG_DELETED')%int(len(ids))
+        
+        # Copy theme.
+        # -----
+        elif btn == 'BTN_COPY':
+            id = REQUEST.get('id', '')
+            self.metaobj_manager.importTheme(id)
+            message = self.getZMILangStr('MSG_IMPORTED')%('<code class="alert-success">'+id+'</code>')
+        
+        # Import theme.
+        # -------
+        elif btn == 'BTN_IMPORT':
+            file = REQUEST['file']
+            filename = _fileutil.extractFilename(file.filename)
+            id = filename[:filename.rfind('.')]
+            filepath = standard.getINSTANCE_HOME()+'/import/'+filename
+            _fileutil.exportObj( file, filepath)
+            home.manage_importObject(filename)
+            _fileutil.remove( filepath)
+            message = self.getZMILangStr('MSG_IMPORTED')%('<code class="alert-success">'+filename+'</code>')
+        
+        # Insert theme.
+        # -------
+        elif btn == 'BTN_INSERT':
+            newId = REQUEST['newId']
+            newTitle = REQUEST['newTitle']
+            home.manage_addFolder(id=newId, title=newTitle)
+            folder = getattr(home, newId)
+            zopeutil.addPageTemplate(folder, id='standard_html', title='', data='<!DOCTYPE html>\n<html tal:define="zmscontext options/zmscontext">\n</html>')
+            message = self.getZMILangStr('MSG_INSERTED')%newId
+        
+        # Return with message.
+        message = standard.url_quote(message)
+        return RESPONSE.redirect('manage_customizeDesignForm?lang=%s&manage_tabs_message=%s'%(lang, message))
 
 
     def getZMSSysConf(self):
-      """
-      Return the ZMSSysConf object, creating and initializing it if it does not already exist.
-      
-      The method checks if the ZMSSysConf object is already present as an attribute of the 
-      current instance. If it is not found, a new ZMSSysConf object is created, added to 
-      the current instance using _setObject, and then initialized. Finally, the method 
-      returns the ZMSSysConf object.
+        """
+        Return the ZMSSysConf object, creating and initializing it if it does not already exist.
+        
+        The method checks if the ZMSSysConf object is already present as an attribute of the 
+        current instance. If it is not found, a new ZMSSysConf object is created, added to 
+        the current instance using _setObject, and then initialized. Finally, the method 
+        returns the ZMSSysConf object.
 
-      @return: The ZMSSysConf object associated with the current instance.
-      @rtype: ZMSSysConf
-      """
-      sys_conf = getattr(self,"sys_conf",None)
-      if sys_conf is None:
-        sys_conf = _conf.ZMSSysConf()
-        self._setObject(sys_conf.id, sys_conf)
-        sys_conf = getattr(self, sys_conf.id, None)
-        sys_conf.initialize()
-      return sys_conf
+        @return: The ZMSSysConf object associated with the current instance.
+        @rtype: ZMSSysConf
+        """
+        sys_conf = getattr(self,"sys_conf",None)
+        if sys_conf is None:
+            sys_conf = _conf.ZMSSysConf()
+            self._setObject(sys_conf.id, sys_conf)
+            sys_conf = getattr(self, sys_conf.id, None)
+            sys_conf.initialize()
+        return sys_conf
 
 
     def getZMSIndex(self):
-      """
-      Return the ZMSIndex object, creating and initializing it if it does not already exist.
-      
-      @return: The ZMSIndex object associated with the root element.
-      @rtype: ZMSIndex
-      """
-      root = self.getRootElement()
-      index = getattr(root,"zmsindex",None)
-      if index is not None and index.meta_type != "ZMSIndex":
-        root.manage_delObjects(ids=["zmsindex"])
-        self.getMetaobjManager().delMetaobj("com.zms.index")
-        self.getMetaobjManager().delMetaobjAttr("ZMS","zmsindex")
-        index = None
-      if index is None:
-        index = zmsindex.ZMSIndex()
-        root._setObject(index.id, index)
+        """
+        Return the ZMSIndex object, creating and initializing it if it does not already exist.
+        
+        @return: The ZMSIndex object associated with the root element.
+        @rtype: ZMSIndex
+        """
+        root = self.getRootElement()
         index = getattr(root,"zmsindex",None)
-        index.initialize()
-      return index
+        if index is not None and index.meta_type != "ZMSIndex":
+            root.manage_delObjects(ids=["zmsindex"])
+            self.getMetaobjManager().delMetaobj("com.zms.index")
+            self.getMetaobjManager().delMetaobjAttr("ZMS","zmsindex")
+            index = None
+        if index is None:
+            index = zmsindex.ZMSIndex()
+            root._setObject(index.id, index)
+            index = getattr(root,"zmsindex",None)
+            index.initialize()
+        return index
 
 
     def getWfActivities(self):
-      """
-      Return the workflow activities.
+        """
+        Return the workflow activities.
 
-      It delegates the retrieval of workflow activities to the workflow manager. 
-      If the workflow manager is not available, it returns an empty list.  
-      
-      @return: A list of workflow activities.
-      @rtype: list
-      """
-      workflow_manager = getattr(self, 'workflow_manager', None)
-      if workflow_manager is None:
-        return []
-      return workflow_manager.getActivities()
+        It delegates the retrieval of workflow activities to the workflow manager. 
+        If the workflow manager is not available, it returns an empty list.  
+        
+        @return: A list of workflow activities.
+        @rtype: list
+        """
+        workflow_manager = getattr(self, 'workflow_manager', None)
+        if workflow_manager is None:
+            return []
+        return workflow_manager.getActivities()
 
 
     def getWfActivitiesIds(self):
-      """
-      Return the workflow activities IDs.
-      It delegates the retrieval of workflow activity IDs to the workflow manager. 
-      If the workflow manager is not available, it returns an empty list.
-      
-      @return: A list of workflow activities IDs.
-      @rtype: list
-      """
-      workflow_manager = getattr(self, 'workflow_manager', None)
-      if workflow_manager is None:
-        return []
-      return workflow_manager.getActivityIds()
+        """
+        Return the workflow activities IDs.
+        It delegates the retrieval of workflow activity IDs to the workflow manager. 
+        If the workflow manager is not available, it returns an empty list.
+        
+        @return: A list of workflow activities IDs.
+        @rtype: list
+        """
+        workflow_manager = getattr(self, 'workflow_manager', None)
+        if workflow_manager is None:
+            return []
+        return workflow_manager.getActivityIds()
 
 
     def getWfActivity(self, id):
-      """
-      Return a specific workflow activity by its ID.
-      It delegates the retrieval of a specific workflow activity to the workflow manager.
-      
-      @param id: The ID of the workflow activity.
-      @type id: str
-      @return: The workflow activity associated with the given ID.
-      @rtype: dict or None
-      """
-      workflow_manager = getattr(self, 'workflow_manager', None)
-      if workflow_manager is None:
-        return None
-      return workflow_manager.getActivity(id)
+        """
+        Return a specific workflow activity by its ID.
+        It delegates the retrieval of a specific workflow activity to the workflow manager.
+        
+        @param id: The ID of the workflow activity.
+        @type id: str
+        @return: The workflow activity associated with the given ID.
+        @rtype: dict or None
+        """
+        workflow_manager = getattr(self, 'workflow_manager', None)
+        if workflow_manager is None:
+            return None
+        return workflow_manager.getActivity(id)
 
 
     def getWfTransitions(self):
-      """
-      Return the workflow transitions.
-      It delegates the retrieval of workflow transitions to the workflow manager.
-      If the workflow manager is not available, it returns an empty list.
-      
-      @return: A list of workflow transitions.
-      @rtype: list
-      """
-      workflow_manager = getattr(self, 'workflow_manager', None)
-      if workflow_manager is None:
-        return []
-      return workflow_manager.getTransitions()
+        """
+        Return the workflow transitions.
+        It delegates the retrieval of workflow transitions to the workflow manager.
+        If the workflow manager is not available, it returns an empty list.
+        
+        @return: A list of workflow transitions.
+        @rtype: list
+        """
+        workflow_manager = getattr(self, 'workflow_manager', None)
+        if workflow_manager is None:
+            return []
+        return workflow_manager.getTransitions()
 
 
     def getWfTransition(self, id):
-      """
-      Return a specific workflow transition by its ID.
-      It delegates the retrieval of a specific workflow transition to the workflow manager.
-      If the workflow manager is not available, it returns None.
+        """
+        Return a specific workflow transition by its ID.
+        It delegates the retrieval of a specific workflow transition to the workflow manager.
+        If the workflow manager is not available, it returns None.
 
-      @param id: The ID of the workflow transition.
-      @type id: str
-      @return: The workflow transition associated with the given ID.
-      @rtype: dict or None
-      """
-      workflow_manager = getattr(self, 'workflow_manager', None)
-      if workflow_manager is None:
-        return None
-      return workflow_manager.getTransition(id)
+        @param id: The ID of the workflow transition.
+        @type id: str
+        @return: The workflow transition associated with the given ID.
+        @rtype: dict or None
+        """
+        workflow_manager = getattr(self, 'workflow_manager', None)
+        if workflow_manager is None:
+            return None
+        return workflow_manager.getTransition(id)
 
 
     def getFilterManager(self):
-      """
-      Return the filter manager.
+        """
+        Return the filter manager.
 
-      It delegates the retrieval of the filter manager to the filter manager object.
-      If the filter manager is not available, it returns a default filter manager.
-      
-      @return: The filter manager object.
-      @rtype: ZMSFilterManager
-      """
-      filters = self.getConfProperty('ZMS.filter.filters', {})
-      processes = self.getConfProperty('ZMS.filter.processes', {})
-      if filters or processes:
-        meta_type = 'ZMSFilterManager'
-        try:
-          obj = ConfDict.forName(meta_type+'.'+meta_type)(filters,processes)
-          self._setObject( obj.id, obj)
-          self.delConfProperty('ZMS.filter.filters')
-          self.delConfProperty('ZMS.filter.processes')
-        except:
-          standard.writeError(self, "[getFilterManager]: can't init new %s"%meta_type)
+        It delegates the retrieval of the filter manager to the filter manager object.
+        If the filter manager is not available, it returns a default filter manager.
+        
+        @return: The filter manager object.
+        @rtype: ZMSFilterManager
+        """
+        filters = self.getConfProperty('ZMS.filter.filters', {})
+        processes = self.getConfProperty('ZMS.filter.processes', {})
+        if filters or processes:
+            meta_type = 'ZMSFilterManager'
+            try:
+                obj = ConfDict.forName(meta_type+'.'+meta_type)(filters,processes)
+                self._setObject( obj.id, obj)
+                self.delConfProperty('ZMS.filter.filters')
+                self.delConfProperty('ZMS.filter.processes')
+            except:
+                standard.writeError(self, "[getFilterManager]: can't init new %s"%meta_type)
 
-      manager = [x for x in self.getDocumentElement().objectValues() if isinstance(x,ZMSFilterManager.ZMSFilterManager)]
+        manager = [x for x in self.getDocumentElement().objectValues() if isinstance(x,ZMSFilterManager.ZMSFilterManager)]
 
-      if len(manager)==0:
-        class DefaultManager(object):
-          """Provide helpers for DefaultManager."""
-          getFilter__roles__ = None
+        if len(manager)==0:
+            class DefaultManager(object):
+                """Provide helpers for DefaultManager."""
+                getFilter__roles__ = None
 
-          def getFilter(self, id):
-            """Return filter."""
-            return {}
+                def getFilter(self, id):
+                    """Return filter."""
+                    return {}
 
-          getFilterIds__roles__ = None
+                getFilterIds__roles__ = None
 
-          def getFilterIds(self, sort=True):
-            """Return filterids."""
-            return []
+                def getFilterIds(self, sort=True):
+                    """Return filterids."""
+                    return []
 
-          getFilterProcesses__roles__ = None
+                getFilterProcesses__roles__ = None
 
-          def getFilterProcesses(self, id):
-            """Return filterprocesses."""
-            return []
+                def getFilterProcesses(self, id):
+                    """Return filterprocesses."""
+                    return []
 
-          getProcess__roles__ = None
+                getProcess__roles__ = None
 
-          def getProcess(self, id):
-            """Return process."""
-            return {}
+                def getProcess(self, id):
+                    """Return process."""
+                    return {}
 
-          getProcessIds__roles__ = None
+                getProcessIds__roles__ = None
 
-          def getProcessIds(self, sort=True):
-            """Return processids."""
-            return []
+                def getProcessIds(self, sort=True):
+                    """Return processids."""
+                    return []
 
-          importXml__roles__ = None
+                importXml__roles__ = None
 
-          def importXml(self, xml):
-            """
-            Placeholder import hook for default in-memory filter manager.
+                def importXml(self, xml):
+                    """
+                    Placeholder import hook for default in-memory filter manager.
 
-            @param xml: Serialized filter-manager payload.
-            @type xml: C{str} | C{bytes}
-            @return: C{None}
-            @rtype: C{None}
-            """
-            pass
+                    @param xml: Serialized filter-manager payload.
+                    @type xml: C{str} | C{bytes}
+                    @return: C{None}
+                    @rtype: C{None}
+                    """
+                    pass
 
-        manager = [DefaultManager()]
-      return manager[0]
+            manager = [DefaultManager()]
+        return manager[0]
 
 
     def getMetaobjManager(self):
-      """
-      Return the metaobj manager.
+        """
+        Return the metaobj manager.
 
-      It delegates the retrieval of the metaobj manager to the metaobj manager object.
-      If the metaobj manager is not available, it returns a default metaobj manager.
-      
-      @return: The metaobj manager object.
-      @rtype: DefaultMetaobjManager
-      """
-      manager = getattr(self, 'metaobj_manager', None)
-      if manager is None:
-        class DefaultMetaobjManager(object):
-          """Provide helpers for DefaultMetaobjManager."""
+        It delegates the retrieval of the metaobj manager to the metaobj manager object.
+        If the metaobj manager is not available, it returns a default metaobj manager.
+        
+        @return: The metaobj manager object.
+        @rtype: DefaultMetaobjManager
+        """
+        manager = getattr(self, 'metaobj_manager', None)
+        if manager is None:
+            class DefaultMetaobjManager(object):
+                """Provide helpers for DefaultMetaobjManager."""
 
-          def importXml(self, xml):
-            """
-            Placeholder import hook for default in-memory metaobj manager.
+                def importXml(self, xml):
+                    """
+                    Placeholder import hook for default in-memory metaobj manager.
 
-            @param xml: Serialized meta-object payload.
-            @type xml: C{str} | C{bytes}
-            @return: C{None}
-            @rtype: C{None}
-            """
-            pass
+                    @param xml: Serialized meta-object payload.
+                    @type xml: C{str} | C{bytes}
+                    @return: C{None}
+                    @rtype: C{None}
+                    """
+                    pass
 
-          def getMetaobjId(self, name):
-            """Return metaobjid."""
-            return None
+                def getMetaobjId(self, name):
+                    """Return metaobjid."""
+                    return None
 
-          def getMetaobjIds(self, sort=None, excl_ids=[]):
-            """Return metaobjids."""
-            return []
+                def getMetaobjIds(self, sort=None, excl_ids=[]):
+                    """Return metaobjids."""
+                    return []
 
-          def getMetaobj(self, id):
-            """Return metaobj."""
-            return None
+                def getMetaobj(self, id):
+                    """Return metaobj."""
+                    return None
 
-          def getMetaobjAttrIds(self, meta_id, types=[]):
-            """Return metaobjattrids."""
-            return []
+                def getMetaobjAttrIds(self, meta_id, types=[]):
+                    """Return metaobjattrids."""
+                    return []
 
-          def getMetaobjAttrs(self, meta_id,  types=[]):
-            """Return metaobjattrs."""
-            return []
+                def getMetaobjAttrs(self, meta_id,  types=[]):
+                    """Return metaobjattrs."""
+                    return []
 
-          def getMetaobjAttr(self, id, attr_id, sync=True):
-            """Return metaobjattr."""
-            return None
+                def getMetaobjAttr(self, id, attr_id, sync=True):
+                    """Return metaobjattr."""
+                    return None
 
-          def getMetaobjAttrIdentifierId(self, meta_id):
-            """Return metaobjattridentifierid."""
-            return None
+                def getMetaobjAttrIdentifierId(self, meta_id):
+                    """Return metaobjattridentifierid."""
+                    return None
 
-          def notifyMetaobjAttrAboutValue(self, meta_id, key, value):
-            """
-            Placeholder callback for meta-object attribute value notifications.
+                def notifyMetaobjAttrAboutValue(self, meta_id, key, value):
+                    """
+                    Placeholder callback for meta-object attribute value notifications.
 
-            @param meta_id: Meta-object id.
-            @type meta_id: C{str}
-            @param key: Attribute id.
-            @type key: C{str}
-            @param value: Observed value.
-            @type value: C{any}
-            @return: C{None}
-            @rtype: C{None}
-            """
-            return None
+                    @param meta_id: Meta-object id.
+                    @type meta_id: C{str}
+                    @param key: Attribute id.
+                    @type key: C{str}
+                    @param value: Observed value.
+                    @type value: C{any}
+                    @return: C{None}
+                    @rtype: C{None}
+                    """
+                    return None
 
-        manager = DefaultMetaobjManager()
-      return manager
+            manager = DefaultMetaobjManager()
+        return manager
 
 
     def getMetaobjRevision(self, id):
-      """
-      Return meta-object revision.
-      It delegates the retrieval of the meta-object revision to 
-      the meta-object manager. If the metaobj manager is not available, 
-      it returns None.
-      """
-      return self.getMetaobjManager().getMetaobjRevision( id)
+        """
+        Return meta-object revision.
+        It delegates the retrieval of the meta-object revision to 
+        the meta-object manager. If the metaobj manager is not available, 
+        it returns None.
+        """
+        return self.getMetaobjManager().getMetaobjRevision( id)
 
 
     def getMetaobjId(self, name):
-      """Return meta-object id."""
-      return self.getMetaobjManager().getMetaobjId( name)
+        """Return meta-object id."""
+        return self.getMetaobjManager().getMetaobjId( name)
 
 
     def getMetaobjIds(self, sort=None, excl_ids=[]):
-      """Return meta-object ids."""
-      return self.getMetaobjManager().getMetaobjIds( sort, excl_ids)
+        """Return meta-object ids."""
+        return self.getMetaobjManager().getMetaobjIds( sort, excl_ids)
 
 
     def getMetaobj(self, id):
-      """Return meta-object."""
-      return self.getMetaobjManager().getMetaobj( id)
+        """Return meta-object."""
+        return self.getMetaobjManager().getMetaobj( id)
 
 
     def getMetaobjAttrIds(self, meta_id, types=[]):
-      """Return meta-object attribute ids."""
-      return self.getMetaobjManager().getMetaobjAttrIds( meta_id, types)
+        """Return meta-object attribute ids."""
+        return self.getMetaobjManager().getMetaobjAttrIds( meta_id, types)
 
 
     def getMetaobjAttrs(self, meta_id,  types=[]):
-      """Return meta-object attributes."""
-      return self.getMetaobjManager().getMetaobjAttrs( meta_id, types)
+        """Return meta-object attributes."""
+        return self.getMetaobjManager().getMetaobjAttrs( meta_id, types)
 
 
     def getMetaobjAttr(self, id, attr_id, sync=True):
-      """Return meta-object attribute."""
-      return self.getMetaobjManager().getMetaobjAttr( id, attr_id, sync)
+        """Return meta-object attribute."""
+        return self.getMetaobjManager().getMetaobjAttr( id, attr_id, sync)
 
 
     def getMetaobjAttrIdentifierId(self, meta_id):
-      """Return meta-object attribute identifier id."""
-      return self.getMetaobjManager().getMetaobjAttrIdentifierId( meta_id)
+        """Return meta-object attribute identifier id."""
+        return self.getMetaobjManager().getMetaobjAttrIdentifierId( meta_id)
 
 
     def notifyMetaobjAttrAboutValue(self, meta_id, key, value):
-      """
-      Notify meta-object attribute definition about (a new) value.
-      It delegates the notification of a meta-object attribute about a value to the meta-object manager.
-      If the meta-object manager is not available, it returns None.
+        """
+        Notify meta-object attribute definition about (a new) value.
+        It delegates the notification of a meta-object attribute about a value to the meta-object manager.
+        If the meta-object manager is not available, it returns None.
 
-      @param meta_id: The ID of the meta-object.
-      @type meta_id: str
-      @param key: The key of the attribute to notify.
-      @type key: str
-      @param value: The value to notify the attribute about.
-      @type value: any
-      @return: The result of the notification, or None if the meta-object manager is not available.
-      @rtype: any
-      """
-      return self.getMetaobjManager().notifyMetaobjAttrAboutValue( meta_id, key, value)
+        @param meta_id: The ID of the meta-object.
+        @type meta_id: str
+        @param key: The key of the attribute to notify.
+        @type key: str
+        @param value: The value to notify the attribute about.
+        @type value: any
+        @return: The result of the notification, or None if the meta-object manager is not available.
+        @rtype: any
+        """
+        return self.getMetaobjManager().notifyMetaobjAttrAboutValue( meta_id, key, value)
 
 
     def getMetacmdManager(self):
-      """
-      Return the metacmd manager.
+        """
+        Return the metacmd manager.
 
-      It delegates the retrieval of the metacmd manager to the metacmd manager object.
-      If the metacmd manager is not available, it returns a default metacmd manager.
-      
-      @return: The metacmd manager object.
-      @rtype: DefaultMetacmdManager
-      """
-      commands = self.getConfProperty('ZMS.custom.commands', [])
-      if len(commands)>0:
-        meta_type = 'ZMSMetacmdProvider'
-        obj = ConfDict.forName(meta_type+'.'+meta_type)(commands)
-        self._setObject( obj.id, obj)
-        self.delConfProperty('ZMS.custom.commands')
+        It delegates the retrieval of the metacmd manager to the metacmd manager object.
+        If the metacmd manager is not available, it returns a default metacmd manager.
+        
+        @return: The metacmd manager object.
+        @rtype: DefaultMetacmdManager
+        """
+        commands = self.getConfProperty('ZMS.custom.commands', [])
+        if len(commands)>0:
+            meta_type = 'ZMSMetacmdProvider'
+            obj = ConfDict.forName(meta_type+'.'+meta_type)(commands)
+            self._setObject( obj.id, obj)
+            self.delConfProperty('ZMS.custom.commands')
 
-      metacmd_manager = getattr(self, 'metacmd_manager', None)
+        metacmd_manager = getattr(self, 'metacmd_manager', None)
 
-      if metacmd_manager is None:
-        class DefaultManager(object):
-          """Provide helpers for DefaultManager."""
+        if metacmd_manager is None:
+            class DefaultManager(object):
+                """Provide helpers for DefaultManager."""
 
-          def importXml(self, xml):
-            """
-            Placeholder import hook for default in-memory metacmd manager.
+                def importXml(self, xml):
+                    """
+                    Placeholder import hook for default in-memory metacmd manager.
 
-            @param xml: Serialized meta-command payload.
-            @type xml: C{str} | C{bytes}
-            @return: C{None}
-            @rtype: C{None}
-            """
-            pass
+                    @param xml: Serialized meta-command payload.
+                    @type xml: C{str} | C{bytes}
+                    @return: C{None}
+                    @rtype: C{None}
+                    """
+                    pass
 
-          def getMetaCmdDescription(self, id):
-            """Return metacmddescription."""
-            return None
+                def getMetaCmdDescription(self, id):
+                    """Return metacmddescription."""
+                    return None
 
-          def getMetaCmd(self, id):
-            """Return metacmd."""
-            return None
+                def getMetaCmd(self, id):
+                    """Return metacmd."""
+                    return None
 
-          def getMetaCmdIds(self, sort=True):
-            """Return metacmdids."""
-            return []
+                def getMetaCmdIds(self, sort=True):
+                    """Return metacmdids."""
+                    return []
 
-          def getMetaCmds(self, context=None, stereotype='', sort=True):
-            """Return metacmds."""
-            return []
+                def getMetaCmds(self, context=None, stereotype='', sort=True):
+                    """Return metacmds."""
+                    return []
 
-        metacmd_manager = DefaultManager()
-      return metacmd_manager
+            metacmd_manager = DefaultManager()
+        return metacmd_manager
 
 
     def getMetaCmdDescription(self, id):
-       """ getMetaCmdDescription """
-       return self.getMetacmdManager().getMetaCmdDescription(id)
+        """ Return metacmddescription. """
+        return self.getMetacmdManager().getMetaCmdDescription(id)
 
 
     def getMetaCmd(self, id):
-       """Return metacmd."""
-       return self.getMetacmdManager().getMetaCmd(id)
+        """ Return metacmd. """
+        return self.getMetacmdManager().getMetaCmd(id)
 
 
     def getMetaCmdIds(self, sort=1):
-       """Return metacmdids."""
-       return self.getMetacmdManager().getMetaCmdIds(sort)
+        """ Return metacmdids. """
+        return self.getMetacmdManager().getMetaCmdIds(sort)
 
 
     def getMetaCmds(self, context=None, stereotype='', sort=True):
-      """Return metacmds."""
-      return self.getMetacmdManager().getMetaCmds(context, stereotype, sort)
+        """ Return metacmds. """
+        return self.getMetacmdManager().getMetaCmds(context, stereotype, sort)
 
     def getWorkflowManager(self):
-      """
-      Return the workflow manager.
+        """
+        Return the workflow manager.
 
-      It delegates the retrieval of the workflow manager to the workflow manager object.
-      If the workflow manager is not available, it returns a default workflow manager.
-      
-      @return: The workflow manager object.
-      @rtype: DefaultWorkflowManager
-      """
-      manager = getattr(self.getDocumentElement(),'workflow_manager',None)
-      if manager is None:
-        class DefaultManager(object):
-          """Provide helpers for DefaultManager."""
+        It delegates the retrieval of the workflow manager to the workflow manager object.
+        If the workflow manager is not available, it returns a default workflow manager.
+        
+        @return: The workflow manager object.
+        @rtype: DefaultWorkflowManager
+        """
+        manager = getattr(self.getDocumentElement(),'workflow_manager',None)
+        if manager is None:
+            class DefaultManager(object):
+                """Provide helpers for DefaultManager."""
 
-          def importXml(self, xml):
-            """
-            Placeholder import hook for default in-memory workflow manager.
+                def importXml(self, xml):
+                    """
+                    Placeholder import hook for default in-memory workflow manager.
 
-            @param xml: Serialized workflow payload.
-            @type xml: C{str} | C{bytes}
-            @return: C{None}
-            @rtype: C{None}
-            """
-            pass
+                    @param xml: Serialized workflow payload.
+                    @type xml: C{str} | C{bytes}
+                    @return: C{None}
+                    @rtype: C{None}
+                    """
+                    pass
 
-          def getAutocommit(self):
-            """Return autocommit."""
-            return True
+                def getAutocommit(self):
+                    """Return autocommit."""
+                    return True
 
-          def getActivities(self):
-            """Return activities."""
-            return []
+                def getActivities(self):
+                    """Return activities."""
+                    return []
 
-          def getActivityIds(self):
-            """Return activityids."""
-            return []
+                def getActivityIds(self):
+                    """Return activityids."""
+                    return []
 
-          def getActivity(self, id):
-            """Return activity."""
-            return None
+                def getActivity(self, id):
+                    """Return activity."""
+                    return None
 
-          def getActivityDetails(self, id):
-            """Return activitydetails."""
-            return None
+                def getActivityDetails(self, id):
+                    """Return activitydetails."""
+                    return None
 
-          def getTransitions(self):
-            """Return transitions."""
-            return []
+                def getTransitions(self):
+                    """Return transitions."""
+                    return []
 
-          def getTransitionIds(self):
-            """Return transitionids."""
-            return []
+                def getTransitionIds(self):
+                    """Return transitionids."""
+                    return []
 
-        manager = DefaultManager()
-      return manager
+                def getTransition(self, id):
+                    """Return transition."""
+                    return None
+
+            manager = DefaultManager()
+        return manager
 
 
     def getFormatManager(self):
-      """Return the format manager.
+        """Return the format manager.
 
-      It delegates the retrieval of the format manager to the format manager object.
-      If the format manager is not available, it returns a default format manager.
+        It delegates the retrieval of the format manager to the format manager object.
+        If the format manager is not available, it returns a default format manager.
 
-      @return: The format manager object.
-      @rtype: DefaultFormatManager
-      """
-      return self.format_manager
+        @return: The format manager object.
+        @rtype: DefaultFormatManager
+        """
+        return self.format_manager
 
 
     def getTextFormatDefault(self):
-      """
-      Return the default text format.
+        """
+        Return the default text format.
 
-      It delegates the retrieval of the default text format to the format manager object.
-      If the format manager is not available, it returns a default text format.
+        It delegates the retrieval of the default text format to the format manager object.
+        If the format manager is not available, it returns a default text format.
 
-      @return: The default text format object.
-      @rtype: C{string}
-      """
-      return self.getFormatManager().getTextFormatDefault()
+        @return: The default text format object.
+        @rtype: C{string}
+        """
+        return self.getFormatManager().getTextFormatDefault()
 
 
     def getTextFormat(self, id, REQUEST):
-      """
-      Return the text format for the given ID.
+        """
+        Return the text format for the given ID.
 
-      It delegates the retrieval of the text format to the format manager object.
-      If the format manager is not available, it returns a default text format.
+        It delegates the retrieval of the text format to the format manager object.
+        If the format manager is not available, it returns a default text format.
 
-      @param id: The ID of the text format.
-      @type id: str
-      @param REQUEST: The request object.
-      @type REQUEST: ZopeRequest
-      @return: The text format object.
-      @rtype: TextFormat
-      """
-      return self.getFormatManager().getTextFormat(id, REQUEST)
+        @param id: The ID of the text format.
+        @type id: str
+        @param REQUEST: The request object.
+        @type REQUEST: ZopeRequest
+        @return: The text format object.
+        @rtype: TextFormat
+        """
+        return self.getFormatManager().getTextFormat(id, REQUEST)
 
 
     def getTextFormats(self, REQUEST):
-      """
-      Return the set of text formats.
+        """
+        Return the set of text formats.
 
-      It delegates the retrieval of the text formats to the format manager object.
-      If the format manager is not available, it returns a default set of text formats.
+        It delegates the retrieval of the text formats to the format manager object.
+        If the format manager is not available, it returns a default set of text formats.
 
-      @param REQUEST: The request object.
-      @type REQUEST: ZopeRequest
-      @return: The set of text format objects.
-      @rtype: list of text formats
-      """
-      return self.getFormatManager().getTextFormats(REQUEST)
+        @param REQUEST: The request object.
+        @type REQUEST: ZopeRequest
+        @return: The set of text format objects.
+        @rtype: list of text formats
+        """
+        return self.getFormatManager().getTextFormats(REQUEST)
 
 
     def getCharFormats(self):
-      """
-      Return the set of character formats.
+        """
+        Return the set of character formats.
 
-      It delegates the retrieval of the character formats to the format manager object.
-      If the format manager is not available, it returns a default set of character formats.
+        It delegates the retrieval of the character formats to the format manager object.
+        If the format manager is not available, it returns a default set of character formats.
 
-      @return: The set of character format objects.
-      @rtype: list of character formats
-      """
-      return self.getFormatManager().getCharFormats()
+        @return: The set of character format objects.
+        @rtype: list of character formats
+        """
+        return self.getFormatManager().getCharFormats()
 
 
     def getCatalogAdapter(self):
-      """
-      Return the catalog adapter.
+        """
+        Return the catalog adapter.
 
-      It delegates the retrieval of the catalog adapter to the catalog adapter object.
-      If the catalog adapter is not available, it returns a default catalog adapter.
+        It delegates the retrieval of the catalog adapter to the catalog adapter object.
+        If the catalog adapter is not available, it returns a default catalog adapter.
 
-      @return: The catalog adapter object.
-      @rtype: IZMSCatalogAdapter
-      """
-      from Products.zms import IZMSCatalogAdapter, ZMSZCatalogAdapter
-      path_nodes = self.breadcrumbs_obj_path()
-      path_nodes.reverse()
-      for path_node in path_nodes:
-        for ob in path_node.objectValues():
-          if IZMSCatalogAdapter.IZMSCatalogAdapter in list(providedBy(ob)):
-            return ob
-      # If no ZMSZCatalogAdapter then add one to root node
-      adapter = ZMSZCatalogAdapter.ZMSZCatalogAdapter()
-      path_nodes[0]._setObject( adapter.id, adapter)
-      adapter = getattr(self, adapter.id)
-      adapter.initialize()
-      return adapter
+        @return: The catalog adapter object.
+        @rtype: IZMSCatalogAdapter
+        """
+        from Products.zms import IZMSCatalogAdapter, ZMSZCatalogAdapter
+        path_nodes = self.breadcrumbs_obj_path()
+        path_nodes.reverse()
+        for path_node in path_nodes:
+            for ob in path_node.objectValues():
+                if IZMSCatalogAdapter.IZMSCatalogAdapter in list(providedBy(ob)):
+                    return ob
+        # If no ZMSZCatalogAdapter then add one to root node
+        adapter = ZMSZCatalogAdapter.ZMSZCatalogAdapter()
+        path_nodes[0]._setObject( adapter.id, adapter)
+        adapter = getattr(self, adapter.id)
+        adapter.initialize()
+        return adapter
 
     def getLLMConnector(self):
-      """
-      Return the LLM connector.
+        """
+        Return the LLM connector.
 
-      Walks the breadcrumb path upward to find a ``ZMSLLMConnector`` object.
-      Returns ``None`` if no connector has been added — it must be added manually
-      like other ZMS components (e.g. workflow_manager, ZMSLog).
+        Walks the breadcrumb path upward to find a ``ZMSLLMConnector`` object.
+        Returns ``None`` if no connector has been added — it must be added manually
+        like other ZMS components (e.g. workflow_manager, ZMSLog).
 
-      @return: The LLM connector object, or None.
-      @rtype: IZMSLLMConnector or None
-      """
-      from Products.zms import IZMSLLMConnector
-      from zope.interface import providedBy
-      path_nodes = self.breadcrumbs_obj_path()
-      path_nodes.reverse()
-      for path_node in path_nodes:
-        for ob in path_node.objectValues():
-          if IZMSLLMConnector.IZMSLLMConnector in list(providedBy(ob)):
-            return ob
-      return None
+        @return: The LLM connector object, or None.
+        @rtype: IZMSLLMConnector or None
+        """
+        from Products.zms import IZMSLLMConnector
+        from zope.interface import providedBy
+        path_nodes = self.breadcrumbs_obj_path()
+        path_nodes.reverse()
+        for path_node in path_nodes:
+            for ob in path_node.objectValues():
+                if IZMSLLMConnector.IZMSLLMConnector in list(providedBy(ob)):
+                    return ob
+        return None
 # does the right thing with the security assertions.
 InitializeClass(ConfManager)
 

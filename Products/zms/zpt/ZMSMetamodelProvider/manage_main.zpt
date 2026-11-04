@@ -8,7 +8,7 @@
 ><!DOCTYPE html>
 <html lang="en" tal:define="zmscontext python:here.getSelf();">
 <head tal:replace="structure python:here.zmi_html_head(here,request)">zmi_html_head</head>
-<body tal:attributes="class python:here.zmi_body_class(id='metas config metaobj')">
+<body tal:attributes="class python:here.zmi_body_class(id='metas config metaobj')" xmlns:hx-on="https://htmx.org/">
 <header tal:replace="structure python:here.zmi_body_header(here,request,options=here.customize_manage_options())">zmi_body_header</header>
 <div id="zmi-tab">
 <tal:block tal:define="
@@ -49,6 +49,9 @@
 		</form>
 	</div><!-- .inner -->
 </div><!-- #insertObj -->
+
+
+<!--! Section A: #meta_properties / Details of a single meta object. -->
 
 <form tal:condition="python:request.get('id')" class="form-horizontal card" action="manage_changeProperties" method="post" enctype="multipart/form-data">
 <tal:block tal:define="
@@ -113,12 +116,16 @@
 					href python:'%s/metaobj_manager/manage_main?lang=%s&id=%s'%(context.getHome().aq_parent.content.absolute_url(),request['lang'],metaObj['id']);
 					title python:'acquired from: %s (%s)'%(context.getHome().aq_parent.content.id, context.getHome().aq_parent.content.attr('titlealt'))"
 				><i class="fas fa-share fa-flip-vertical" title="acquired"></i></a>
-			<a class="btn btn-secondary" target="_blank" value="BTN_SEARCH"
+			<button class="btn btn-secondary" type="button" value="BTN_SEARCH"
+				title="Click for content analysis. Please, apply carefully!"
+				data-modal-title="Meta-Object Count Details"
+				onclick="$ZMI.iframe('manage_analyze',{id:$(this).attr('data-id'),lang:getZMILang(),filter:$(this).attr('data-path_filter'),limit:500},{iframe:true,height:'600',id:'modal-meta-count',title:$(this).attr('data-modal-title')});return false" 
 				tal:attributes="
-					href python:'manage_analyze?lang=%s&id=%s'%(request['lang'],metaObj['id']); 
-					title python:'Click for content analysis of \042%s\042. Please, apply carefully!'%metaObj['id']"
-				><i class="fas fa-search"></i>
-			</a>
+					data-id python:metaObj['id'];
+					data-path_filter python:here.getHome().absolute_url_path()">
+				<i class="fas fa-search"></i>
+			</button>
+			<a class="btn btn-secondary" title="Show Model Details (Printable)" href="manage_bigpicture" tal:attributes="href python:'manage_bigpicture?id=%s'%(metaObj['id'])" target="_blank"><i class="fas fa-print"></i></a>
 			<button class="btn btn-secondary" type="button" tal:attributes="title python:here.getZMILangStr('BTN_IMPORT')+'...'" onclick="$ZMI.iframe('manage_main_import',{lang:getZMILang()},{iframe:true,height:'600',title:$(this).attr('title')});return false"><i class="fas fa-upload"></i></button>
 			<button class="btn btn-secondary" type="button" name="btn" value="BTN_EXPORT" tal:attributes="title python:here.getZMILangStr('BTN_EXPORT')" onclick="return zmiExportBtnClick(this)"><i class="fas fa-download"></i></button>
 		</div>
@@ -260,9 +267,11 @@
 								<input type="hidden" tal:attributes="name python:'attr_type_%s'%objAttr.get('id'); value objAttr/type"/>
 								<input class="btn btn-file" type="file" tal:attributes="name python:'attr_custom_%s'%objAttr.get('id')"/>
 								<tal:block tal:condition="python:objAttr.get('ob')">
-									<a tal:define="fname python:objAttr['ob'].title"
+									<a tal:define="
+										fname python:objAttr['ob'].title;
+										size python:here.getDataSizeStr(objAttr['ob'].get_size()) if callable(getattr(objAttr['ob'], 'get_size', None)) else ''"
 										tal:attributes="href python:'%s/manage_main'%(objAttr['ob'].absolute_url());
-											title python:'Edit %s [%s]'%(fname,here.getDataSizeStr(objAttr['ob'].get_size()))"
+											title python:'Edit %s [%s]'%(fname,size)"
 										target="_blank" style="text-decoration:none;">
 										<i class="fas fa-file-alt"></i>
 										<tal:block tal:content="fname">FILE NAME</tal:block>
@@ -507,6 +516,9 @@
 </tal:block>
 </form>
 
+
+<!--! Section B: #meta_overview / Overview of all meta objects. -->
+
 <form tal:condition="python:not request.get('id')" class="form-horizontal card" action="manage_changeProperties" method="post" enctype="multipart/form-data">
 	<input type="hidden" name="lang" tal:attributes="value request/lang"/>
 	<legend class="has_tooltip"
@@ -529,16 +541,31 @@
 				<div class="btn-group managing mr-1">
 					<button type="button" class="btn btn-primary" tal:attributes="title python:here.getZMILangStr('BTN_INSERT')+'...'" onclick="zmiModal('#insertObj',{title:$(this).attr('title')});return false"><i class="fas fa-plus"></i></button>
 					<button type="button" class="btn btn-secondary" tal:attributes="title python:here.getZMILangStr('BTN_DELETE')+'...'" onclick="zmiDeleteObjBtnClick(this,{btn:'BTN_DELETE',key:'obj'});return false"><i class="fas fa-times"></i></button>
-				</div><!-- .btn-group -->
+				</div>
 				<div class="btn-group packaging mr-1">
+					<button class="btn btn-secondary" type="button" value="BTN_SEARCH"
+						title="Click for content analysis. Please, apply carefully!"
+						data-modal-title="Meta-Object Count Details"
+						onclick="$ZMI.iframe('manage_analyze',{lang:getZMILang(),filter:$(this).attr('data-path_filter'),limit:500},{iframe:true,height:'600',id:'modal-meta-count',title:$(this).attr('data-modal-title')});return false" 
+						tal:attributes="data-path_filter python:here.getHome().absolute_url_path()">
+						<i class="fas fa-search"></i>
+					</button>
+					<a class="btn btn-secondary" title="Show Model Details of all Packages (Printable Big Picture)" href="manage_bigpicture" target="_blank"><i class="fas fa-print"></i></a>
 					<button type="button" class="btn btn-secondary" tal:attributes="title python:here.getZMILangStr('BTN_ACQUIRE')+'...'" onclick="$ZMI.iframe('manage_main_acquire',{lang:getZMILang()},{iframe:true,height:'600',title:$(this).attr('title')});return false" tal:condition="python:here.getPortalMaster() is not None"><i class="fas fa-share fa-flip-vertical"></i></button>
 					<button type="button" class="btn btn-secondary" tal:attributes="title python:here.getZMILangStr('BTN_IMPORT')+'...'" onclick="$ZMI.iframe('manage_main_import',{lang:getZMILang()},{iframe:true,height:'600',title:$(this).attr('title')});return false"><i class="fas fa-upload"></i></button>
 					<button type="button" class="btn btn-secondary" tal:attributes="title python:here.getZMILangStr('BTN_EXPORT')+'...'" onclick="return zmiExportBtnClick(this);"><i class="fas fa-download"></i></button>
-				</div><!-- .btn-group -->
+				</div>
 				<div class="btn-group filtering" title="Filter object list by entering a name.">
 					<i class="fas fa-filter tablefilter p-2" onclick="$('#tablefilter').focus().addClass('visited')"></i>
 					<input id="tablefilter" name="tablefilter" class="form-control" type="text" />
 				</div>	
+			</th>
+			<th class="meta-count">
+				<button type="button" class="btn btn-secondary" 
+					title="Recursively count content-object occurrences" 
+					onclick="showMetaIdCount(this);return false">
+					Count
+				</button>
 			</th>
 		</tr>
 	</thead>
@@ -546,16 +573,18 @@
 	<tal:block tal:repeat="metaObjPackage python:here.sort_list(metaObjPackages+metaObjPackages2)">
 		<tal:block tal:condition="python:metaObjPackage in metaObjPackages">
 			<tr id="pack_default" class="meta-package"
-				tal:define="global metaObj python:here.getMetaobj(metaObjPackage)"
+				tal:define="metaObj python:here.getMetaobj(metaObjPackage)"
 				tal:attributes="id python:'pack_%s'%(metaObjPackage and metaObjPackage or 'default')">
 				<td style="text-align:center;" class="meta-check">
 					<input tal:condition="python:metaObjPackage" type="checkbox" name="ids:list" tal:attributes="value metaObjPackage"/>
 				</td>
-				<td colspan="2" class="meta-id">
+				<td colspan="3" class="meta-id">
 					<tal:block tal:condition="python:metaObjPackage"
 						><i tal:condition="python:metaObj.get('acquired',None)" class="fas fa-share fa-flip-vertical" title="acquired"></i>
-						<a tal:condition="python:metaObjPackage" data-turbolinks="false"
-							tal:attributes="href python:'manage_bigpicture?lang=%s&id=%s'%(request['lang'],metaObjPackage); title python:'%s - Click for big picture...'%metaObjPackage" target="_blank"
+						<a tal:condition="python:metaObjPackage" target="_blank"
+							tal:attributes="
+								href python:'manage_bigpicture?lang=%s&id=%s'%(request['lang'],metaObjPackage); 
+								title python:'%s - Click for big picture...'%metaObjPackage"
 							><i class="fas fa-briefcase"></i></a>
 						&nbsp;
 						<a tal:omit-tag="python:metaObj.get('acquired',None)"
@@ -589,21 +618,45 @@
 				</td>
 				<td class="meta-space"></td>
 				<td class="meta-id">
-					<span tal:attributes="id python:metaObj['id'];title python:metaObj['id'];class python:' '.join([[''],['enabled']][metaObj.get('enabled',0) in [1,True]])">
+					<span tal:attributes="
+						id python:metaObj['id'];
+						data-title python:metaObj['id'];
+						class python:' '.join([[''],['enabled']][metaObj.get('enabled',0) in [1,True]])">
 						<a tal:condition="python:metaObj.get('acquired',None)" target="_blank"
 							tal:attributes="
 								href python:'%s/metaobj_manager/manage_main?lang=%s&id=%s'%(context.getHome().aq_parent.content.absolute_url(),request['lang'],metaObj['id']);
 								title python:'acquired from: %s (%s)'%(context.getHome().aq_parent.content.id, context.getHome().aq_parent.content.attr('titlealt'))"
 							><i class="fas fa-share fa-flip-vertical"></i></a>
 						<a title="Enabled" href="javascript:;" onclick="zmiEnabledBtnClick(this)"><i tal:attributes="class python:' '.join(['enabled-toggle']+[['far fa-square'],['far fa-check-square']][metaObj.get('enabled',0) in [1,True]])"></i></a>
-						<a tal:attributes="href python:'manage_analyze?lang=%s&id=%s'%(request['lang'],metaObj['id']); title python:'%s - Click for content analysis...'%metaObj['id']" target="_blank"><i tal:on-error="string:ERROR icon" tal:attributes="class python:zmscontext.zmi_icon(metaObj['id'])"></i></a>
-						<i tal:on-error="string:ERROR icon" tal:attributes="class python:zmscontext.zmi_icon(metaObj['id'])" style="display:none;"></i>
-						<a tal:attributes="href python:'?lang=%s&id=%s'%(request['lang'],metaObj['id'])"><span tal:on-error="string:ERROR name" tal:replace="metaObj/name">the name</span></a>
-						<span class="meta-id-info">
+						<a href="#" title=""
+							onmouseover="showModelPreview(event)" 
+							onmouseout="hideModelPreview()"
+							tal:attributes="
+								href python:'manage_main?lang=%s&id=%s'%(request['lang'],metaObj['id']);
+								data-preview-url python:'manage_bigpicture?id=%s&lang=%s&content_type=htmx'%(metaObj['id'],request['lang'])">
+							<i tal:on-error="string:ERROR icon" 
+								tal:attributes="class python:zmscontext.zmi_icon(metaObj['id'])"
+							></i>
+						</a>
+						<a tal:attributes="href python:'manage_main?lang=%s&id=%s'%(request['lang'],metaObj['id'])">
+							<span tal:on-error="string:ERROR name" style="margin-left: .1rem;" tal:content="metaObj/name">the name</span>
+						</a>
+							<span class="meta-id-info">
 							<tal:block tal:content="revision">the revision</tal:block>
 							(<tal:block tal:content="python:here.getZMILangStr('SOTYPE_%s'%metaObj.get('type','unknown').upper())">the type</tal:block>)
 						</span>
 					</span>
+				</td>
+				<td id="meta-count-id" class="meta-count no-data" 
+					data-modal-title="Meta-Object Count Details"
+					onclick="$ZMI.iframe('manage_analyze',{id:$(this).attr('data-id'),lang:getZMILang(),filter:$(this).attr('data-path_filter'),limit:500},{iframe:true,height:'600',id:'modal-meta-count',title:$(this).attr('data-modal-title')});return false" 
+					tal:attributes="
+						id python:'meta-count-%s'%(metaObj['id']);
+						data-id python:metaObj['id'];
+						data-path_filter python:here.getHome().absolute_url_path();
+						data-modal-title python:'Meta-Object Count Details | %s'%(request.get('lang',here.getPrimaryLanguage())) ;
+						title python:'Click for content analysis of \042%s\042. Please, apply carefully!'%metaObj['id']">
+					<span>&ndash;</span>
 				</td>
 			</tr>
 		</tal:block>
@@ -616,11 +669,76 @@
 </tal:block>
 
 </div><!-- #zmi-tab -->
-
+<div id="modelpreview" style="position: absolute;display: none; z-index: 1000;"></div>
 <footer tal:replace="structure python:here.zmi_body_footer(here,request)">zmi_body_footer</footer>
 
 <script>
 //<!--
+	/**
+	 * Show meta object count.
+	 * @param e The element that triggered the action.
+	 */
+	function showMetaIdCount(e) {
+		// Show spinner while loading the meta object count.
+		$(e).html('<i class="fas fa-spinner fa-spin"></i>');
+		$.get('manage_analyze?content_type=json',function(data) {
+			// data must be an object with meta object IDs as keys and their counts as values.
+			// if not handle an error:
+			if (typeof data !== 'object') {
+				alert('Error: Invalid response data.');
+				$(e).html('Count');
+				return;
+			}
+			for (var id in data) {
+				$('#meta-count-' + id)
+					.text(data[id])
+					.removeClass('no-data');
+				if (data[id] === undefined || data[id] === null) {
+					$('#meta-count-' + id)
+						.text('N/A')
+						.addClass('no-data');
+				};
+				if (data[id] == 0) {
+					$('#meta-count-' + id)
+						.addClass('no-data')
+						.removeAttr('onclick')
+						.attr('title','No data available');
+				}
+			}
+			$(e).html('Count');
+		});
+	}
+
+	/**
+	 * Model Preview Popup.
+	 */
+	function showModelPreview(event) {
+		const modelpreview = document.getElementById('modelpreview');
+		// if the element is too close to the bottom edge of the viewport 
+		// add extra space to the footer.
+		if (event.pageY + 300 >  window.innerHeight) {
+			document.querySelector('footer').style.marginTop= 300 + 'px';
+		}
+		modelpreview.style.display = 'block';
+		modelpreview.style.left = event.pageX + 10 + 'px';
+		modelpreview.style.top = event.pageY + 10 + 'px';
+		// Load preview via fetch (no htmx => no history/URL change).
+		const url = event.currentTarget.getAttribute('data-preview-url');
+		if (window.lastModelPreviewUrl === url) return;
+		window.lastModelPreviewUrl = url;
+		fetch(url, {credentials: 'same-origin'})
+			.then(r => r.text())
+			.then(html => {
+				if (window.lastModelPreviewUrl !== url) return;
+				const doc = new DOMParser().parseFromString(html, 'text/html');
+				const main = doc.querySelector('main');
+				modelpreview.innerHTML = main ? main.innerHTML : html;
+			})
+			.catch(() => { window.lastModelPreviewUrl = null; });
+	}
+	function hideModelPreview() {
+		document.getElementById('modelpreview').style.display = 'none';
+	}
 
 	/**
 	 * Enable Button-Click.

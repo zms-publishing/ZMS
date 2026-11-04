@@ -8,7 +8,7 @@ manage_repository_gitstatus:
   name: Git Status
   nodes: '{$}'
   package: com.zms.custom.metacmd.gitbridge
-  revision: 5.1.3
+  revision: 6.0.0
   roles:
     - ZMSAdministrator
   stereotype: repository

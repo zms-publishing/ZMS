@@ -1523,6 +1523,15 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
       #-- Sanity check.
       qorder = REQUEST.get('qorder', standard.get_session_value(self,'qorder_%s'%self.id, ''))
       qorderdir = REQUEST.get('qorderdir', standard.get_session_value(self,'qorderdir_%s'%self.id, 'asc'))
+      # A parameter given twice (e.g. hidden field and url) arrives as list: use the last value.
+      if isinstance(qorder, (list, tuple)):
+        qorder = qorder[-1] if qorder else ''
+      if not isinstance(qorder, str):
+        qorder = ''
+      if isinstance(qorderdir, (list, tuple)):
+        qorderdir = qorderdir[-1] if qorderdir else 'asc'
+      # qorderdir is appended to the sql-statement: allow nothing but asc and desc.
+      qorderdir = 'desc' if str(qorderdir).strip().lower() == 'desc' else 'asc'
       sqlStatement = REQUEST.get('sqlStatement', [])
       if len(tabledefs) > 0:
         tabledef = [x for x in tabledefs if x['id'].upper()==tablename.upper()][0]

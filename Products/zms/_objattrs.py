@@ -577,7 +577,7 @@ class ObjAttrs(object):
       return modified
 
     #  ObjAttrs.getObjProperty retrieves value for specified property.
-	#  @deprecated: use attr(key) instead! 
+    #  @deprecated: use attr(key) instead! 
     def getObjProperty(self, key, REQUEST={}, par=None):
       obj_attrs = self.getObjAttrs()
       

@@ -1381,7 +1381,7 @@ class ConfManager(_multilangmanager.MultiLanguageManager):
             metacmd_manager = DefaultManager()
         return metacmd_manager
 
-
+    @zpublish
     def getMetaCmdDescription(self, id):
         """ Return metacmddescription. """
         return self.getMetacmdManager().getMetaCmdDescription(id)

@@ -9,6 +9,7 @@ Organization: ZMS Publishing
 """
 # Imports.
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
+from ZPublisher import zpublish
 import copy
 from zope.interface import implementer
 # Product Imports.
@@ -123,6 +124,7 @@ class ZMSWorkflowProviderAcquired(
       """
       return self.getPortalMaster().getWorkflowManager().getTransition(id, for_export)
 
+    @zpublish
     def manage_changeWorkflow(self, lang, key='', btn='', REQUEST=None, RESPONSE=None):
       """Handle ZMI updates for acquired workflow settings.
 

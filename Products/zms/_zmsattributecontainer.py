@@ -9,6 +9,7 @@ Organization: ZMS Publishing
 """
 from OFS.Folder import Folder
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
+from ZPublisher import zpublish
 import time
 
 from Products.zms import _objattrs
@@ -76,6 +77,7 @@ class ZMSAttributeContainer(
     return []
 
 
+  @zpublish
   def manage_changeProperties(self, REQUEST, RESPONSE):
     """
     Persist submitted attribute values for all configured object attributes.

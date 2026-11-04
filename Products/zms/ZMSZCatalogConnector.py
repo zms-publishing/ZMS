@@ -33,6 +33,7 @@ Organization: ZMS Publishing
 """
 # Imports.
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
+from ZPublisher import zpublish
 from zope.interface import implementer
 import json
 import re
@@ -131,6 +132,7 @@ class ZMSZCatalogConnector(
     # --------------------------------------------------------------------------
     #  ZMSZCatalogConnector.manage_init
     # --------------------------------------------------------------------------
+    @zpublish
     def manage_init(self):
       """Handle the ZMI action 'manage_init'."""
       [x['ob'](self) for x in self.getActions(r'^manage_(.*?)_init$')]
@@ -143,6 +145,7 @@ class ZMSZCatalogConnector(
     #  @return  success, failed
     #  @rtype   C{tuple}
     # --------------------------------------------------------------------------
+    @zpublish
     def manage_objects_add(self, objects):
       """Handle the ZMI action 'manage_objects_add'."""
       return [x['ob'](self, objects) for x in self.getActions(r'^manage_(.*?)_objects_add$')][0]
@@ -155,6 +158,7 @@ class ZMSZCatalogConnector(
     #  @return  success, failed
     #  @rtype   C{tuple}
     # --------------------------------------------------------------------------
+    @zpublish
     def manage_objects_remove(self, nodes):
       """Handle the ZMI action 'manage_objects_remove'."""
       return [x['ob'](self, nodes) for x in self.getActions(r'^manage_(.*?)_objects_remove$')][0]
@@ -167,6 +171,7 @@ class ZMSZCatalogConnector(
     #  @return success, failed
     #  @rtype  tuple
     # --------------------------------------------------------------------------
+    @zpublish
     def manage_objects_clear(self, home_id):
       """Handle the ZMI action 'manage_objects_clear'."""
       return [x['ob'](self, home_id) for x in self.getActions(r'^manage_(.*?)_objects_clear$')][0]
@@ -174,6 +179,7 @@ class ZMSZCatalogConnector(
     # --------------------------------------------------------------------------
     #  ZMSZCatalogConnector.manage_destroy
     # --------------------------------------------------------------------------
+    @zpublish
     def manage_destroy(self):
       """Handle the ZMI action 'manage_destroy'."""
       [x['ob'](self) for x in self.getActions(r'^manage_(.*?)_destroy$')]
@@ -181,6 +187,7 @@ class ZMSZCatalogConnector(
     # --------------------------------------------------------------------------
     #  ZMSZCatalogConnector.search_json
     # --------------------------------------------------------------------------
+    @zpublish
     def search_json(self, REQUEST, RESPONSE):
       """ search_json """
       self.ensure_zcatalog_connector_is_initialized()
@@ -192,6 +199,7 @@ class ZMSZCatalogConnector(
     # --------------------------------------------------------------------------
     #  ZMSZCatalogConnector.search_xml
     # --------------------------------------------------------------------------
+    @zpublish
     def search_xml(self, REQUEST, RESPONSE):
       """ search_xml """
       self.ensure_zcatalog_connector_is_initialized()
@@ -264,6 +272,7 @@ class ZMSZCatalogConnector(
     # --------------------------------------------------------------------------
     #  ZMSZCatalogConnector.suggest_json
     # --------------------------------------------------------------------------
+    @zpublish
     def suggest_json(self, REQUEST, RESPONSE):
       """ suggest_json """
       self.ensure_zcatalog_connector_is_initialized()
@@ -275,6 +284,7 @@ class ZMSZCatalogConnector(
     # --------------------------------------------------------------------------
     #  ZMSZCatalogConnector.suggest_xml
     # --------------------------------------------------------------------------
+    @zpublish
     def suggest_xml(self, REQUEST, RESPONSE):
       """ suggest_xml """
       self.ensure_zcatalog_connector_is_initialized()
@@ -315,6 +325,7 @@ class ZMSZCatalogConnector(
     # --------------------------------------------------------------------------
     #  ZMSZCatalogConnector.reindex_page
     # --------------------------------------------------------------------------
+    @zpublish
     def reindex_page(self, uid, page_size, clients=False, fileparsing=True, REQUEST=None, RESPONSE=None):
       """ reindex_page """
       adapter = self.getCatalogAdapter()
@@ -352,6 +363,7 @@ class ZMSZCatalogConnector(
     #
     #  Change properties.
     ############################################################################
+    @zpublish
     def manage_changeProperties(self, btn, lang, REQUEST, RESPONSE):
         """
         manage_changeProperties

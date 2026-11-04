@@ -11,6 +11,7 @@ Organization: ZMS Publishing
 import copy
 import sys
 import time
+from ZPublisher import zpublish
 # Product Imports.
 from Products.zms import standard
 
@@ -236,6 +237,7 @@ class ZMSMetadictManager(object):
       return ''
 
 
+    @zpublish
     def manage_changeMetaProperties(self, btn, lang, REQUEST, RESPONSE=None):
       """Handle add/edit/delete/copy/import/export/reorder actions for meta-dictionary attributes."""
       message = ''

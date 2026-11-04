@@ -12,6 +12,7 @@ Organization: ZMS Publishing
 # Imports.
 from AccessControl import ClassSecurityInfo
 from AccessControl.class_init import InitializeClass
+from ZPublisher import zpublish
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 import copy
 import operator
@@ -836,6 +837,7 @@ class VersionItem(object):
     #  VersionItem.ajaxBodyContentObjHistory:
     # --------------------------------------------------------------------------
     security.declareProtected('View', 'ajaxBodyContentObjHistory')
+    @zpublish
     def ajaxBodyContentObjHistory(self, version_nr, REQUEST):
       """
       Returns ajax-xml with body-content of object-history for given version-nr.
@@ -1079,6 +1081,7 @@ class VersionItem(object):
     #  Undo version changes.
     ############################################################################
     manage_UndoVersionForm = PageTemplateFile('zpt/versionmanager/manage_undoversionform', globals())
+    @zpublish
     def manage_UndoVersion(self, lang, btn, REQUEST):
       """ VersionItem.manage_UndoVersion """
       message = ''
@@ -1259,6 +1262,7 @@ class VersionManagerContainer(object):
     #
     #  Workflow transition.
     ############################################################################
+    @zpublish
     def manage_wfTransition(self, lang, custom, REQUEST, RESPONSE):
       """ WorkflowContainer.manage_wfTransition """
       standard.writeLog( self, "[manage_wfTransition]")
@@ -1276,6 +1280,7 @@ class VersionManagerContainer(object):
     #
     #  Workflow transition finalize.
     ############################################################################
+    @zpublish
     def manage_wfTransitionFinalize(self, lang, custom, REQUEST, RESPONSE=None):
       """ WorkflowContainer.manage_wfTransitionFinalize """
       standard.writeLog( self, "[manage_wfTransitionFinalize]")

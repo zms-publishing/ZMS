@@ -8,7 +8,7 @@ This chapter guides you through installing ZMS from scratch, creating your first
 
 The following setup has been tested on Ubuntu 24.04 and works similarly on other Unix-like systems (including Windows Subsystem for Linux, WSL). It is recommended to create a dedicated non-root user (e.g. `zope`) to run the Zope application server.
 
-ZMS requires **Python 3.10 or later**. Check your installed version:
+ZMS requires **Python 3.11 or later**. Check your installed version:
 
 ```console
 ~$ python3 --version
@@ -16,7 +16,7 @@ ZMS requires **Python 3.10 or later**. Check your installed version:
 
 Update or reinstall Python 3 if it is missing or outdated.
 
-ZMS runs on **Zope 5+** as its underlying application server. Install the required OS packages first:
+ZMS runs on **Zope 6+** as its underlying application server. Install the required OS packages first:
 
 ```console
 ~$ sudo apt-get update && sudo apt-get -y upgrade

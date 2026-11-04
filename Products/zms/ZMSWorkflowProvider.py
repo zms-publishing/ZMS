@@ -11,6 +11,7 @@ Organization: ZMS Publishing
 
 # Imports.
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
+from ZPublisher import zpublish
 import copy
 from zope.interface import implementer
 # Product Imports.
@@ -324,6 +325,7 @@ class ZMSWorkflowProvider(
     
     Change workflow.
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+    @zpublish
     def manage_changeWorkflow(self, lang, btn='', key='workflow_properties', REQUEST=None, RESPONSE=None):
       """ ZMSWorkflowProvider.manage_changeWorkflow """
       message = ''

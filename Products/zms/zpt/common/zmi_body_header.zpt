@@ -105,18 +105,17 @@
 				</div>
 			</li><!-- .dropdown -->
 			<li class="dropdown localisation">
-				<a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" tal:attributes="title python:'ZMS-%s: %s'%(here.getZMILangStr('ATTR_LANG'),here.getZMILangStr('LANG'))">
+				<a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown"
+					tal:attributes="
+						title python:'ZMS-%s: %s'%(here.getZMILangStr('ATTR_LANG'),here.getZMILangStr('LANG'));
+						hx-get python:'%s/zmi_manage_lang_dropdown?lang=%s&manage_lang=%s'%(here.absolute_url(),request['lang'],here.get_manage_lang())"
+					hx-trigger="click once"
+					hx-target="next .dropdown-menu"
+					hx-swap="innerHTML">
 					<i class="fas fa-globe"></i>
 					<b class="caret"></b>
 				</a>
-				<div class="dropdown-menu">
-					<tal:block tal:repeat="manage_lang python:here.get_manage_langs()">
-						<a class="dropdown-item" tal:attributes="href python:'?lang=%s&manage_lang=%s'%(request['lang'],manage_lang)">
-							<i class="far fa-check-square" tal:attributes="class python:manage_lang==here.get_manage_lang() and 'far fa-check-square' or 'far fa-square'"></i>
-							<tal:block tal:content="python:here.getLangStr('LANG',manage_lang)">language</tal:block>
-						</a>
-					</tal:block>
-				</div>
+				<div class="dropdown-menu"></div>
 			</li><!-- .dropdown -->
 			<tal:block tal:condition="python: here.getTrashcan().getId()!=here.getId()">
 				<tal:block tal:on-error="structure string: <!-- ZMS-ERROR: zmi_body_header_custom -->"

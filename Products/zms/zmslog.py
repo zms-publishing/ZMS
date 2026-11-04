@@ -10,6 +10,7 @@ Organization: ZMS Publishing
 """
 from AccessControl import ClassSecurityInfo
 from AccessControl.class_init import InitializeClass
+from ZPublisher import zpublish
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 import logging
 import os
@@ -87,6 +88,7 @@ class ZMSLog(ZMSItem.ZMSItem):
 
 
     security.declareProtected('ZMS Administrator', 'getLOG')
+    @zpublish
     def getLOG(self, REQUEST, RESPONSE=None):
       """Stream the active Zope event log file as a plain-text download."""
       filename = self.get_log_filename()
@@ -129,6 +131,7 @@ class ZMSLog(ZMSItem.ZMSItem):
 
 
     security.declareProtected('ZMS Administrator', 'manage_index_html')
+    @zpublish
     def manage_index_html(self, REQUEST, RESPONSE):
       """Serve a binary file from the remote filesystem as an inline download."""
       path = self.getPath(REQUEST)
@@ -139,6 +142,7 @@ class ZMSLog(ZMSItem.ZMSItem):
 
 
     security.declareProtected('ZMS Administrator', 'manage_submit')
+    @zpublish
     def manage_submit(self, REQUEST, RESPONSE):
       """Handle remote-filesystem actions: execute a shell command or upload a file."""
       path = self.getPath(REQUEST)

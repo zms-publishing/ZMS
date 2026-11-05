@@ -57,8 +57,8 @@ def _get_context(context):
 def has_access(node, REQUEST=None):
     """Return True if the current user may view node (View permission or public access)."""
     request = REQUEST if REQUEST is not None else _get_request(node)
-    if node.getConfProperty('ZMS.private.rest_api_secret'):
-        if request.get('rest_api_secret') == node.getConfProperty('ZMS.private.rest_api_secret'):
+    if node.getConfProperty('ZMS.private.rest_api_key'):
+        if request.get('rest_api_key') == node.getConfProperty('ZMS.private.rest_api_key'):
             return True
     f = getattr(node, 'hasAccess', None)
     if f is not None:

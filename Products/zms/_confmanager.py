@@ -248,7 +248,7 @@ class ConfManager(_multilangmanager.MultiLanguageManager):
         {'key':'ZMS.repository_manager.__init__.format','title':'Repository format of __init__','desc':'Repository format of __init__','datatype':'string','options':['yaml','py'],'default':'yaml'},
         {'key':'ZReferableItem.validateLinkObj','title':'Auto-correct link-attributes','desc':'Ensure valid link-attributes by parsing and using ZMSIndex for refreshing target urls on rendering','datatype':'boolean','default':1},
         {'key':'ZReferableItem.validateInlineLinkObj','title':'Auto-correct inline-links','desc':'Ensure valid inline-links by text-parsing and using ZMSIndex for refreshing target urls on rendering','datatype':'boolean','default':1},
-        {'key':'ZMS.private.rest_api_secret','title':'REST API Secret','desc':'Secret key for accessing protected content nodes via the REST API.','datatype':'string','default':''},
+        {'key':'ZMS.private.rest_api_key','title':'REST API Key','desc':'Key for accessing protected content nodes via the REST API.','datatype':'string','default':''},
       ]
 
     def importConfPackage(self, file):

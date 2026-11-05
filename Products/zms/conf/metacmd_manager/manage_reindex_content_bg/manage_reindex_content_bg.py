@@ -21,7 +21,7 @@ import requests
 
 LOGGER = logging.getLogger("ZMSReindex")
 logging.basicConfig(level=logging.INFO)
-REST_API_SECRET = None
+REST_API_KEY = None
 
 
 # ======================================================================
@@ -142,8 +142,8 @@ class ZMSIndexSchematizedReindexer:
 		def fetch_children(path):
 			rest_path = path.strip("/")
 			url = f"{self.base_url}/++rest_api/{rest_path}/list_child_nodes"
-			if REST_API_SECRET:
-				response = requests.get(url, params={'rest_api_secret': REST_API_SECRET}, timeout=60)
+			if REST_API_KEY:
+				response = requests.get(url, params={'rest_api_key': REST_API_KEY}, timeout=60)
 			else:
 				response = requests.get(url, timeout=60)
 			response.raise_for_status()
@@ -852,8 +852,8 @@ def manage_reindex_content_bg(self):
 	"""
 	from Products.zms import standard
 
-	global REST_API_SECRET
-	REST_API_SECRET = self.getConfProperty('ZMS.private.rest_api_secret')
+	global REST_API_KEY
+	REST_API_KEY = self.getConfProperty('ZMS.private.rest_api_key')
 
 	request = self.REQUEST
 	if request.get("status") == "1":

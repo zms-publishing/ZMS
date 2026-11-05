@@ -218,3 +218,433 @@ order_items(item_id, order_id, product_id, qty, unit_price)
   `AfterInsert`, etc. to implement custom validation or triggers.
 - For ZODB-based tabular data without an external database, use the
   **ZMS Record Set** instead.
+
+
+# SQL Parameter Sanitization Guide
+
+## Overview
+
+The `sanitize_sqlparam()` function provides a comprehensive solution for safely normalizing and validating request parameters in ZMS, with advanced SQL injection prevention that handles obfuscation and encoding techniques.
+
+## Function Signature
+
+```python
+def sanitize_sqlparam(value, param_type=str, allowed_values=None, default=''):
+    """
+    Sanitize and normalize a request parameter to a given type, preventing SQL injection
+    including obfuscated variants.
+    """
+```
+
+## Parameters
+
+| Parameter | Type | Default | Description |
+|-----------|------|---------|-------------|
+| `value` | object | N/A | Raw parameter value (str, list, tuple, or None) |
+| `param_type` | type | `str` | Expected type (str, int, float, or bool) |
+| `allowed_values` | list/tuple | `None` | Optional whitelist of allowed values |
+| `default` | object | `''` | Value to return if validation fails |
+
+## Return Value
+
+Returns the normalized value of the specified `param_type`, or `default` if validation fails.
+
+## Features
+
+### 1. **List/Tuple Normalization**
+Automatically converts list and tuple parameters to their last element:
+
+```python
+# Multi-value parameter (common from HTML form arrays)
+qorder = sanitize_sqlparam(['col1', 'col2'])  # Returns: 'col2'
+```
+
+### 2. **Advanced Obfuscation Handling**
+Prevents SQL injection through multiple encoding/escaping techniques:
+
+#### URL Encoding
+```python
+# URL-encoded quote (%27)
+value = sanitize_sqlparam("col%27; DROP")  # Returns: "col; DROP"
+
+# Double-encoded (%2527)
+value = sanitize_sqlparam("col%2527; DROP")  # Returns: "col; DROP"
+
+# Recursive multi-level decoding
+value = sanitize_sqlparam("col%252527")  # Handles triple encoding
+```
+
+#### HTML Entities
+```python
+# HTML numeric entity
+value = sanitize_sqlparam("col&#39; DROP")  # Returns: "col DROP"
+
+# HTML named entity
+value = sanitize_sqlparam("col&apos; DROP")  # Returns: "col DROP"
+
+# Mixed entities
+value = sanitize_sqlparam("col&quot;DROP&quot;")  # Returns: "colDROP"
+```
+
+#### Escape Sequences
+```python
+# Hex escape (\xXX)
+value = sanitize_sqlparam("col\\x27 DROP")  # Returns: "col DROP"
+
+# Unicode escape (\uXXXX)
+value = sanitize_sqlparam("col\\u0027 DROP")  # Returns: "col DROP"
+
+# Octal escape (\XXX)
+value = sanitize_sqlparam("col\\047 DROP")  # Returns: "col DROP"
+
+# Backslash escape (\' and \")
+value = sanitize_sqlparam("col\\' DROP")  # Returns: "col DROP"
+```
+
+#### SQL Comment Removal
+```python
+# SQL line comments (--)
+value = sanitize_sqlparam("col'--comment")  # Returns: "col"
+
+# SQL block comments (/* */)
+value = sanitize_sqlparam("col'/*comment*/")  # Returns: "col"
+
+# MySQL comments (#)
+value = sanitize_sqlparam("col'#comment")  # Returns: "col"
+```
+
+#### Null Byte Injection
+```python
+# Null byte removal
+value = sanitize_sqlparam("col\\x00 data")  # Returns: "col data"
+value = sanitize_sqlparam("col\x00 data")  # Returns: "col data"
+```
+
+### 3. **SQL Injection Prevention**
+Removes single and double quotes to prevent quote-based SQL injection:
+
+```python
+# Malicious input
+value = sanitize_sqlparam("name'; DROP TABLE users--")
+# Returns: "name; DROP TABLE users--" (quotes and comments removed)
+
+# OR injection prevention
+value = sanitize_sqlparam("col' OR 1=1")
+# Returns: "col OR 1=1" (quote removed, injection neutralized)
+```
+
+### 4. **Whitelist Validation**
+Validates string values against an allowed set:
+
+```python
+# ORDER BY direction validation
+direction = sanitize_sqlparam(
+    'desc',
+    param_type=str,
+    allowed_values=('asc', 'desc'),
+    default='asc'
+)  # Returns: 'desc'
+
+# Invalid value returns default
+direction = sanitize_sqlparam(
+    'invalid',
+    param_type=str,
+    allowed_values=('asc', 'desc'),
+    default='asc'
+)  # Returns: 'asc'
+
+# Works with URL-encoded invalid values
+direction = sanitize_sqlparam(
+    'invalid%20value',
+    param_type=str,
+    allowed_values=('asc', 'desc'),
+    default='asc'
+)  # Returns: 'asc' (after decoding, still invalid)
+```
+
+### 5. **Type Conversion**
+Automatically converts values to the requested type:
+
+```python
+# String parameter
+name = sanitize_sqlparam(['John'], param_type=str)  # 'John'
+
+# Integer parameter
+page = sanitize_sqlparam('42', param_type=int, default=1)  # 42
+
+# Float parameter
+price = sanitize_sqlparam('19.99', param_type=float, default=0.0)  # 19.99
+
+# Boolean parameter
+enabled = sanitize_sqlparam('true', param_type=bool, default=False)  # True
+```
+
+### 6. **Graceful Fallback**
+Returns default value when conversion fails:
+
+```python
+# Invalid integer
+page = sanitize_sqlparam('not_a_number', param_type=int, default=1)  # 1
+
+# None value
+name = sanitize_sqlparam(None, param_type=str, default='Anonymous')  # 'Anonymous'
+
+# Empty string
+name = sanitize_sqlparam('', param_type=str, default='Anonymous')  # 'Anonymous'
+```
+
+### 7. **Whitespace Normalization**
+Handles various whitespace obfuscation techniques:
+
+```python
+# Tabs and newlines
+value = sanitize_sqlparam("col\t' DROP\n")  # Returns: "col DROP"
+
+# Multiple spaces
+value = sanitize_sqlparam("col   '   DROP")  # Returns: "col DROP"
+
+# Leading/trailing whitespace
+value = sanitize_sqlparam("  data  ")  # Returns: "data"
+```
+
+## Usage Examples
+
+### Example 1: ORDER BY Clause (Original Use Case)
+
+**Before** (vulnerable pattern):
+```python
+qorder = REQUEST.get('qorder', '')
+qorderdir = REQUEST.get('qorderdir', 'asc')
+# Ensure qorder and qorderdir are single values, not lists.
+qorder = isinstance(qorder, (list, tuple)) and list(qorder)[-1] or ( isinstance(qorder,str) and qorder or '' )
+qorderdir = isinstance(qorderdir, (list, tuple)) and list(qorderdir)[-1] or ( isinstance(qorderdir,str) and qorderdir or 'asc' )
+qorderdir = 'desc' if str(qorderdir).strip().lower() == 'desc' else 'asc'
+```
+
+**After** (safe and clean):
+```python
+qorder = sanitize_sqlparam(
+    REQUEST.get('qorder', ''),
+    param_type=str,
+    default=''
+)
+qorderdir = sanitize_sqlparam(
+    REQUEST.get('qorderdir', 'asc'),
+    param_type=str,
+    allowed_values=('asc', 'desc'),
+    default='asc'
+)
+```
+
+### Example 2: Pagination Parameters
+
+```python
+page = sanitize_sqlparam(
+    REQUEST.get('page', '1'),
+    param_type=int,
+    default=1
+)
+page_size = sanitize_sqlparam(
+    REQUEST.get('page_size', '50'),
+    param_type=int,
+    default=50
+)
+```
+
+### Example 3: Filter Parameters
+
+```python
+# Ensure filter value is string without quotes
+filter_value = sanitize_sqlparam(
+    REQUEST.get('filter'),
+    param_type=str,
+    default=''
+)
+
+# Ensure column name is in allowed list
+column = sanitize_sqlparam(
+    REQUEST.get('column'),
+    param_type=str,
+    allowed_values=allowed_column_names,
+    default=allowed_column_names[0]
+)
+```
+
+### Example 4: Boolean Flags
+
+```python
+# Show archived items?
+include_archived = sanitize_sqlparam(
+    REQUEST.get('include_archived', 'false'),
+    param_type=bool,
+    default=False
+)
+```
+
+## Security Considerations
+
+### ✓ What This Function PROTECTS Against
+
+1. **Quote-based SQL Injection** (direct and obfuscated)
+   - Direct: `col'; DROP TABLE`
+   - URL-encoded: `col%27; DROP TABLE`
+   - HTML-encoded: `col&#39; DROP TABLE`
+   - Escape sequences: `col\x27; DROP TABLE`, `col\u0027; DROP TABLE`
+
+2. **Comment-based SQL Injection**
+   - Line comments: `col'--comment`
+   - Block comments: `col'/* comment */`
+   - MySQL comments: `col'#comment`
+
+3. **Null Byte Injection**
+   - String truncation: `col\x00 data` → `col data`
+
+4. **Type Confusion Attacks**
+   - Ensures values are converted to expected type
+   - Prevents type juggling vulnerabilities
+
+5. **Unexpected List Values**
+   - Normalizes multi-value parameters to single values
+   - Takes last value (safer than first)
+
+6. **Double/Recursive Encoding**
+   - URL decoding with multiple passes (up to 10 iterations)
+   - Catches double-encoded attacks: `col%2527` → `col%27` → `col'`
+
+7. **Whitespace Obfuscation**
+   - Normalizes tabs, newlines, multiple spaces
+   - Strips leading/trailing whitespace
+
+8. **Missing/Invalid Parameters**
+   - Provides safe defaults for all error conditions
+
+### ⚠️ What This Function Does NOT Protect Against
+
+1. **Column Name Injection (Identifiers)**
+   - Solution: Use `allowed_values` parameter with whitelist
+   ```python
+   column = sanitize_sqlparam(
+       REQUEST.get('column'),
+       param_type=str,
+       allowed_values=safe_column_names,  # Whitelist!
+       default='id'
+   )
+   ```
+
+2. **Numeric Out-of-Bounds Attacks**
+   - Solution: Add range validation after sanitization
+   ```python
+   limit = sanitize_sqlparam(REQUEST.get('limit', '10'), param_type=int, default=10)
+   if limit < 1 or limit > 100:
+       limit = 10  # Force safe default
+   ```
+
+3. **Business Logic Errors**
+   - Function validates format, not business logic
+   - Solution: Add application-level validation
+
+4. **Database-Specific Escaping**
+   - Function removes quotes rather than escaping them
+   - Solution: Use parameterized queries instead of string concatenation
+
+### Best Practices
+
+1. **Always use parameterized queries** when possible (preferred over sanitization)
+   ```python
+   # BETTER: Parameterized query
+   db.query("SELECT * FROM users WHERE id = ?", [user_id])
+   
+   # ACCEPTABLE: With sanitization
+   user_id = sanitize_sqlparam(REQUEST.get('id'), param_type=int, default=0)
+   db.query(f"SELECT * FROM users WHERE id = {user_id}")
+   ```
+
+2. **Combine with `allowed_values`** for identifiers like column names
+   ```python
+   qorder = sanitize_sqlparam(
+       REQUEST.get('qorder'),
+       param_type=str,
+       allowed_values=['id', 'name', 'created_at'],
+       default='id'
+   )
+   ```
+
+3. **Validate ranges** for numeric parameters after sanitization
+   ```python
+   page = sanitize_sqlparam(REQUEST.get('page', '1'), param_type=int, default=1)
+   if page < 1:
+       page = 1
+   ```
+
+4. **Document expected types** in API specifications
+   ```python
+   """
+   @param sort_order: Sort direction (asc or desc)
+   @param sort_column: Column name (must be from allowed list)
+   @param limit: Result limit (1-1000)
+   """
+   ```
+
+5. **Log suspicious input** when defaults are returned
+   ```python
+   value = sanitize_sqlparam(REQUEST.get('param'), ...)
+   if value == default:
+       logger.warning(f"Suspicious parameter value rejected: {REQUEST.get('param')}")
+   ```
+
+6. **Test with obfuscated payloads** during security audits
+   ```
+   col%27; DROP TABLE
+   col&#39; DROP TABLE
+   col\x27; DROP TABLE
+   col%2527; DROP TABLE
+   col'--comment
+   col/**/DROP
+   ```
+
+## Migration Guide
+
+To migrate existing code to use `sanitize_sqlparam()`:
+
+### Step 1: Identify Parameter Usage
+Search for REQUEST parameter access patterns:
+```python
+value = REQUEST.get('param_name')
+```
+
+### Step 2: Determine Type and Constraints
+```python
+# String parameter with allowed values?
+# Integer parameter with range?
+# Boolean flag?
+```
+
+### Step 3: Replace with sanitize_sqlparam()
+```python
+value = sanitize_sqlparam(
+    REQUEST.get('param_name', default_value),
+    param_type=type,
+    allowed_values=None,  # Remove if not applicable
+    default=default_value
+)
+```
+
+## Compatibility
+
+- **Python 2.7+** (uses built-in string operations)
+- **Python 3.x** (fully compatible)
+- **Zope** (compatible with all versions supporting REQUEST objects)
+
+## Error Handling
+
+The function raises `ValueError` only for invalid `param_type`:
+
+```python
+try:
+    # This raises ValueError - list is not a supported type
+    value = sanitize_sqlparam('test', param_type=list)
+except ValueError as e:
+    print(f"Invalid parameter type: {e}")
+```
+
+All other errors (conversion failures, missing values, etc.) result in returning the `default` value.

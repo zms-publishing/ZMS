@@ -13,6 +13,10 @@
 		// 	"path": "/home/zope/src/zopefoundation/Zope"
 		// },
 		// {
+		// 	"name": "site-packages",
+		// 	"path": "/home/zope/vpy313/lib/python3.13/site-packages"
+		// },
+		// {
 		// 	"name": "Zope-WebDAV Access",
 		// 	"uri": "webdav://admin:admin@localhost:8091/"
 		// }
@@ -39,7 +43,8 @@
 			"*-all.min.*":true,
 			"**/cache/**": true,
 			"**/Data.*": true,
-			"**/docker/**/var/*": true
+			"**/docker/**/var/*": true,
+			"**/docker/**/Extensions/*": true
 		},
 		"search.exclude": { 
 			"**/apidocs/**": true,
@@ -47,7 +52,8 @@
 			"*-all.min.*":true,
 			"**/cache/**": true,
 			"**/Data.*": true,
-			"**/docker/**/var/*": true
+			"**/docker/**/var/*": true,
+			"**/docker/**/Extensions/*": true
 		},
 		"python.testing.unittestArgs": [
 			"-v",
@@ -65,7 +71,8 @@
 				"envManager": "ms-python.python:venv",
 				"packageManager": "ms-python.python:pip"
 			}
-		]
+		],
+		"chat.agentHost.byokModels.enabled": true
 	},
 
 	"launch": {

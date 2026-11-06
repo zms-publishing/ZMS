@@ -11,6 +11,7 @@ Organization: ZMS Publishing
 # Imports.
 import copy
 import json
+from ZPublisher import zpublish
 # Product Imports.
 from Products.zms import _blobfields
 from Products.zms import mock_http
@@ -152,11 +153,8 @@ def get_attrs(node):
                 data[id] = get_attr(node,id)
     return data
 
-
+@zpublish
 class RestApiController(object):
-    """
-    RestApiController
-    """
 
     def __init__(self, context=None, TraversalRequest=None):
         if context and TraversalRequest:
@@ -179,6 +177,7 @@ class RestApiController(object):
         return self
 
     __call____roles__ = None
+
     def __call__(self, REQUEST=None, **kw):
         """"""
         standard.writeBlock(self.context,'__call__: %s'%str(self.ids))

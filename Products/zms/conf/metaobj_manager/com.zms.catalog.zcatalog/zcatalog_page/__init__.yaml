@@ -4,7 +4,7 @@ zcatalog_page:
   enabled: 1
   name: ZCatalog-Page
   package: com.zms.catalog.zcatalog
-  revision: 1.3.0
+  revision: 1.3.1
   type: ZMSDocument
   Attrs:
     - id: icon_clazz

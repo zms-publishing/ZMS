@@ -1180,6 +1180,18 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
       metadata = MetaData()
       # reflect db schema to MetaData
       metadata.reflect(bind=engine)
+      # Views are not reflected by default (views=False). Add them one by one,
+      # so that a broken view does not hide all tables of the connection.
+      try:
+        view_names = inspect(engine).get_view_names()
+      except Exception:
+        view_names = []
+      for view_name in view_names:
+        if view_name not in metadata.tables:
+          try:
+            Table(view_name, metadata, autoload_with=engine)
+          except Exception:
+            standard.writeError(self, '[getEntitiesSQLAlchemyDA]: cannot reflect view %s' % view_name)
       entities = []
       for tablename in metadata.tables:
         table = metadata.tables[tablename]

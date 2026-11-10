@@ -21,15 +21,15 @@
 	SESSION request/SESSION;
 	dummy0 python:request.set('qsize',request.get('qsize',standard.get_session_value(here,'qsize_%s'%here.id,20)));
 	dummy0 python:request.set('qfilters',request.get('qfilters',standard.get_session_value(here,'qfilters_%s'%here.id,1)));
-	dummy0 python:request.set('qindex',request.get('qindex',standard.get_session_value(here,'qindex_%s'%here.id,-1)));
+	dummy0 python:request.set('qindex',request.get('qindex',-1));
 	dummy0 python:SESSION.set('qsize_%s'%here.id,request.get('qsize'));
 	dummy0 python:SESSION.set('qfilters_%s'%here.id,request.get('qfilters'));
 	dummy0 python:SESSION.set('qindex_%s'%here.id,request.get('qindex'));
 	dummy0 python:here.recordSet_Init(request);
 	dummy0 python:here.recordSet_Filter(request);
 	dummy0 python:here.recordSet_Sort(request);
-	pageSize python:request.get('qsize',20);
-	pageIndex python:request.get('pageIndex',0);
+	pageSize python:int(request.get('qsize',20));
+	pageIndex python:int(request.get('pageIndex',0));
 	pageStart python:pageIndex*pageSize;
 	">
 
@@ -86,9 +86,13 @@
 			</tal:block>
 		</tal:block>
 		<tal:block tal:define="dummy0 python:request.RESPONSE.redirect(here.url_append_params(request['URL'],{
-					'lang':request['lang'],
-					'manage_tabs_message':'<br>'.join(message),
-				}))">
+			'lang':request['lang'],
+			'manage_tabs_message':'<br>'.join(message),
+			'pageIndex':request.get('pageIndex', 0),
+			'qsize':request.get('qsize', 20),
+			'rowid':request.get('rowid', -1),
+			'qindex':request.get('qindex', -1)
+		}))">
 		</tal:block>
 	</tal:block>
 </tal:block>
@@ -102,7 +106,7 @@
 	<input tal:condition="python:'qorderdir' in request" type="hidden" name="qorderdir" tal:attributes="value request/qorderdir">
 	<div class="card">
 
-		<div class="card-header attr_last_modified clearfix btn-collapse">
+		<div class="card-header attr_last_modified btn-collapse">
 			<a class="btn card-toggle text-left" data-toggle="collapse" href="#attrActivity" aria-expanded="false"
 				><i class="fas fa-caret-right"></i> <tal:block tal:content="python:here.getZMILangStr('ATTR_ACTIVITY')">Activity</tal:block
 			></a>
@@ -125,7 +129,7 @@
 			</div><!-- .card-body -->
 		</div><!-- .collapse -->
 
-		<div class="card-header filters clearfix btn-collapse">
+		<div class="card-header filters btn-collapse">
 			<a class="btn card-toggle pull-left py-2 mt-1 text-left" data-toggle="collapse" href="#attrProperties">
 				<i class="fas fa-caret-down"></i>
 				<tal:block tal:content="structure python:here.getZMILangStr('ATTR_FILTER')">the label</tal:block>
@@ -178,10 +182,10 @@
 					<a href="javascript:;" onclick="$('#manage_main_div_sql').toggleClass('d-none')" title="Show SQL Code">
 						&middot;
 					</a>
-				</div><!-- .form-row -->
+				</div><!--! .form-row -->
 				<div id="manage_main_div_sql" class="d-none well" style="padding:1em;margin: 1em 0 0 0;"><code tal:content="structure python:resSlctStmnt.replace('\n','<br>')">resSlctStmnt</code></div>
-			</div><!-- .card-body -->
-		</div><!-- .collapse -->
+			</div><!--! .card-body -->
+		</div><!--! .collapse -->
 	</div><!-- .card -->
 </form>
 <tal:block tal:define="

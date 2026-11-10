@@ -367,11 +367,6 @@ body.zmi {
 		}
 	}
 
-	@media (max-width: 546px) {
-		header.navbar ul.navbar-nav li#toggle_menu {
-			display: none;
-		}
-	}
 	&:not(.manage-menu) footer {
 		margin: -32px 0 0 0;
 		height: 32px;
@@ -508,10 +503,6 @@ body.zmi {
 		padding-bottom: 4rem;
 	}
 
-	&.users.config #zmi-tab {
-		min-height: calc(100vh - 8rem);
-	}
-
 	#zmi-tab nav#subTab {
 		margin: 0 1.5rem;
 		z-index: 1;
@@ -529,14 +520,6 @@ body.zmi {
 		background-color: #ffffff;
 	}
 
-	@media (max-width: 546px) {
-		#zmi-tab > form.card,
-		#subTab,
-		.tab-content .tab-pane.card {
-			overflow-x: scroll;
-			overflow-y: hidden;
-		}
-	}
 	#zmi-tab .tab-content > .card {
 		padding: 2rem 1rem 1rem 1rem !important;
 		margin: 0 1.25rem;
@@ -668,13 +651,6 @@ body.zmi {
 	#zmiIframeAddDialog .card .card-header {
 		padding: 0;
 		background: #eaedef;
-	}
-
-	@media (max-width: 546px) {
-		#zmi-tab .card .card-header.btn-collapse .zmi-changes,
-		#zmiIframeAddDialog .card .card-header.btn-collapse .zmi-changes {
-			display: none;
-		}
 	}
 
 	.center h1 {
@@ -2733,14 +2709,6 @@ body.zmi {
 		height: 80vh;
 	}
 
-	&.users.config .modal .modal-dialog > .modal-content > .modal-body form {
-		min-height: 42vh;
-	}
-
-	&.users.config .modal#zmiModalinsertNode .modal-dialog > .modal-content > .modal-body form .controls {
-		margin-top: 10rem;
-	}
-
 	@media (max-width: 767px) {
 		div#zmiIframeAddDialog,
 		div#zmiIframeAddDialog > div.modal-dialog,
@@ -3009,9 +2977,7 @@ body.zmi {
 		max-width: 100%;
 		margin-bottom: 1rem;
 		font-size: 80%;
-		font-family:
-			SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New",
-			monospace;
+		font-family: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
 		display: flex;
 		-ms-flex-wrap: wrap;
 		flex-wrap: wrap;
@@ -3031,48 +2997,50 @@ body.zmi {
 		margin-right: 0.3rem;
 		color: #999;
 	}
-	&.users.config .table tbody tr td.alert-danger {
-		background-color: #f8d7da59;
-		background-color: rgba(248, 215, 218, 0.35);
-	}
-
-	&.users.config .table tbody tr td i {
-		margin: 0 0.3rem;
-	}
-
 	.btn.btn-secondary.alert-danger:hover {
 		background: #dc3545 !important;
 	}
-	&.users.config .table tbody tr.userName,
-	&.users.config .table tbody tr.userRole {
-		white-space: nowrap;
-	}
 
-	&.users.config .table tbody tr.userName td input,
-	&.users.config .table tbody tr.userRole td input {
-		margin-left: 0.3rem;
-	}
-
-	&.users.config .list_users .table th,
-	&.users.config .list_users .table td,
-	&.users.config .list_roles .table th,
-	&.users.config .list_roles .table td {
-		vertical-align: middle;
-		overflow: hidden;
-		text-overflow: ellipsis;
-		max-width: calc(50vw - 1rem);
-	}
-
-	@media (max-width: 546px) {
-		&.users.config .list_users .table th,
-		&.users.config .list_users .table td,
-		&.users.config .list_roles .table th,
-		&.users.config .list_roles .table td {
-			max-width: calc(100vw - 1rem);
+	&.users.config {
+		#zmi-tab {
+			min-height: calc(100vh - 8rem);
+			.table tbody tr {
+				&.userName, &.userRole {
+					white-space: nowrap;
+					td input {
+						margin-left: 0.3rem;
+					}
+				}
+				td {
+					&.alert-danger {
+						background-color: #f8d7da59;
+						background-color: rgba(248, 215, 218, 0.35);
+					}
+					i {
+						margin: 0 0.3rem;
+					}
+					ol.breadcrumb {
+						padding: 0;
+					}
+				}
+			}
+			.list_users, .list_roles {
+				.table {
+					th, td {
+						vertical-align: middle;
+						overflow: hidden;
+						text-overflow: ellipsis;
+						max-width: calc(50vw - 1rem);
+					}
+				}
+			}
 		}
-	}
-	&.users.config .table td ol.breadcrumb {
-		padding: 0;
+		.modal .modal-dialog > .modal-content > .modal-body form {
+			min-height: 42vh;
+		}
+		.modal#zmiModalinsertNode .modal-dialog > .modal-content > .modal-body form .controls {
+			margin-top: 10rem;
+		}
 	}
 
 	&.config .preview_textformat {
@@ -3507,12 +3475,6 @@ body.zmi {
 		display: inline-block;
 		border: 1px solid #ced4da;
 		border-radius: 0px 4px 4px 0px;
-	}
-
-	@media (max-width: 546px) {
-		.helpbtn {
-			margin-top: 1.75rem;
-		}
 	}
 
 	/* ++++++++++++++++++++++++++++++++++++++++++++++++++ */
@@ -4103,4 +4065,47 @@ body.zmi {
 		}
 	}
 
+	@media (max-width: 546px) {
+		.helpbtn {
+			margin-top: 1.75rem;
+		}
+		#zmi-tab .card .card-header.btn-collapse .zmi-changes,
+		#zmiIframeAddDialog .card .card-header.btn-collapse .zmi-changes,
+		header.navbar ul.navbar-nav li#toggle_menu {
+			display: none;
+		}
+		#zmi-tab > form.card,
+		#subTab,
+		.tab-content .tab-pane.card {
+			overflow-x: scroll;
+			overflow-y: hidden;
+		}
+		&.config #zmi-tab > form.card  {
+			background-image: linear-gradient( 180deg, #eaedef 33px, #ffffff 33px, #ffffff 100% );
+		}
+		&.users.config {
+			.list_users, .list_roles {
+				.table {
+					th, td {
+						max-width: calc(100vw - 1rem);
+					}
+				}
+			}
+			#zmi-tab .row {
+				display: inline !important;
+				& > div {
+					padding-left:0 !important;
+					padding-right:0 !important;
+				}
+				.card {
+					table th .btn-group {
+						margin-bottom: .5rem;
+						.btn.btn-secondary {
+							width: 2.75rem;
+						}
+					}
+				}
+			}
+		}
+	}
 }

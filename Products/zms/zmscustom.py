@@ -11,6 +11,7 @@ Organization: ZMS Publishing
 # Imports.
 from AccessControl import ClassSecurityInfo
 from AccessControl.class_init import InitializeClass
+from ZPublisher import zpublish
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 import copy
 import time
@@ -489,6 +490,7 @@ class ZMSCustom(zmscontainerobject.ZMSContainerObject):
 
 
     security.declareProtected('View', 'recordSet_Export')
+    @zpublish
     def recordSet_Export(self, lang, qorder, qorderdir, qindex=[], REQUEST=None, RESPONSE=None, mode='xml'):
       """
       Export record-set to XML or CSV via /recordSet_Export?lang=&qorder=&qorderdir=&mode=csv
@@ -614,6 +616,7 @@ class ZMSCustom(zmscontainerobject.ZMSContainerObject):
       return EntityRecordHandler(self, id)
 
 
+    @zpublish
     def manage_changeRecordGrid(self, lang, btn, REQUEST, RESPONSE):
       """
       Update the record-set grid view with edited row values.
@@ -703,6 +706,7 @@ class ZMSCustom(zmscontainerobject.ZMSContainerObject):
       return REQUEST.RESPONSE.redirect(target)
 
 
+    @zpublish
     def manage_changeRecordSet(self, lang, btn, action, REQUEST, RESPONSE):
       """
       Insert, update, move, duplicate, or delete record-set entries.
@@ -821,6 +825,7 @@ class ZMSCustom(zmscontainerobject.ZMSContainerObject):
       return REQUEST.RESPONSE.redirect(target)
 
 
+    @zpublish
     def manage_import(self, file, lang, REQUEST, RESPONSE=None):
       """
       Import content or record-set data into the custom object.

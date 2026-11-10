@@ -12,6 +12,7 @@ Organization: ZMS Publishing
 # Imports.
 from DateTime import DateTime
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
+from ZPublisher import zpublish
 import copy
 import os
 from zope.interface import implementer
@@ -381,6 +382,7 @@ class ZMSMetacmdProvider(
       return newId
 
 
+    @zpublish
     def getMetaCmdDescription(self, id):
       """
       Returns description of meta-command specified by ID.
@@ -503,6 +505,7 @@ class ZMSMetacmdProvider(
       return metaCmds
 
 
+    @zpublish
     def manage_changeMetacmds(self, btn, lang, REQUEST, RESPONSE):
         """Handle ZMI actions for meta-commands (acquire/save/copy/delete/export/import/insert)."""
         message = ''

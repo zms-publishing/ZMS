@@ -11,6 +11,7 @@ Organization: ZMS Publishing
 # Imports.
 import copy
 import json
+from ZPublisher import zpublish
 # Product Imports.
 from Products.zms import _blobfields
 from Products.zms import mock_http
@@ -52,6 +53,19 @@ def _get_context(context):
     monolang = lang is not None
     langs = [lang] if monolang else lang_ids
     return monolang, langs
+
+
+def has_access(node, REQUEST=None):
+    """Return True if the current user may view node (View permission or public access)."""
+    request = REQUEST if REQUEST is not None else _get_request(node)
+    if node.getConfProperty('ZMS.private.rest_api_key'):
+        if request.get('rest_api_key') == node.getConfProperty('ZMS.private.rest_api_key'):
+            return True
+    f = getattr(node, 'hasAccess', None)
+    if f is not None:
+        return bool(f(request))
+    user = request.get('AUTHENTICATED_USER')
+    return user is not None and user.has_permission('View', node) in [1, True]
 
 
 def get_meta_data(node):
@@ -139,11 +153,8 @@ def get_attrs(node):
                 data[id] = get_attr(node,id)
     return data
 
-
+@zpublish
 class RestApiController(object):
-    """
-    RestApiController
-    """
 
     def __init__(self, context=None, TraversalRequest=None):
         if context and TraversalRequest:
@@ -166,9 +177,20 @@ class RestApiController(object):
         return self
 
     __call____roles__ = None
+
     def __call__(self, REQUEST=None, **kw):
         """"""
         standard.writeBlock(self.context,'__call__: %s'%str(self.ids))
+        if REQUEST is None:
+            REQUEST = _get_request(self.context)
+        if not has_access(self.context, REQUEST):
+            user = REQUEST.get('AUTHENTICATED_USER')
+            REQUEST.RESPONSE.setHeader('Content-Type','application/json')
+            if user is None or user.getUserName() == 'Anonymous User':
+                # raise Unauthorized()
+                return  json.dumps({'error': 'Unauthorized'})
+            # raise Forbidden()
+            return json.dumps({'error': 'Forbidden'})
         if self.method == 'POST':
             if self.ids == ['get_htmldiff']:
                 decoration, data = self.get_htmldiff(self.context, content_type=True)
@@ -297,7 +319,6 @@ class RestApiController(object):
     def get_indexschematized_content(self, context):
         request = _get_request(context)
         fileparsing = standard.pybool(request.get('fileparsing', 1))
-        path = '/'.join(context.getPhysicalPath())
         docs = get_indexschematized_data(context, fileparsing)
         return {
             'total': 1,
@@ -306,7 +327,7 @@ class RestApiController(object):
 
     @api(tag="navigation", pattern="/{path}/list_parent_nodes", method="GET", content_type="application/json")
     def list_parent_nodes(self, context):
-        nodes = context.breadcrumbs_obj_path()
+        nodes = [x for x in context.breadcrumbs_obj_path() if has_access(x)]
         return [get_meta_data(x) for x in nodes]
 
     @api(tag="navigation", pattern="/{path}/list_child_nodes", method="GET", content_type="application/json")
@@ -314,7 +335,7 @@ class RestApiController(object):
         request = _get_request(context)
         id_prefix = request.get('id_prefix','')
         meta_types = [context.PAGES if str(x)==str(context.PAGES) else context.PAGEELEMENTS if str(x)==str(context.PAGEELEMENTS) else x for x in request.get('meta_types').split(',')] if request.get('meta_types') else None
-        nodes = context.getObjChildren(id_prefix, request, meta_types)
+        nodes = [x for x in context.getObjChildren(id_prefix, request, meta_types) if has_access(x)]
         if context.meta_type == 'ZMS':
             nodes.extend(context.getPortalClients())
         return [get_meta_data(x) for x in nodes]
@@ -327,19 +348,19 @@ class RestApiController(object):
             path = '/'+'/'.join(context.REQUEST.steps).split('++rest_api')[0]
             result = context.zcatalog_index({'meta_id': meta_id, 'path': path})
             return [get_index_data(x) for x in result]
-        nodes = context.getTreeNodes(request)
+        nodes = [x for x in context.getTreeNodes(request) if has_access(x)]
         return [get_meta_data(x) for x in nodes]
 
     @api(tag="navigation", pattern="/{path}/get_parent_nodes", method="GET", content_type="application/json")
     def get_parent_nodes(self, context):
-        nodes = context.breadcrumbs_obj_path()
+        nodes = [x for x in context.breadcrumbs_obj_path() if has_access(x)]
         return [get_attrs(x) for x in nodes]
 
     def __get_child_nodes(self, context):
         request = _get_request(context)
         id_prefix = request.get('id_prefix','')
         meta_types = [context.PAGES if str(x)==str(context.PAGES) else context.PAGEELEMENTS if str(x)==str(context.PAGEELEMENTS) else x for x in request.get('meta_types').split(',')] if request.get('meta_types') else None
-        nodes = context.getObjChildren(id_prefix, request, meta_types)
+        nodes = [x for x in context.getObjChildren(id_prefix, request, meta_types) if has_access(x)]
         if context.meta_type == 'ZMS':
             nodes.extend(context.getPortalClients())
         return nodes
@@ -357,7 +378,7 @@ class RestApiController(object):
     @api(tag="navigation", pattern="/{path}/get_tree_nodes", method="GET", content_type="application/json")
     def get_tree_nodes(self, context):
         request = _get_request(context)
-        nodes = context.getTreeNodes(request)
+        nodes = [x for x in context.getTreeNodes(request) if has_access(x)]
         return [get_attrs(x) for x in nodes]
 
     @api(tag="version", pattern="/{path}/get_tags", method="GET", content_type="application/json")

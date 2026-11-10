@@ -33,6 +33,7 @@ Organization: ZMS Publishing
 
 # Imports.
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
+from ZPublisher import zpublish
 from OFS.userfolder import UserFolder
 import copy
 import pickle
@@ -519,6 +520,7 @@ class AccessableObject(object):
     #
     #  Change user.
     manage_userForm = PageTemplateFile('zpt/ZMS/manage_user', globals())
+    @zpublish
     def manage_user(self, btn, lang, REQUEST, RESPONSE):
       """
       Update properties of the currently authenticated user.
@@ -1261,6 +1263,7 @@ class AccessManager(AccessableContainer):
 
     #
     #  Change or delete roles.
+    @zpublish
     def manage_roleProperties(self, btn, key, lang, REQUEST, RESPONSE=None):
       """
       Create, update, or delete role definitions and role-node bindings.
@@ -1355,6 +1358,7 @@ class AccessManager(AccessableContainer):
 
     #
     #  Change or delete users.
+    @zpublish
     def manage_userProperties(self, btn, key, lang, REQUEST, RESPONSE=None):
       """
       Create, update, delete, import, export, or invite managed users.

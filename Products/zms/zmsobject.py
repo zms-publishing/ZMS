@@ -76,6 +76,7 @@ Organization: ZMS Publishing
 # Imports.
 from AccessControl import ClassSecurityInfo
 from AccessControl.class_init import InitializeClass
+from ZPublisher import zpublish
 from DateTime.DateTime import DateTime
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 import ZPublisher.HTTPRequest
@@ -174,6 +175,7 @@ class ZMSObject(ZMSItem.ZMSItem,
 
     # ZPT Templates.
     zmi_navbar_brand = PageTemplateFile('zpt/common/zmi_navbar_brand', globals())
+    zmi_manage_lang_dropdown = PageTemplateFile('zpt/common/zmi_manage_lang_dropdown', globals())
     zmi_breadcrumbs = PageTemplateFile('zpt/common/zmi_breadcrumbs', globals())
     zmi_breadcrumbs_obj_path = PageTemplateFile('zpt/common/zmi_breadcrumbs_obj_path', globals())
     zmi_manage_tabs_message = PageTemplateFile('zpt/common/zmi_manage_tabs_message', globals())
@@ -926,6 +928,7 @@ class ZMSObject(ZMSItem.ZMSItem,
             request.set('objAttrNamePrefix', '')
 
 
+    @zpublish
     def manage_changeProperties(self, lang, REQUEST, RESPONSE=None):
       """
       Persist edited properties and redirect back to the management UI.
@@ -1362,6 +1365,7 @@ class ZMSObject(ZMSItem.ZMSItem,
       return rtnVal
 
 
+    @zpublish
     def manage_moveObjUp(self, lang, REQUEST, RESPONSE):
       """
       Move the object up within its parent's sort order.
@@ -1382,6 +1386,7 @@ class ZMSObject(ZMSItem.ZMSItem,
       RESPONSE.redirect('%s/manage_main?lang=%s&manage_tabs_message=%s#zmi_item_%s'%(parent.absolute_url(), lang, standard.url_quote(message), self.id))
 
 
+    @zpublish
     def manage_moveObjDown(self, lang, REQUEST, RESPONSE):
       """
       Move the object down within its parent's sort order.
@@ -1402,6 +1407,7 @@ class ZMSObject(ZMSItem.ZMSItem,
       RESPONSE.redirect('%s/manage_main?lang=%s&manage_tabs_message=%s#zmi_item_%s'%(parent.absolute_url(), lang, standard.url_quote(message), self.id))
 
 
+    @zpublish
     def manage_moveObjToPos(self, lang, pos, fmt=None, REQUEST=None, RESPONSE=None):
       """
       Move the object to a specific position within its siblings.
@@ -1450,6 +1456,7 @@ class ZMSObject(ZMSItem.ZMSItem,
         RESPONSE.redirect('%s/manage_main?lang=%s&manage_tabs_message=%s#zmi_item_%s'%(parent.absolute_url(),lang,standard.url_quote(message),self.id))
 
 
+    @zpublish
     def manage_executeMetacmd(self, id, REQUEST, RESPONSE=None, context=None):
       """
       Execute a meta-object attribute or configured meta command.
@@ -1532,6 +1539,7 @@ class ZMSObject(ZMSItem.ZMSItem,
     security.declareProtected('View', 'ajaxGetBodyContent')
 
 
+    @zpublish
     def ajaxGetBodyContent(self, REQUEST, forced=False):
       """
       Return body content for AJAX requests.

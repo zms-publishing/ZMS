@@ -14,6 +14,7 @@ import time
 import shutil
 from OFS import Moniker
 from OFS.CopySupport import _cb_decode, _cb_encode, CopyError
+from ZPublisher import zpublish
 # Product Imports.
 from Products.zms import standard
 from Products.zms import _globals
@@ -315,6 +316,7 @@ class CopySupport(object):
                 self.blobfields = []
 
 
+    @zpublish
     def manage_copyObject(self, ids=[], REQUEST=None, RESPONSE=None):
         """
         Put a reference to the objects named in ids in the clipboard.
@@ -338,6 +340,7 @@ class CopySupport(object):
         RESPONSE.redirect('manage_main?lang=%s&manage_tabs_message=%s' % (REQUEST.get('lang', context.getPrimaryLanguage()), message))
 
 
+    @zpublish
     def manage_cutObject(self, ids=[], REQUEST=None, RESPONSE=None):
         """
         Put a reference to the objects named in ids in the clipboard for cutting.
@@ -361,6 +364,7 @@ class CopySupport(object):
         RESPONSE.redirect('manage_main?lang=%s&manage_tabs_message=%s' % (REQUEST.get('lang', context.getPrimaryLanguage()), message)) 
 
 
+    @zpublish
     def manage_pasteObjs(self, REQUEST, RESPONSE=None):
         """
         Paste previously copied or cut objects into the current object.

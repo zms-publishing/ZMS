@@ -248,6 +248,7 @@ class ConfManager(_multilangmanager.MultiLanguageManager):
         {'key':'ZMS.repository_manager.__init__.format','title':'Repository format of __init__','desc':'Repository format of __init__','datatype':'string','options':['yaml','py'],'default':'yaml'},
         {'key':'ZReferableItem.validateLinkObj','title':'Auto-correct link-attributes','desc':'Ensure valid link-attributes by parsing and using ZMSIndex for refreshing target urls on rendering','datatype':'boolean','default':1},
         {'key':'ZReferableItem.validateInlineLinkObj','title':'Auto-correct inline-links','desc':'Ensure valid inline-links by text-parsing and using ZMSIndex for refreshing target urls on rendering','datatype':'boolean','default':1},
+        {'key':'ZMS.private.rest_api_key','title':'REST API Key','desc':'Key for accessing protected content nodes via the REST API.','datatype':'string','default':''},
       ]
 
     def importConfPackage(self, file):
@@ -323,6 +324,7 @@ class ConfManager(_multilangmanager.MultiLanguageManager):
 
 
     security.declareProtected('ZMS Administrator', 'importConf')
+    @zpublish
     def importConf(self, file, syncIfNecessary=True):
         """
         Imports configuration from the given file and processes 
@@ -371,6 +373,7 @@ class ConfManager(_multilangmanager.MultiLanguageManager):
 
 
     security.declareProtected('ZMS Administrator', 'getConfFiles')
+    @zpublish
     def getConfFiles(self, pattern=None, REQUEST=None, RESPONSE=None):
         """
         Retrieve configuration files from the ZMS distribution code:
@@ -615,6 +618,7 @@ class ConfManager(_multilangmanager.MultiLanguageManager):
         return getattr( self, '__attr_conf_dict__', {})
 
     
+    @zpublish
     def getConfProperties(self, prefix=None, inherited=False, REQUEST=None):
         """
         Returns properties from configuration.
@@ -701,6 +705,7 @@ class ConfManager(_multilangmanager.MultiLanguageManager):
         return value 
 
 
+    @zpublish
     def getConfProperty(self, key, default=None, REQUEST=None):
         """
         Returns property from configuration.
@@ -740,6 +745,7 @@ class ConfManager(_multilangmanager.MultiLanguageManager):
 
 
     security.declareProtected('ZMS Administrator', 'manage_customizeSystem')
+    @zpublish
     def manage_customizeSystem(self, btn, key, lang, REQUEST, RESPONSE=None):
         """
         Manage the system customization.
@@ -897,6 +903,7 @@ class ConfManager(_multilangmanager.MultiLanguageManager):
         return message
 
 
+    @zpublish
     def manage_customizeDesign(self, btn, lang, REQUEST, RESPONSE):
         """
         Customize design properties.
@@ -1375,7 +1382,7 @@ class ConfManager(_multilangmanager.MultiLanguageManager):
             metacmd_manager = DefaultManager()
         return metacmd_manager
 
-
+    @zpublish
     def getMetaCmdDescription(self, id):
         """ Return metacmddescription. """
         return self.getMetacmdManager().getMetaCmdDescription(id)

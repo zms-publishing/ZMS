@@ -20,6 +20,7 @@ Organization: ZMS Publishing
 
 # Imports.
 from AccessControl import ClassSecurityInfo
+from ZPublisher import zpublish
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 from Persistence import Persistent
 from ZPublisher.Iterators import filestream_iterator
@@ -413,6 +414,7 @@ class MediaDb(
 
 
     security.declareProtected('ZMS Administrator', 'manage_index_html')
+    @zpublish
     def manage_index_html(self, filename, REQUEST=None):
       """Serve a mediadb file as a streaming HTTP response."""
       return self.retrieveFileStreamIterator(filename,REQUEST)
@@ -533,6 +535,7 @@ class MediaDb(
       return filenames
 
 
+    @zpublish
     def manage_test(self, REQUEST, RESPONSE):
       """Scan the mediadb and return a JSON report of OK/MISSING file statuses."""
       RESPONSE.setHeader('Cache-Control', 'no-cache')
@@ -558,6 +561,7 @@ class MediaDb(
       return json.dumps(l, indent=2)
 
 
+    @zpublish
     def manage_changeProperties(self, submit, REQUEST, RESPONSE):
       """
       Apply submitted form changes to MediaDb location and redirect back 

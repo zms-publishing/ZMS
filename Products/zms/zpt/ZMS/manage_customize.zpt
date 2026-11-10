@@ -467,9 +467,12 @@
 	<script type="text/javascript">
 		// Scroll to top on page load and when switching tabs
 		$(function(){
-			window.scrollTo(0, 0);
+			$('html,body').animate({
+				scrollTop: 0
+			}, 100);
+			window.scrollTo({ top: 0, behavior: 'smooth' });
 			$('#subTab a').on('show.bs.tab', function (e) {
-				window.scrollTo(0, 0);
+				window.scrollTo({ top: 0, behavior: 'smooth' });
 			});
 		});
 	</script>

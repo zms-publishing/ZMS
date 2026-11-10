@@ -20,7 +20,7 @@ from zope.event import notify
 from zope.lifecycleevent import ObjectModifiedEvent
 from zope.globalrequest import getRequest
 import base64
-import cgi
+import urllib.parse
 import copy
 import fnmatch
 import hashlib
@@ -498,8 +498,7 @@ def url_encode(url):
   @return: Encoded string
   @rtype: C{str}
   """
-  from urllib.parse import quote_plus
-  return ''.join([quote_plus(x) for x in url])
+  return ''.join([urllib.parse.quote_plus(x) for x in url])
 
 
 security.declarePublic('guess_content_type')
@@ -997,7 +996,6 @@ def http_import(context, url, method='GET', auth=None, parse_qs=0, timeout=10, h
   @rtype: C{str}
   """
   # Parse URL.
-  import urllib.parse
   u = urllib.parse.urlparse(url)
   writeLog( context, "[http_import.%s]: %s"%(method, str(u)))
   scheme = u[0]
@@ -1065,7 +1063,7 @@ def http_import(context, url, method='GET', auth=None, parse_qs=0, timeout=10, h
     if parse_qs:
       try:
         # return dictionary of value lists
-        data = cgi.parse_qs(data, keep_blank_values=1, strict_parsing=1)
+        data = urllib.parse.parse_qs(data, keep_blank_values=1, strict_parsing=1)
       except:
         writeError(context, '[http_import]: can\'t parse_qs')
     return data

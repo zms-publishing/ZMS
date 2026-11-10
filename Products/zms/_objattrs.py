@@ -81,6 +81,7 @@ Organization: ZMS Publishing
 # Imports.
 from OFS.Image import Image, File
 from AccessControl import ClassSecurityInfo
+from ZPublisher import zpublish
 import ZPublisher.HTTPRequest
 import datetime
 import math
@@ -185,6 +186,7 @@ class ObjAttrs(object):
     security = ClassSecurityInfo()
     
     security.declareProtected('View', 'ajaxGetObjOptions')
+    @zpublish
     def ajaxGetObjOptions(self, REQUEST):
       """ ObjAttrs.ajaxGetObjOptions """
       meta_id = REQUEST['obj_id']
@@ -575,7 +577,7 @@ class ObjAttrs(object):
       return modified
 
     #  ObjAttrs.getObjProperty retrieves value for specified property.
-	#  @deprecated: use attr(key) instead! 
+    #  @deprecated: use attr(key) instead! 
     def getObjProperty(self, key, REQUEST={}, par=None):
       obj_attrs = self.getObjAttrs()
       
@@ -1038,6 +1040,7 @@ class ObjAttrs(object):
       return message
 
 
+    @zpublish
     def manage_changeTempBlobjProperty(self, lang, key, form_id, action, REQUEST, RESPONSE=None):
       """ ObjAttrs.manage_changeTempBlobjProperty """
       rtn = {}
@@ -1109,6 +1112,7 @@ class ObjAttrs(object):
       return self.str_json(rtn)
 
 
+    @zpublish
     def getTempBlobjPropertyUrl(self, format='json', REQUEST=None, RESPONSE=None):
       """ ObjAttrs.getTempBlobjPropertyUrl """
       rtn = {}
@@ -1155,6 +1159,7 @@ class ObjAttrs(object):
       return rtn
 
 
+    @zpublish
     def clearTempBlobjProperty(self, format='json', REQUEST=None, RESPONSE=None):
       """ ObjAttrs.clearTempBlobjProperty """
       rtn = {}

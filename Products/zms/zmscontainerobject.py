@@ -12,6 +12,7 @@ Organization: ZMS Publishing
 # Imports.
 from OFS.role import RoleManager
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
+from ZPublisher import zpublish
 from OFS.CopySupport import _cb_decode, _cb_encode
 import re
 import sys
@@ -119,6 +120,7 @@ class ZMSContainerObject(
     manage_importexportDebugFilter = PageTemplateFile('zpt/ZMSContainerObject/manage_importexportdebugfilter', globals())
 
 
+    @zpublish
     def manage_addZMSCustom(self, meta_id=None, values={}, REQUEST=None):
       """
       Add a custom node of the type designated by meta_id in current context.
@@ -136,6 +138,7 @@ class ZMSContainerObject(
       return self.manage_addZMSObject('ZMSCustom', values, request)
 
 
+    @zpublish
     def manage_addZMSObject(self, meta_id, values, REQUEST):
       """
       Add a node of type designated by meta_id in current context.
@@ -263,6 +266,7 @@ class ZMSContainerObject(
       self.normalizeSortIds()
 
 
+    @zpublish
     def manage_eraseObjs(self, lang, ids, REQUEST, RESPONSE=None):
       """ 
       Delete a subordinate object physically:
@@ -292,6 +296,7 @@ class ZMSContainerObject(
         return RESPONSE.redirect('%s?lang=%s&manage_tabs_message=%s'%(target, lang, standard.url_quote(message)))
 
 
+    @zpublish
     def manage_undoObjs(self, lang, ids, REQUEST, RESPONSE=None):
       """
       Undo a subordinate object:
@@ -325,6 +330,7 @@ class ZMSContainerObject(
         return RESPONSE.redirect('%s?preview=preview&lang=%s&manage_tabs_message=%s'%(target, lang, standard.url_quote(message)))
 
 
+    @zpublish
     def manage_deleteObjs(self, lang, ids, REQUEST, RESPONSE=None):
       """
       Delete a subordinate object logically:
@@ -376,6 +382,7 @@ class ZMSContainerObject(
       return 'text/html'
 
 
+    @zpublish
     def manage_ajaxDragDrop( self, lang, target, REQUEST, RESPONSE):
       """
       Move the current object relative to another node using drag-and-drop.
@@ -533,6 +540,7 @@ class ZMSContainerObject(
       return ob
 
 
+    @zpublish
     def manage_ajaxZMIActions(self, context_id, REQUEST, RESPONSE):
       """
       Returns ZMI actions.
@@ -944,6 +952,7 @@ class ZMSContainerObject(
         new_sort_id = new_sort_id + 10
       return new_sort_id
 
+    @zpublish
     def manage_addZMSCustomDefault(self, lang, id_prefix, _sort_id, REQUEST, RESPONSE):
       """
       Add default node.
@@ -968,6 +977,7 @@ class ZMSContainerObject(
       RESPONSE.redirect('%s/%s/manage_main?lang=%s&manage_tabs_message=%s'%(self.absolute_url(), new_id, lang, standard.url_quote(message)))
 
 
+    @zpublish
     def manage_addZMSModule(self, lang, _sort_id, custom, REQUEST, RESPONSE):
       """
       Add module-node.

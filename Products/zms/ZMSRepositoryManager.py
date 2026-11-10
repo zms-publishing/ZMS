@@ -48,6 +48,7 @@ Organization: ZMS Publishing
 """
 # Imports.
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
+from ZPublisher import zpublish
 import copy
 import os
 import time
@@ -265,6 +266,7 @@ class ZMSRepositoryManager(
       return success,failure
 
 
+    @zpublish
     def manage_change(self, btn, lang, REQUEST=None, RESPONSE=None):
       """ 
       Manage changes in the ZMS repository.

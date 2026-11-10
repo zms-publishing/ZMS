@@ -21,6 +21,9 @@ This file consolidates all ZMSSqlDb-related unit and integration tests:
    - Comprehensive unit tests for SQL injection prevention
    - Covers URL encoding, HTML entities, escape sequences, etc.
 
+6. RecordSetMainGridSelectionTest
+   - Unit tests for hilighting the edited row in the record-set grid
+
 All tests can be run with:
   python3 -m unittest tests.test_zmssqldb -v
 """
@@ -37,6 +40,7 @@ from Products.zms import _globals
 from Products.zms import mock_http
 from Products.zms import standard
 from Products.zms import zms
+from Products.zms import zmscustom
 from Products.zms import zmssqldb
 
 
@@ -262,6 +266,197 @@ class ZMSSqlDbMySQLGridContextTest(unittest.TestCase):
     self.assertEqual(1, first_row['record']['params']['rowid'])
     self.assertEqual(1, first_row['params']['rowid'])
     self.assertEqual('company', first_row['params']['qentity'])
+
+
+class RecordSetMainGridSelectionTest(unittest.TestCase):
+  """
+  Unit test for the hilighting of the edited data-row in the record-set grid
+  (zpt/ZMSRecordSet/main_grid.zpt, ZMSCustom.getRecordSetMainGridContext).
+
+  The grid marks a row only if the caller passes C{selected_value}, compared with
+  the row value: the primary key (__id__) for ZMSSqlDb, the index in the stored
+  records for ZMSRecordSet. The position on the page is no identity: the edited
+  row may have moved after saving (changed sort column, equal sort values, other
+  users). A request parameter like qindex belongs to one grid only and must not
+  mark rows in other grids rendered by the same request (details grids, nested
+  record-set grids).
+
+  No database is needed: records are passed as plain dicts.
+  """
+
+  lang = 'eng'
+
+  def setUp(self):
+    folder = Folder('myzmsx')
+    folder.REQUEST = mock_http.MockHTTPRequest({
+      'lang': self.lang,
+      'preview': 'preview',
+      'theme': 'conf:aquire',
+      'minimal_init': 1,
+      'content_init': 1,
+    })
+    self.context = zms.initZMS(
+      folder, 'content', 'titlealt', 'title', self.lang, self.lang, folder.REQUEST
+    )
+    self.context.REQUEST.response = self.context.REQUEST.RESPONSE
+    obj_id = 'sql_db_under_test'
+    self.context._setObject(obj_id, zmssqldb.ZMSSqlDb(obj_id, 1))
+    self.sql_db = getattr(self.context, obj_id)
+    self.url = self.sql_db.absolute_url() + '/manage_main'
+    self.sql_db.REQUEST.set('URL', self.url)
+    # The pagination is not under test here.
+    self.sql_db.zmi_pagination = lambda *args, **kwargs: ''
+
+  def _request(self, **form):
+    d = {'URL': self.url, 'lang': self.lang}
+    d.update(form)
+    request = mock_http.MockHTTPRequest(d, form=dict(form), environ={}, other={})
+    request.response = request.RESPONSE
+    return request
+
+  def _context(self, request, records, **options):
+    options.setdefault('records', records)
+    options.setdefault('metaObjAttrIds', ['id', 'name'])
+    options.setdefault('metaObjAttrs', [
+      {'id': 'id', 'name': 'id', 'type': 'int'},
+      {'id': 'name', 'name': 'name', 'type': 'string'},
+    ])
+    options.setdefault('actions', ['insert', 'update', 'delete'])
+    return self.sql_db.getRecordSetMainGridContext(options, request)
+
+  def _selected(self, ctx):
+    return [str(x['value']) for x in ctx['rows'] if x['selected']]
+
+  def _sql_page(self):
+    # Page 2 (qsize=2) of a sql table: only the rows of this page are passed
+    # (LIMIT/OFFSET), offset is 0, size is the total row count.
+    return [
+      {'id': 7, 'name': 'Gamma', '__id__': 7, 'params': {'rowid': 7}},
+      {'id': 3, 'name': 'Alpha', '__id__': 3, 'params': {'rowid': 3}},
+    ]
+
+  def test_sql_marks_row_by_primary_key_not_by_position(self):
+    # Row 3 was opened at position 0 and moved to position 1 after saving.
+    request = self._request(qsize=2, pageIndex=1, qindex='0', rowid='3')
+    ctx = self._context(request, self._sql_page(), size=4, total=4, offset=0,
+                        selected_value=request.get('rowid'))
+    self.assertEqual(1, ctx['pageIndex'])
+    self.assertEqual(['3'], self._selected(ctx))
+
+  def test_sql_no_mark_after_row_left_the_page(self):
+    request = self._request(qsize=2, pageIndex=1, qindex='0', rowid='9')
+    ctx = self._context(request, self._sql_page(), size=4, total=4, offset=0,
+                        selected_value=request.get('rowid'))
+    self.assertEqual([], self._selected(ctx))
+
+  def test_request_qindex_does_not_mark_other_grids(self):
+    # A details/nested grid rendered in a request that carries qindex/rowid
+    # of another grid: nothing was edited here, nothing is marked.
+    request = self._request(qindex='0', rowid='7')
+    ctx = self._context(request, self._sql_page())
+    self.assertEqual([], self._selected(ctx))
+
+  def test_recordset_marks_storage_index_when_sorted(self):
+    # Stored order differs from the sorted view: record 0 ('b') is shown at
+    # position 1. main.zpt sets request qindex to the sorted position and
+    # passes the storage index as selected_value.
+    records = [{'name': 'b'}, {'name': 'c'}, {'name': 'a'}]
+    filtered = [records[1], records[0], records[2]]
+    request = self._request(qindex=1)
+    ctx = self._context(request, records, filtered_records=filtered,
+                        metaObjAttrIds=['name'], selected_value=0)
+    self.assertEqual(['0'], self._selected(ctx))
+    self.assertEqual(1, [x['rindex'] for x in ctx['rows'] if x['selected']][0])
+
+  def test_no_selected_value_marks_nothing(self):
+    for value in (None, '', -1, '-1'):
+      request = self._request(qindex=0)
+      ctx = self._context(request, [{'name': 'a'}, {'name': 'b'}],
+                          metaObjAttrIds=['name'], selected_value=value)
+      self.assertEqual([], self._selected(ctx), value)
+
+  def test_invalid_paging_params(self):
+    request = self._request(qsize='abc', pageIndex='x', qindex='y')
+    ctx = self._context(request, self._sql_page())
+    self.assertEqual(20, ctx['pageSize'])
+    self.assertEqual(0, ctx['pageIndex'])
+    self.assertEqual(2, len(ctx['rows']))
+
+  # --- manage_changeRecordSet: qindex of the row to hilight after saving ---
+
+  class _RecordSetStub(object):
+    """Minimal stand-in for a ZMSCustom record-set with a sort_id column."""
+    meta_id = 'rs'
+
+    class metaobj_manager(object):
+      valid_types = ['int', 'string']
+      valid_xtypes = []
+      valid_zopetypes = []
+
+    def __init__(self, records):
+      self.records = records
+      self.stored = None
+    def setObjStateModified(self, REQUEST):
+      pass
+    def onChangeObj(self, REQUEST):
+      pass
+    def getMetaobj(self, meta_id):
+      return {'attrs': [
+        {'id': 'records', 'type': 'list'},
+        {'id': 'sort_id', 'type': 'int'},
+        {'id': 'name', 'type': 'string'},
+      ]}
+    def getMetaobjAttrIds(self, meta_id):
+      return [x['id'] for x in self.getMetaobj(meta_id)['attrs']]
+    def recordSet_Init(self, REQUEST):
+      return self.records
+    def getObjAttr(self, key):
+      return key
+    def getObjAttrName(self, objAttr, lang):
+      return objAttr
+    def formatObjAttrValue(self, objAttr, value, lang):
+      return value
+    def setObjProperty(self, key, value, lang):
+      self.stored = value
+    def getZMILangStr(self, key):
+      return key + ' %s'
+
+  def _change(self, btn, action, **form):
+    stub = self._RecordSetStub([
+      {'sort_id': 1, 'name': 'a'},
+      {'sort_id': 2, 'name': 'b'},
+      {'sort_id': 3, 'name': 'c'},
+    ])
+    request = self._request(**form)
+    request.RESPONSE.redirect = lambda url: url
+    url = zmscustom.ZMSCustom.manage_changeRecordSet(
+      stub, self.lang, btn, action, request, request.RESPONSE)
+    return stub, url
+
+  def _qindex(self, url):
+    return [x[len('qindex='):] for x in url.split('?', 1)[-1].split('&') if x.startswith('qindex=')]
+
+  def test_insert_into_sorted_recordset_hilights_new_row(self):
+    # Inserted with sort_id 2: after normalizing it is the third row, not the last.
+    stub, url = self._change('BTN_SAVE', 'insert', sort_id=2, name='new')
+    self.assertEqual(['a', 'b', 'new', 'c'], [x['name'] for x in stub.stored])
+    self.assertEqual(['2'], self._qindex(url))
+
+  def test_update_of_sort_id_hilights_moved_row(self):
+    stub, url = self._change('BTN_SAVE', 'update', qindex=0, sort_id=3, name='a')
+    self.assertEqual(['b', 'a', 'c'], [x['name'] for x in stub.stored])
+    self.assertEqual(['1'], self._qindex(url))
+
+  def test_cancel_returns_to_opened_row(self):
+    stub, url = self._change('BTN_CANCEL', 'update', qindex=1)
+    self.assertIsNone(stub.stored)
+    self.assertEqual(['1'], self._qindex(url))
+
+  def test_cancel_keeps_qindex_of_target(self):
+    # Nested record-set: the target already names the outer row.
+    target = 'manage_main?lang=eng&action=updateForm&qindex=4'
+    stub, url = self._change('BTN_CANCEL', 'update', qindex=1, target=target)
+    self.assertEqual(['4'], self._qindex(url))
 
 
 class ZMSSqlDbFilterSessionTest(unittest.TestCase):

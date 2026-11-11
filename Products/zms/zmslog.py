@@ -61,8 +61,9 @@ class ZMSLog(ZMSItem.ZMSItem):
       self.copy_to_stdout = copy_to_stdout
       self.logged_entries = logged_entries
 
-
-    def setProperties(self, REQUEST, RESPONSE):
+    security.declareProtected('ZMS Administrator', 'manage_setProperties')
+    @zpublish
+    def manage_setProperties(self, REQUEST, RESPONSE):
       """Persist logging settings submitted from the ZMI form."""
       self.tail_event_log_linesback = REQUEST.get('tail_event_log_linesback', 100)
       self.copy_to_stdout = 'copy_to_stdout' in REQUEST

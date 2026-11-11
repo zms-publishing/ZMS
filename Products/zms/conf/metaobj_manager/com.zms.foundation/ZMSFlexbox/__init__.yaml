@@ -1,0 +1,66 @@
+ZMSFlexbox:
+  access:
+    insert_custom: '{$}'
+  enabled: 1
+  name: Flexbox-Container
+  package: com.zms.foundation
+  revision: 5.0.0
+  type: ZMSObject
+  Attrs:
+    - id: icon_clazz
+      name: Icon-Class (CSS)
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: constant
+      custom: icon-columns fas fa-columns
+    - id: e
+      name: Items
+      mandatory: 0
+      multilang: 0
+      repetitive: 1
+      type: '*'
+      keys:
+        - type(ZMSObject)
+    - id: f_css_defaults
+      name: CSS Default
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: constant
+      custom: |-
+        @media only screen and (min-width: 576px) {
+        	body:not(.zmi) .ZMSFlexbox:not(.contentEditable) {
+        		display: flex;
+        		flex-direction: row;
+        		justify-content: space-between;
+        	}
+        	body:not(.zmi) .ZMSFlexbox:not(.contentEditable) .ZMSFlexboxItem {
+        		flex-direction: column;
+        		background: rgba(0,0,0,.05);
+        		padding: 1rem;
+        		margin:1rem 0;
+        	}
+        	body:not(.zmi) .ZMSFlexbox:not(.contentEditable) .ZMSFlexboxItem > * {
+        		margin:0 !important;
+        		padding:0 !important;
+        	}
+        	body:not(.zmi) .ZMSFlexbox .ZMSFlexboxItem {
+        		flex-basis:calc((100% / var(--data-itemcount)) - 3rem);
+        	}
+        	body:not(.zmi) .ZMSFlexbox .ZMSFlexboxItem .ZMSGraphic .graphic,
+        	body:not(.zmi) .ZMSFlexbox .ZMSFlexboxItem .ZMSGraphic .graphic img {
+        		width:100% !important;
+        		max-width:100% !important;
+        	}
+        	body:not(.zmi) .ZMSFlexbox .ZMSFlexboxItem .ZMSGraphic .text {
+        		padding-top:1em;
+        	}
+        }
+        }
+    - id: standard_html
+      name: 'Template: Box-Container'
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: zpt

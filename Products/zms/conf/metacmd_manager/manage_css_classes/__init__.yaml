@@ -1,0 +1,16 @@
+manage_css_classes:
+  acquired: 0
+  action: '%smanage_executeMetacmd?id=manage_css_classes'
+  execution: 0
+  icon_clazz: fab fa-css3 text-primary
+  meta_types:
+    - ZMSTextarea
+  name: CSS Specials
+  nodes: '{$}'
+  revision: 5.0.0
+  roles:
+    - ZMSAdministrator
+  title: Add special CSS class names to object's internal_dict
+  Impl:
+    - id: manage_css_classes
+      type: External Method

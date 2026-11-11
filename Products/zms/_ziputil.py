@@ -1,32 +1,30 @@
-################################################################################
-# _ziputil.py
-#
-# This program is free software; you can redistribute it and/or
-# modify it under the terms of the GNU General Public License
-# as published by the Free Software Foundation; either version 2
-# of the License, or (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
-################################################################################
+"""
+_ziputil.py - ZMS ZIP Utility for Exporting and Importing ZODB Objects
+
+This module provides utility functions for exporting ZODB
+objects to ZIP archives and importing ZIP archives into the ZODB.
+
+License: GNU General Public License v2 or later,
+Organization: ZMS Publishing
+"""
 
 # Imports.
 from io import BytesIO
 import zipfile
 from Products.zms import standard
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-_ziputil.exportZodb2Zip:
 
-Extracts and imports zip-file to zodb.
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 def _exportZodb2Zip(zf, root, container):
+  """
+  Recursively export ZODB objects (Images/Files) from a container into a ZIP file.
+
+  @param zf: Open ZIP file object to write to
+  @type zf: C{zipfile.ZipFile}
+  @param root: Root container for calculating relative archive paths
+  @type root: C{OFS.ObjectManager}
+  @param container: Container whose child objects are exported
+  @type container: C{OFS.ObjectManager}
+  """
   for ob in container.objectValues():
     if ob.meta_type in ['Folder']:
       _exportZodb2Zip(zf, root, ob)
@@ -45,17 +43,31 @@ def _exportZodb2Zip(zf, root, container):
         standard.writeError(root.content, "_exportZodb2Zip")
 
 def exportZodb2Zip(root):
+  """
+  Export ZODB objects from root container to a ZIP archive.
+
+  @param root: Root container to export
+  @type root: C{OFS.ObjectManager}
+  @return: ZIP archive data
+  @rtype: C{bytes}
+  """
   zip_buffer = zipfile.ZipFile( zipfilename, 'w')
   _exportZodb2Zip(zip_buffer, root, root)
   return zip_buffer.getvalue()
 
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-_ziputil.importZip2Zodb:
-
-Extracts and imports zip-file to zodb.
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 def importZip2Zodb(root, data):
+  """
+  Extract and import a ZIP archive into the ZODB.
+
+  Creates Folder, Image, and File objects in the ZODB hierarchy
+  matching the ZIP archive structure.
+
+  @param root: Root container to import into
+  @type root: C{OFS.ObjectManager}
+  @param data: ZIP archive data
+  @type data: C{bytes} or C{str} or C{io.BytesIO}
+  """
   if isinstance(data, bytes) or isinstance(data, str):
     data = BytesIO( data)
   zf = zipfile.ZipFile( data, 'r')
@@ -77,5 +89,3 @@ def importZip2Zodb(root, data):
         file = container.manage_addImage(id=id, file=file)
       else:
         file = container.manage_addFile(id=id, file=file)
-
-################################################################################

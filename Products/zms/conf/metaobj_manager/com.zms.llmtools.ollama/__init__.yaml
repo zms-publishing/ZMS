@@ -1,0 +1,5 @@
+com.zms.llmtools.ollama:
+  enabled: 1
+  name: com.zms.llmtools.ollama
+  revision: 0.0.1
+  type: ZMSPackage

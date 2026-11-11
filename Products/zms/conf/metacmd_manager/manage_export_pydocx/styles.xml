@@ -30,6 +30,10 @@
 		<w:lsdException w:name="heading 4" w:uiPriority="9"/>
 		<w:lsdException w:name="heading 5" w:uiPriority="9"/>
 		<w:lsdException w:name="heading 6" w:uiPriority="9"/>
+		<w:lsdException w:name="heading 7" w:uiPriority="9"/>
+		<w:lsdException w:name="heading 8" w:uiPriority="9"/>
+		<w:lsdException w:name="heading 9" w:uiPriority="9"/>
+		<w:lsdException w:name="heading 10" w:uiPriority="9"/>
 		<w:lsdException w:name="header"/>
 		<w:lsdException w:name="footer"/>
 		<w:lsdException w:name="caption" w:uiPriority="21"/>
@@ -187,7 +191,7 @@
 
 	<w:style w:type="paragraph" w:styleId="berschrift6">
 		<w:name w:val="heading 6"/>
-		<w:basedOn w:val="Standard"/>
+		<w:basedOn w:val="berschrift1"/>
 		<w:next w:val="Standard"/>
 		<w:link w:val="berschrift6Zchn"/>
 		<w:uiPriority w:val="8"/>
@@ -201,7 +205,90 @@
 		</w:pPr>
 		<w:rPr>
 			<w:bCs w:val="0"/>
-			<w:u w:val="single"/>
+			<w:iCs/>
+			<w:sz w:val="18"/>
+		</w:rPr>
+	</w:style>
+
+	<w:style w:type="paragraph" w:styleId="berschrift7">
+		<w:name w:val="heading 7"/>
+		<w:basedOn w:val="berschrift1"/>
+		<w:next w:val="Standard"/>
+		<w:link w:val="berschrift7Zchn"/>
+		<w:uiPriority w:val="9"/>
+		<w:unhideWhenUsed/>
+		<w:qFormat/>
+		<w:pPr>
+			<w:keepNext/>
+			<w:keepLines/>
+			<w:spacing w:before="200" w:after="0"/>
+			<w:outlineLvl w:val="6"/>
+		</w:pPr>
+		<w:rPr>
+			<w:bCs w:val="0"/>
+			<w:iCs/>
+			<w:sz w:val="18"/>
+		</w:rPr>
+	</w:style>
+
+	<w:style w:type="paragraph" w:styleId="berschrift8">
+		<w:name w:val="heading 8"/>
+		<w:basedOn w:val="berschrift1"/>
+		<w:next w:val="Standard"/>
+		<w:link w:val="berschrift8Zchn"/>
+		<w:uiPriority w:val="10"/>
+		<w:unhideWhenUsed/>
+		<w:qFormat/>
+		<w:pPr>
+			<w:keepNext/>
+			<w:keepLines/>
+			<w:spacing w:before="200" w:after="0"/>
+			<w:outlineLvl w:val="7"/>
+		</w:pPr>
+		<w:rPr>
+			<w:bCs w:val="0"/>
+			<w:iCs/>
+			<w:sz w:val="18"/>
+		</w:rPr>
+	</w:style>
+
+	<w:style w:type="paragraph" w:styleId="berschrift9">
+		<w:name w:val="heading 9"/>
+		<w:basedOn w:val="berschrift1"/>
+		<w:next w:val="Standard"/>
+		<w:link w:val="berschrift9Zchn"/>
+		<w:uiPriority w:val="11"/>
+		<w:unhideWhenUsed/>
+		<w:qFormat/>
+		<w:pPr>
+			<w:keepNext/>
+			<w:keepLines/>
+			<w:spacing w:before="200" w:after="0"/>
+			<w:outlineLvl w:val="8"/>
+		</w:pPr>
+		<w:rPr>
+			<w:bCs w:val="0"/>
+			<w:iCs/>
+			<w:sz w:val="18"/>
+		</w:rPr>
+	</w:style>
+
+	<w:style w:type="paragraph" w:styleId="berschrift10">
+		<w:name w:val="heading 10"/>
+		<w:basedOn w:val="berschrift1"/>
+		<w:next w:val="Standard"/>
+		<w:link w:val="berschrift10Zchn"/>
+		<w:uiPriority w:val="12"/>
+		<w:unhideWhenUsed/>
+		<w:qFormat/>
+		<w:pPr>
+			<w:keepNext/>
+			<w:keepLines/>
+			<w:spacing w:before="200" w:after="0"/>
+			<w:outlineLvl w:val="9"/>
+		</w:pPr>
+		<w:rPr>
+			<w:bCs w:val="0"/>
 			<w:iCs/>
 			<w:sz w:val="18"/>
 		</w:rPr>
@@ -246,10 +333,9 @@
 		<w:rPr>
 			<w:rFonts w:ascii="Courier New" w:hAnsi="Courier New"/>
 			<w:b/>
-			<w:color w:val="EEEEEE"/>
-			<w:sz w:val="16"/>
-			<w:bdr w:val="single" w:sz="20" w:space="0" w:color="000000"/>
-			<w:shd w:val="clear" w:color="auto" w:fill="000000"/>
+			<w:color w:val="auto"/>
+			<w:sz w:val="18"/>
+			<w:bdr w:val="single" w:sz="12" w:space="0" w:color="000000" w:shadow="1"/>
 		</w:rPr>
 	</w:style>
 
@@ -539,6 +625,24 @@
 				<w:tab w:val="left" w:pos="0"/>
 			</w:tabs>
 		</w:pPr>
+	</w:style>
+
+	<w:style w:type="paragraph" w:styleId="HorizontaleLinie">
+		<w:name w:val="Horizontale Linie"/>
+		<w:basedOn w:val="Normal"/>
+		<w:next w:val="Standard"/>
+		<w:qFormat/>
+		<w:pPr>
+			<w:suppressLineNumbers/>
+			<w:pBdr>
+				<w:bottom w:val="single" w:sz="2" w:space="0" w:color="808080"/>
+			</w:pBdr>
+			<w:spacing w:before="120" w:after="280"/>
+		</w:pPr>
+		<w:rPr>
+			<w:sz w:val="12"/>
+			<w:szCs w:val="12"/>
+		</w:rPr>
 	</w:style>
 
 	<w:style w:type="paragraph" w:customStyle="1" w:styleId="Grundsatz">

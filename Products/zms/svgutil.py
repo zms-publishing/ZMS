@@ -1,21 +1,12 @@
-################################################################################
-# svgutil.py
-#
-# This program is free software; you can redistribute it and/or
-# modify it under the terms of the GNU General Public License
-# as published by the Free Software Foundation; either version 2
-# of the License, or (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
-################################################################################
+"""
+svgutil.py
 
+Provides get_dimensions, set_dimensions helper functions for SVG image generation, manipulation, and rendering.
+It creates scalable vector graphics, applies transformations, and generates dynamic diagrams.
+
+License: GNU General Public License v2 or later,
+Organization: ZMS Publishing
+"""
 # Imports.
 from AccessControl.SecurityInfo import ModuleSecurityInfo
 import xml.dom.minidom
@@ -23,7 +14,14 @@ import xml.dom.minidom
 security = ModuleSecurityInfo('Products.zms.svgutil')
 
 security.declarePublic('get_svg_dimensions')
+
+
 def get_dimensions(image):
+    """
+    Return intrinsic SVG dimensions as C{(width, height)} in pixel units.
+
+    Width/height attributes are preferred; C{viewBox} is used as fallback.
+    """
     size = None
     if image.filename.endswith('.svg'):
         data = bytes(image.getData())
@@ -56,7 +54,15 @@ def get_dimensions(image):
     return size
 
 security.declarePublic('set_svg_dimensions')
+
+
 def set_dimensions(image, size):
+    """
+    Update width/height attributes in SVG data and return the image object.
+
+    If the object is not an SVG or has no detectable dimensions, the image is
+    returned unchanged.
+    """
     svg_dim = get_dimensions(image)
     if svg_dim is not None:
         w = int(float(size[0]))
@@ -81,4 +87,3 @@ def set_dimensions(image, size):
 
 security.apply(globals())
 
-################################################################################

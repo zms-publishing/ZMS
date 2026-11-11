@@ -1,0 +1,77 @@
+__metas__:
+  Metas:
+    - id: titlealt
+      mandatory: 1
+      multilang: 1
+      name: DC.Title.Alt
+      repetitive: 0
+      type: string
+    - id: title
+      mandatory: 1
+      multilang: 1
+      name: DC.Title
+      repetitive: 0
+      type: string
+    - id: levelnfc
+      keys:
+        - '##'
+        - return [(x,context.getZMILangStr('OPT_L_%i'%x)) for x in range(3)]
+      mandatory: 0
+      multilang: 0
+      name: Level
+      repetitive: 0
+      type: select
+    - id: attr_dc_description
+      mandatory: 0
+      multilang: 1
+      name: DC.Description
+      repetitive: 0
+      type: text
+    - id: attr_dc_subject
+      mandatory: 0
+      multilang: 1
+      name: DC.Subject
+      repetitive: 0
+      type: text
+    - id: attr_dc_type
+      keys:
+        - Home
+        - Artikel
+        - Forum
+        - News
+        - Resource
+      mandatory: 0
+      multilang: 1
+      name: DC.Type
+      repetitive: 0
+      type: select
+    - id: attr_dc_creator
+      mandatory: 0
+      multilang: 1
+      name: DC.Creator
+      repetitive: 0
+      type: string
+    - id: attr_logo
+      mandatory: 0
+      multilang: 1
+      name: Logo
+      repetitive: 0
+      type: image
+    - id: attr_navigation
+      keys:
+        - '1'
+        - '2'
+        - '3'
+        - '4'
+      mandatory: 0
+      multilang: 0
+      name: Navigation
+      repetitive: 0
+      type: select
+    - default: '0'
+      id: attr_dc_accessrights_restricted
+      mandatory: 0
+      multilang: 0
+      name: Restricted
+      repetitive: 0
+      type: boolean

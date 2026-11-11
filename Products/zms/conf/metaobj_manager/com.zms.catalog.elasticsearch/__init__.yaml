@@ -1,0 +1,5 @@
+com.zms.catalog.elasticsearch:
+  enabled: 1
+  name: com.zms.catalog.elasticsearch
+  revision: 1.10.3
+  type: ZMSPackage

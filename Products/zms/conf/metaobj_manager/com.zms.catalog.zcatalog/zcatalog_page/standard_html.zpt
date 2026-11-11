@@ -43,6 +43,8 @@
 	<section class="search-form">
 		 <form id="site-search-content" action="#" method="get" 
 		 	tal:attributes="data-root-url python:zmscontext.getRootElement().absolute_url()">
+			<input type="hidden" id="lang" name="lang"
+				tal:attributes="value python:request.get('lang',zmscontext.getPrimaryLanguage())" />
 			<input type="hidden" id="home_id" name="home_id"
 				tal:attributes="value python:zmscontext.getHome().getId()" />
 			<input type="hidden" id="multisite_search" name="multisite_search"
@@ -57,7 +59,7 @@
 							tal:attributes="value python:request.get('q','')">
 						<span class="input-group-btn">
 							<button type="submit" class="btn btn-primary">
-								<i class="fa fa-search icon-search"></i>
+								<i class="fa fa-search icon-search glyphicon glyphicon-search"></i>
 							</button>
 						</span>
 					</div>
@@ -69,10 +71,15 @@
 		<!-- listing results -->
 	</section>
 
-	<!-- script type="text/javascript" charset="UTF-8" src="/++resource++zms_/ZMS/zmi_body_content_search.js"></script -->
-	<link type="text/css" rel="stylesheet"	tal:attributes="href python:'%s/%s.style.css'%(zmscontext.getMetaobjManager().absolute_url(),zmscontext.meta_id)"/>
+	<!--!
+		HINT: Some functions used in ZMI like GetPagination() can to be loaded 
+		from /++resource++zms_/ZMS/zmi_body_content_search.js
+		if not by available by the utilized theme 
+	-->
+	<script type="text/javascript" charset="UTF-8" src="/++resource++zms_/ZMS/zmi_body_content_search.js"></script>
 	<script type="text/javascript" charset="UTF-8" tal:attributes="src python:'%s/%s.handlebars.js'%(zmscontext.getMetaobjManager().absolute_url(),zmscontext.meta_id)"></script>
 	<script type="text/javascript" charset="UTF-8" tal:attributes="src python:'%s/%s.script.js'%(zmscontext.getMetaobjManager().absolute_url(),zmscontext.meta_id)"></script>
+	<link type="text/css" rel="stylesheet" tal:attributes="href python:'%s/%s.style.css'%(zmscontext.getMetaobjManager().absolute_url(),zmscontext.meta_id)"/>
 
 </tal:block>
 

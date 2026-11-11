@@ -1,0 +1,48 @@
+ZMSRichtext:
+  access:
+    delete:
+      - ZMSAdministrator
+      - ZMSAuthor
+      - ZMSEditor
+    insert:
+      - ZMSAdministrator
+      - ZMSAuthor
+      - ZMSEditor
+    insert_custom: '{$}'
+  enabled: 0
+  name: ZMSRichtext
+  package: com.zms.foundation
+  revision: 5.0.0
+  type: ZMSObject
+  Attrs:
+    - id: icon_clazz
+      name: Icon (Class)
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: constant
+      custom: fas fa-file-word
+    - id: interface0
+      name: interface0
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: interface
+    - id: text
+      name: Text
+      mandatory: 0
+      multilang: 1
+      repetitive: 0
+      type: richtext
+    - id: onChangeObjEvt
+      name: 'Event: onChange-Object'
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: py
+    - id: standard_html
+      name: 'Template: ZMSRichtext'
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: zpt

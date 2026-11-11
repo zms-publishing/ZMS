@@ -8,7 +8,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "ZMS"
 dynamic = ["version"]
-description = "ZMS5: Simplified Content Modelling"
+description = "ZMS6: Simplified Content Modelling"
 readme = "README.rst"
 license = {text = "GPL"}
 authors = [
@@ -19,12 +19,13 @@ maintainers = [
 ]
 classifiers = [
     "Development Status :: 5 - Production/Stable",
-    "Framework :: Zope :: 5",
+    "Framework :: Zope :: 6",
     "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Programming Language :: Python :: 3.15",
     "Operating System :: OS Independent",
     "Environment :: Web Environment",
     "Topic :: Internet :: WWW/HTTP :: Site Management",
@@ -39,7 +40,7 @@ classifiers = [
     "Intended Audience :: Financial and Insurance Industry",
     "License :: OSI Approved :: GNU General Public License (GPL)",
 ]
-requires-python = ">=3.10"
+requires-python = ">=3.11"
 dependencies = [
     "docutils",
     "configparser",
@@ -61,7 +62,10 @@ dependencies = [
     "ZopeUndo",
     "Pillow",
     "xmltodict",
+    "ruamel.yaml",
     "Markdown",
+    "htmldiff2",
+    "pdfminer.six"
 ]
 
 [project.optional-dependencies]
@@ -74,6 +78,7 @@ dev = [
     "watching_testrunner",
     "pytest",
     "selenium",
+    "SQLAlchemy",
 ]
 
 [project.urls]
@@ -88,10 +93,10 @@ include-package-data = true
 [tool.setuptools.packages.find]
 where = ["."]
 include = ["Products*"]
-namespaces = false
+namespaces = true
 
 [tool.setuptools.package-data]
 "Products.zms" = ["**/*"]
 
 [tool.setuptools.dynamic]
-version = {file = "Products/zms/version.txt"}
+version = {attr = "Products.zms._version.__version__"}

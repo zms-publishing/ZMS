@@ -1,0 +1,89 @@
+calendar_items:
+  access:
+    insert_custom: '{$}'
+  enabled: 0
+  name: Calendar Items
+  package: com.zms.calendar
+  revision: 0.0.6
+  type: ZMSRecordSet
+  Attrs:
+    - id: records
+      name: Datensätze
+      mandatory: 1
+      multilang: 0
+      repetitive: 0
+      type: list
+    - id: col_id
+      name: COL_ID
+      mandatory: 1
+      multilang: 0
+      repetitive: 0
+      type: identifier
+      custom: 1
+    - id: start_time
+      name: Start Date/Time
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: datetime
+      custom: 1
+    - id: end_time
+      name: End Date/Time
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: datetime
+      custom: 1
+    - id: all_day
+      name: Ganztags
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: boolean
+      custom: 1
+      default: '0'
+    - id: title
+      name: Titel
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: string
+      custom: 1
+    - id: description
+      name: Info-Text
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: text
+      custom: 1
+    - id: location
+      name: Ort
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: string
+    - id: contact
+      name: Ansprechpartner
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: string
+    - id: url
+      name: Link
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: url
+    - id: icon_clazz
+      name: Icon-Class (CSS)
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: constant
+      custom: far fa-list-alt text-info
+    - id: standard_html
+      name: 'Template: Calendar Data'
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: zpt

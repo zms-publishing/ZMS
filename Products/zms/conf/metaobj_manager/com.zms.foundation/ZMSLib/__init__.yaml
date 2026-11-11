@@ -1,0 +1,31 @@
+ZMSLib:
+  enabled: 0
+  name: ZMSLib
+  package: com.zms.foundation
+  revision: 5.0.0
+  type: ZMSLibrary
+  Attrs:
+    - id: bodyContentZMSLib_page
+      name: 'Template: Page'
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: Page Template
+    - id: uploadMedia
+      name: 'Upload: Media'
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: py
+    - id: show_version
+      name: Show version
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: zpt
+    - id: index_html
+      name: Index-Html
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: Script (Python)

@@ -1,0 +1,64 @@
+ZMSFigure:
+  access:
+    delete_deny:
+      - ZMSAuthor
+      - ZMSEditor
+    insert_custom: '{$}'
+    insert_deny:
+      - ZMSAuthor
+      - ZMSEditor
+  enabled: 1
+  name: ZMSFigure
+  package: com.zms.foundation
+  revision: 5.0.2
+  type: ZMSObject
+  Attrs:
+    - id: titlealt
+      name: DC.Title.Alt
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: py
+    - id: img
+      name: Image
+      mandatory: 1
+      multilang: 1
+      repetitive: 0
+      type: image
+    - id: _img
+      name: Image (Preview)
+      mandatory: 0
+      multilang: 1
+      repetitive: 0
+      type: image
+    - id: figcaption
+      name: Legende
+      mandatory: 0
+      multilang: 1
+      repetitive: 0
+      type: text
+    - id: icon_clazz
+      name: Icon-Class (CSS)
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: constant
+      custom: icon-picture fas fa-image
+    - id: getHref2IndexHtml
+      name: 'Function: index_html'
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: py
+    - id: onChangeObjEvt
+      name: 'Event: onChange'
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: py
+    - id: standard_html
+      name: 'Template: Simple-Bild'
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: zpt

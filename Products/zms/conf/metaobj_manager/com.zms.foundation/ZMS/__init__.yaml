@@ -1,0 +1,106 @@
+ZMS:
+  access:
+    insert_custom: '{$}'
+  enabled: 0
+  name: ZMS
+  package: com.zms.foundation
+  revision: 5.0.4
+  type: ZMSDocument
+  Attrs:
+    - id: icon_clazz
+      name: Icon (Class)
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: constant
+      custom: fas fa-home
+    - id: titlealt
+      name: DC.Title.Alt
+      mandatory: 1
+      multilang: 1
+      repetitive: 0
+      type: titlealt
+    - id: title
+      name: DC.Title
+      mandatory: 1
+      multilang: 1
+      repetitive: 0
+      type: title
+    - id: titleimage
+      name: Titleimage
+      mandatory: 0
+      multilang: 1
+      repetitive: 0
+      type: image
+    - id: levelnfc
+      name: Level
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: levelnfc
+    - id: TAB_METADATA
+      name: TAB_METADATA
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: delimiter
+    - id: attr_dc_description
+      name: DC.Description
+      mandatory: 0
+      multilang: 1
+      repetitive: 0
+      type: attr_dc_description
+    - id: attr_dc_subject
+      name: DC.Subject
+      mandatory: 0
+      multilang: 1
+      repetitive: 0
+      type: attr_dc_subject
+    - id: attr_dc_type
+      name: DC.Type
+      mandatory: 0
+      multilang: 1
+      repetitive: 0
+      type: attr_dc_type
+    - id: attr_dc_creator
+      name: DC.Creator
+      mandatory: 0
+      multilang: 1
+      repetitive: 0
+      type: attr_dc_creator
+    - id: delimiter_permalinks
+      name: Permalinks
+      mandatory: 0
+      multilang: 1
+      repetitive: 0
+      type: delimiter
+    - id: interface_permalinks
+      name: interface_permalinks
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: interface
+    - id: e
+      name: Objects
+      mandatory: 0
+      multilang: 0
+      repetitive: 1
+      type: '*'
+      keys:
+        - type(ZMSDocument)
+        - type(ZMSObject)
+        - type(ZMSRecordSet)
+        - type(ZMSReference)
+        - type(ZMSModule)
+    - id: onChangeObjEvt
+      name: 'Event: onChange'
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: py
+    - id: standard_html
+      name: 'Template: ZMS'
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: zpt

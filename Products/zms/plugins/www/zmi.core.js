@@ -182,7 +182,9 @@ $ZMI.registerReady(function(){
 			})
 			.attr( "title", "Click to Edit!\nShift+Click to Properties Menu");
 	}
+});
 
+$(function() {
 	// ZMS plugins
 	if (typeof zmiParams['ZMS_HIGHLIGHT'] != 'undefined' && typeof zmiParams[zmiParams['ZMS_HIGHLIGHT']] != 'undefined') {
 		$.plugin('zmi_highlight',{
@@ -328,30 +330,6 @@ ZMI.prototype.getCachedValue = function(k) {
 ZMI.prototype.setCachedValue = function(k,v) {
 	localStorage.setItem("zmiCache["+k+"]",JSON.stringify(v));
 	return v;
-}
-
-/**
- * Returns request-property.
- */
-ZMI.prototype.getReqProperty = function(key, defaultValue) {
-	var data  = {};
-	data['key'] = key;
-	if (typeof defaultValue != "undefined") {
-		data['default'] = defaultValue;
-	};
-	var url = this.getPhysicalPath();
-	if (url.indexOf('/content/')>0 || url.slice(-8)=='/content' ) {
-		url = url.substring(0,url.indexOf('/content')+'/content'.length);
-	} else {
-		url='';
-	};
-	var r = $.ajax({
-		url: url+'/getReqProperty',
-		data: data,
-		datatype: 'text',
-		async: false
-		}).responseText;
-	return r;
 }
 
 /**

@@ -1,0 +1,18 @@
+manage_cachepurge_list:
+  acquired: 0
+  action: '%smanage_executeMetacmd?id=manage_cachepurge_list'
+  execution: 0
+  icon_clazz: fas fa-sync
+  meta_types:
+    - ZMS
+  name: Cache-Purge (List)
+  nodes: '{$}'
+  package: com.zms.custom.cache
+  revision: 5.0.0
+  roles:
+    - ZMSAdministrator
+    - ZMSEditor
+  title: Liste von URLs aus dem Cache löschen
+  Impl:
+    - id: manage_cachepurge_list
+      type: Page Template

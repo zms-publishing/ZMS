@@ -4,12 +4,16 @@ Products/zms/plugins/www/zms-all.min.js
 Products/zms/plugins/www/zms-all.min.js.hash
 Products/zms/plugins/www/i18n/*.js
 Products/zms/overrides.zcml
+/revisions.txt
+var/mediafolder/*
 .vscode/
+!docker/**/.vscode/
 
 *~
 .*.swp
 
 /.idea/
+/**/BAK/*
 
 dist/
 build/
@@ -24,4 +28,4 @@ docker/**/opensearch/data/*
 !docker/**/opensearch/data/
 docker/**/elastic/data/*
 !docker/**/elastic/data/
-/revisions.txt
+

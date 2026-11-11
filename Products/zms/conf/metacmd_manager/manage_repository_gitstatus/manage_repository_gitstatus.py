@@ -22,7 +22,7 @@ def manage_repository_gitstatus( self ):
 	else:
 		# --- Display form.
 		# -------------------------
-		base_path = self.getConfProperty('ZMS.conf.path', self.get_conf_basepath(id=''))
+		base_path = self.get_conf_basepath(id='')
 		base_status = ''
 		try:
 			standard.localfs_readPath(base_path)
@@ -75,9 +75,9 @@ def manage_repository_gitstatus( self ):
 		html.append('<div class="card-body">')
 		html.append('<div class="form-group row">')
 		html.append('<div class="controls save">')
-		html.append('<button type="submit" name="btn" class="btn btn-danger" value="BTN_GITPULL"><i class="fas fa-backward"></i>&nbsp;&nbsp;%s</button> '%(self.getZMILangStr('BTN_GITPULL')))
-		html.append('<button type="submit" name="btn" class="btn btn-success" value="BTN_GITPUSH"><i class="fas fa-forward"></i>&nbsp;&nbsp;%s</button> '%(self.getZMILangStr('BTN_GITPUSH')))
-		html.append('<button type="submit" name="btn" class="btn btn-secondary btn-default" value="BTN_CANCEL">Cancel</button>')
+		html.append('<button type="submit" name="btn" class="btn btn-danger" onclick="$(\'i\',this).attr(\'class\',\'fas fa-spinner fa-spin\')" value="BTN_GITPULL"><i class="fas fa-backward"></i>&nbsp;&nbsp;%s</button> '%(self.getZMILangStr('BTN_GITPULL')))
+		html.append('<button type="submit" name="btn" class="btn btn-success" onclick="$(\'i\',this).attr(\'class\',\'fas fa-spinner fa-spin\')" value="BTN_GITPUSH"><i class="fas fa-forward"></i>&nbsp;&nbsp;%s</button> '%(self.getZMILangStr('BTN_GITPUSH')))
+		html.append('<button type="submit" name="btn" class="btn btn-secondary btn-default" value="BTN_CANCEL">%s</button>'%(self.getZMILangStr('BTN_CANCEL')))
 		html.append('</div>')
 		html.append('</div><!-- .form-group -->')
 		html.append('</div><!-- .card-body -->')
@@ -87,12 +87,7 @@ def manage_repository_gitstatus( self ):
 		html.append('</form><!-- .form-horizontal -->')
 		html.append('</div><!-- .card -->')
 		html.append('</div><!-- #zmi-tab -->')
-
-		try:
-			html.append(self.zmi_body_footer(self,request))
-		except:
-			html.append(self.zmi_body_footer(self,request).encode('utf-8'))
-
+		html.append(self.zmi_body_footer(self,request))
 		html.append('<script>$ZMI.registerReady(function(){ $(\'#tabs_items li a\').removeClass(\'active\');$(\'#tabs_items li[data-action*=\"repository_manager\"] a\').addClass(\'active\'); })</script>')
 		html.append('</body>')
 		html.append('</html>')

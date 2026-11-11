@@ -1,0 +1,52 @@
+bt_jumbotron:
+  access:
+    insert_custom: '{$}'
+  enabled: 1
+  name: Jumbotron
+  package: com.zms.bootstrap
+  revision: 5.0.0
+  type: ZMSObject
+  Attrs:
+    - id: icon_clazz
+      name: Icon (Class)
+      mandatory: 0
+      multilang: 1
+      repetitive: 0
+      type: constant
+      custom: fas fa-republican
+    - id: interface0
+      name: interface0
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: interface
+    - id: title
+      name: Title
+      mandatory: 1
+      multilang: 1
+      repetitive: 0
+      type: string
+    - id: subtitle
+      name: Subtitle
+      mandatory: 0
+      multilang: 1
+      repetitive: 0
+      type: string
+    - id: text
+      name: Text
+      mandatory: 0
+      multilang: 1
+      repetitive: 0
+      type: richtext
+    - id: links
+      name: Links
+      mandatory: 1
+      multilang: 0
+      repetitive: 0
+      type: bt_link_list
+    - id: standard_html
+      name: 'Template: Jumbotron'
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: zpt

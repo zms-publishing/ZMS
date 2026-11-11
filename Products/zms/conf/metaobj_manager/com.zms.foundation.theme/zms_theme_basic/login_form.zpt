@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title> Login Form </title>
+		<!--! link rel="stylesheet" type="text/css" href="/++resource++zmi/bootstrap-4.6.0/bootstrap.min.css"  -->
+	</head>
+	<body>
+		<form class="login-form" method="post" action="" autocomplete="off"
+			tal:attributes="action string:${here/absolute_url}/login" >
+			<p class="form-header"><b class="mr-0">ZMS</b><span class="ml-2">The Python CMS</span></p>
+			<input type="hidden" name="came_from" value="" tal:attributes="value request/came_from | string:"/>
+			<div class="row my-3">
+				<label class="col-3">
+					<span>Login:</span>
+				</label>
+				<div class="col-9">
+					<input type="text" class="form-control font-monospace" required="required" autofocus="autofocus"
+						name="__ac_name" title="Login-Name" value="" />
+				</div>
+			</div>
+			<div class="row my-3">
+				<label class="col-3">
+					<span>Password:</span>
+				</label>
+				<div class="col-9">
+					<input type="password" class="form-control font-monospace" required="required"
+						name="__ac_password" title="Password" value="" />
+				</div>
+			</div>
+			<div class="text-right">
+				<input type="submit" class="btn btn-primary" value=" Log In " />
+			</div>
+		</form>
+	</body>
+	<style>
+	/*<!--*/
+	/* Base reset and typography */
+	*,::after,::before { 
+		box-sizing: border-box;
+	}
+	body {
+		margin: 0;
+		font-family: Arial, Helvetica, sans-serif;
+		font-size: 1rem;
+		font-weight: 400;
+		line-height: 1.5;
+		color: #212529;
+		background-color:#c8cfd5;
+		-webkit-font-smoothing: antialiased;
+		-moz-osx-font-smoothing: grayscale;
+		text-align: left;
+		direction: ltr;
+		-webkit-text-size-adjust: 100%;
+		-ms-text-size-adjust: 100%;
+		-webkit-tap-highlight-color: transparent;
+	}
+	/* Form controls */
+	.form-group { 
+		margin-bottom: 1rem; 
+	}
+	label { 
+		display: inline-block; 
+		margin-bottom: .5rem; 
+	}
+	.form-control {
+		font-size: inherit;
+		display: block;
+		width: 100%;
+		height: calc(1.5em + .75rem + 2px);
+		padding: .375rem .75rem;
+		color: #495057;
+		background-color: #fff;
+		border: 1px solid #ced4da;
+		border-radius: .25rem;
+		transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+	}
+	.form-control:focus {
+		border-color: #80bdff;
+		outline: 0;
+		box-shadow: 0 0 0 .2rem rgba(0,123,255,.25);
+	}
+	/* Buttons */
+	.btn {
+		display: inline-block;
+		font-weight: 400;
+		font-size: inherit;
+		text-align: center;
+		vertical-align: middle;
+		user-select: none;
+		border: 1px solid transparent;
+		padding: .375rem .75rem;
+		border-radius: .25rem;
+		transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out;
+	}
+	.btn-primary {
+		color: #fff;
+		background-color: #007bff;
+		border-color: #007bff;
+	}
+	.btn-primary:hover {
+		background-color: #0069d9;
+		border-color: #0062cc;
+	}
+	.btn-primary:focus {
+		box-shadow: 0 0 0 .2rem rgba(38,143,255,.5);
+	}
+	.row {
+		display: flex;
+		margin-right: -15px;
+		margin-left: -15px;
+		align-items: baseline;
+	}
+	.col-3, .col-9 {
+		position: relative;
+		padding-right: 15px;
+		padding-left: 15px;
+	}
+	.col-3 { 
+		flex: 0 0 25%; 
+		max-width: 25%;
+	}
+	.col-9 {
+		flex: 0 0 75%; 
+		max-width: 75%;
+	}
+	.ml-2 {
+		margin-left: .5rem !important;
+	}
+	.mr-0 {
+		margin-right: 0 !important;
+	}
+	.my-3 {
+		margin-top: 1rem !important; 
+		margin-bottom: 1rem !important; 
+	}
+	.text-right { 
+		text-align: right !important;
+	}
+	.font-monospace {
+		font-family: SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;
+	}
+	form.login-form {
+		width:350px;
+		height:260px;
+		margin:calc(50vh - 150px) auto;
+		padding:1rem;
+		border:1px solid #354f67;
+		border-radius:4px;
+		background:#fff;
+	}
+	p.form-header {
+		color: #ced4da;
+		margin: -1rem -1rem 2rem -1rem;
+		padding: 1rem;
+		background: #354f67;
+	}
+	/*-->*/
+</style>
+</html>

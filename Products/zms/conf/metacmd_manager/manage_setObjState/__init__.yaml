@@ -1,0 +1,17 @@
+manage_setObjState:
+  acquired: 0
+  action: '%smanage_executeMetacmd?id=manage_setObjState'
+  execution: 0
+  icon_clazz: fas fa-hammer
+  meta_types:
+    - '*'
+  name: Set object-state...
+  nodes: '{$}'
+  package: com.zms.custom.metacmd.maintenance
+  revision: 0.0.1
+  roles:
+    - ZMSAdministrator
+  title: Set object-state...
+  Impl:
+    - id: manage_setObjState
+      type: Script (Python)

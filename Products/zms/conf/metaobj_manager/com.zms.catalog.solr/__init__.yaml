@@ -1,0 +1,5 @@
+com.zms.catalog.solr:
+  enabled: 0
+  name: com.zms.catalog.solr
+  revision: 1.1.1
+  type: ZMSPackage

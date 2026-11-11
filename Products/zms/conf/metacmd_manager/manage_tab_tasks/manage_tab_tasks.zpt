@@ -76,7 +76,7 @@
 		<tal:block tal:repeat="lang python:[request['lang']]+[[],here.getDescendantLanguages(request['lang'],request)][int('descendant_langs' in request.form)]">
 			<tal:block tal:repeat="ob python:[here]+here.getTreeNodes(request,here.PAGES)">
 				<tal:block tal:condition="python:ob.inObjStates([request['task_type']],request) and
-						(ob.inObjStates(['STATE_NEW','STATE_MODIFIED','STATE_DELETED'],request) or
+						(ob.inObjStates(['STATE_NEW','STATE_MODIFIED','STATE_DELETED','AC_COMMITTED'],request) or
 						(len(ob.getWfStates(request))>0 and ob.isVersionContainer() and ob.hasObjModifiedChildren(request)))">
 					<tal:block tal:define="dummy0 python:obs.append(ob)"></tal:block>
 				</tal:block>

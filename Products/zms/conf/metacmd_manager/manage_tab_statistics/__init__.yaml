@@ -1,0 +1,17 @@
+manage_tab_statistics:
+  acquired: 0
+  action: '%smanage_executeMetacmd?id=manage_tab_statistics'
+  execution: 0
+  icon_clazz: icon-cogs fas fa-chart-bar
+  meta_types:
+    - ZMS
+  name: Statistics
+  nodes: '{$}'
+  revision: 5.2.0
+  roles:
+    - ZMSAdministrator
+  stereotype: tab
+  title: Content object usage statistics
+  Impl:
+    - id: manage_tab_statistics
+      type: Page Template

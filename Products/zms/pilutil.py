@@ -1,24 +1,14 @@
-################################################################################
-# pilutil.py
-#
-# This program is free software; you can redistribute it and/or
-# modify it under the terms of the GNU General Public License
-# as published by the Free Software Foundation; either version 2
-# of the License, or (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
-################################################################################
+"""
+pilutil.py
 
+Provides enabled, generate_preview, thumbnail helper functions for image processing and PIL/Pillow operations.
+It resizes images, applies filters, generates thumbnails, and manipulates image metadata.
+
+License: GNU General Public License v2 or later,
+Organization: ZMS Publishing
+"""
 # Imports.
 from AccessControl.SecurityInfo import ModuleSecurityInfo
-import tempfile
 # Product Imports.
 from Products.zms import _fileutil
 from Products.zms import standard
@@ -28,6 +18,7 @@ security = ModuleSecurityInfo('Products.zms.pilutil')
 
 security.declarePublic('enabled')
 def enabled():
+  """Return whether Pillow is available in the current runtime."""
   try:
     from PIL import Image
     return True
@@ -36,6 +27,12 @@ def enabled():
 
 security.declarePublic('generate_preview')
 def generate_preview(self, hiresKey, loresKey, maxdim):
+  """
+  Generate and persist a low-resolution preview image from a hi-res source.
+
+  The method reads object properties, derives a thumbnail via L{thumbnail}, and
+  stores both low-res and hi-res values back into object properties.
+  """
   request = self.REQUEST
   lang = request['lang']
   hires = self.attr(hiresKey)
@@ -76,7 +73,7 @@ def resize(img, size, mode='resize', sffx='_thumbnail', qual=75):
   
   # Save image in temp-folder
   context = img.aq_parent
-  tempfolder = tempfile.mkdtemp()
+  tempfolder = standard.getTempFolder(context)
   filepath = _fileutil.getOSPath('%s/%s'%(tempfolder, img.filename))
   _fileutil.exportObj(img, filepath)
   
@@ -158,7 +155,7 @@ def crop(img, box, qual=75):
   
   # Save image in temp-folder
   context = img.aq_parent
-  tempfolder = tempfile.mkdtemp()
+  tempfolder = standard.getTempFolder(context)
   filepath = _fileutil.getOSPath('%s/%s'%(tempfolder, img.filename))
   _fileutil.exportObj(img, filepath)
   
@@ -183,22 +180,23 @@ def crop(img, box, qual=75):
 
 
 security.declarePublic('rotate')
-def rotate(img, direction, qual=75):
+def rotate(img, direction, qual=75, expand=False):
   """
-  Rotate image.
+  Rotate image counter-clockwise by direction degrees.
+  With expand=True the canvas is enlarged to hold the whole image.
   """
   from PIL import Image, ImageFile
   ImageFile.LOAD_TRUNCATED_IMAGES = True
   
   # Save image in temp-folder
   context = img.aq_parent
-  tempfolder = tempfile.mkdtemp()
+  tempfolder = standard.getTempFolder(context)
   filepath = _fileutil.getOSPath('%s/%s'%(tempfolder, img.filename))
   _fileutil.exportObj(img, filepath)
   
   # Rotate image
   im = Image.open(filepath)
-  im = im.rotate(direction)
+  im = im.rotate(direction, expand=expand)
   im.convert('RGB').save(filepath, "JPEG", quality=qual, optimize=True)
   
   # Read rotated image from file-system
@@ -216,6 +214,37 @@ def rotate(img, direction, qual=75):
   return image
 
 
+security.declarePublic('mirror')
+def mirror(img, direction='h', qual=75):
+  """
+  Mirror image horizontally ('h') or vertically ('v').
+  """
+  from PIL import Image, ImageFile, ImageOps
+  ImageFile.LOAD_TRUNCATED_IMAGES = True
+  
+  # Save image in temp-folder
+  context = img.aq_parent
+  tempfolder = standard.getTempFolder(context)
+  filepath = _fileutil.getOSPath('%s/%s'%(tempfolder, img.filename))
+  _fileutil.exportObj(img, filepath)
+  
+  # Mirror image
+  im = Image.open(filepath)
+  im = ImageOps.flip(im) if direction == 'v' else ImageOps.mirror(im)
+  im.convert('RGB').save(filepath, "JPEG", quality=qual)
+  
+  # Read mirrored image from file-system
+  f = open(filepath, 'rb')
+  data = f.read()
+  f.close()
+  
+  # Remove temp-folder and images
+  _fileutil.remove(tempfolder, deep=1)
+  
+  # Returns resulting image
+  return standard.ImageFromData(context, data, img.filename)
+
+
 security.declarePublic('optimize')
 def optimize(img, qual=75):
   """
@@ -227,7 +256,7 @@ def optimize(img, qual=75):
   
   # Save image in temp-folder
   context = img.aq_parent
-  tempfolder = tempfile.mkdtemp()
+  tempfolder = standard.getTempFolder(context)
   filepath = _fileutil.getOSPath('%s/%s'%(tempfolder, img.filename))
   _fileutil.exportObj(img, filepath)
   
@@ -252,4 +281,3 @@ def optimize(img, qual=75):
 
 security.apply(globals())
 
-################################################################################

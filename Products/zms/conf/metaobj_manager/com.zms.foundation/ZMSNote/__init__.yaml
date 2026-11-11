@@ -1,0 +1,46 @@
+ZMSNote:
+  access:
+    insert_custom: '{$}'
+  enabled: 1
+  name: ZMSNote
+  package: com.zms.foundation
+  revision: 5.2.0
+  type: ZMSObject
+  Attrs:
+    - id: icon_clazz
+      name: Icon (Class)
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: constant
+      custom: far fa-comment-alt
+    - id: text
+      name: Memotext
+      mandatory: 1
+      multilang: 1
+      repetitive: 0
+      type: text
+    - id: interface
+      name: interface
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: interface
+    - id: renderShort
+      name: 'ZMI: Render short'
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: zpt
+    - id: onChangeObjEvt
+      name: 'Event: onChangeObj'
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: py
+    - id: standard_json_docx
+      name: JSON-DOCX Template
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: py

@@ -1,23 +1,87 @@
-################################################################################
-# _objattrs.py
-#
-# This program is free software; you can redistribute it and/or
-# modify it under the terms of the GNU General Public License
-# as published by the Free Software Foundation; either version 2
-# of the License, or (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
-################################################################################
+"""
+_objattrs.py - ZMS Object Attributes Management
 
+The _objattrs module is central to ZMS's content management architecture, implementing
+the meta-object model that enables flexible attribute handling for arbitrary content types.
+It encapsulates logic for content-object traversal, attribute access, and child-node
+handling, providing reusable behaviors shared by the ZMS runtime.
+
+Key Functionality:
+  - Attribute retrieval, defaults, and access with multilingual and blob field support
+  - Form input generation (text areas, select menus, file uploads, rich text editors, etc.)
+  - Value formatting and validation including blob handling and datetime parsing
+  - Multilingual support with language-specific fallback behavior
+  - Object activation status determination based on active flags and datetime attributes
+  - Object versioning integration for preview vs. live version management
+  - Blob field management (images/files) with upload, preview, and manipulation support
+  - AJAX endpoints for autocomplete and dynamic form updates
+  - Attribute cloning and synchronization across object instances
+
+  ObjAttrs:
+  Mixin class providing attribute access, form rendering, and manipulation methods
+  for ZMS content objects. Enables getting/setting attributes, generating form fields,
+  and managing multilingual content.
+
+  ObjAttrsManager:
+  Manager class for synchronizing and maintaining the centralized attribute
+  metadata dictionary (dObjAttrs) across the ZMS instance. Coordinates attribute
+  definitions from the meta-object model with actual object instances.
+
+Core Functions:
+  - getobjattrdefault(obj, obj_attr, lang):
+    Returns the default value for an object attribute based on datatype, considering
+    translation status and special handling for the 'active' attribute.
+  - getobjattr(self, obj, obj_attr, lang):
+    Retrieves an object attribute value with fallback to primary language for
+    mono-lingual attributes and default value resolution.
+  - setobjattr(self, obj, obj_attr, value, lang):
+    Assigns a value to an object attribute, handling blob field callbacks.
+  - cloneobjattr(self, src, dst, obj_attr, lang):
+    Copies an attribute value from source to destination object with proper
+    handling of complex datatypes, blobs, lists, and dictionaries.
+
+Architecture:
+  - The module integrates with:
+    - ZMS meta-object model for attribute definitions
+    - Object versioning system for preview/live state management
+    - Blob field management for media handling
+    - Multilingual content system with per-language attribute variants
+    - AJAX framework for dynamic form interactions
+    - PIL (Python Imaging Library) for image manipulation via pilutil
+
+  - Attribute Types Supported:
+    - Text/Rich Text: Standard text, DTML, TAL expressions, rich text editors
+    - Media: Images and files with upload, preview, resize, and crop capabilities
+    - Numeric: Integers, floats, and currency amounts
+    - Temporal: Date, time, datetime with format parsing
+    - Structured: Lists, dictionaries with XML serialization
+    - Selection: Select menus, multiselect, autocomplete with custom options
+    - Security: Password fields with proper handling
+    - Utility: Identifiers, URLs, coverage (i18n), status tracking
+
+  - Multilingual Features:
+    - Per-language attribute variants with fallback chains
+    - Coverage tracking for attribute availability by language
+    - Translation status awareness affecting default values
+    - Language-specific form field generation and rendering
+
+  - Special Attributes:
+    - active: Boolean activation flag with multilingual support
+    - attr_active_start/end: Datetime-based activation windows with cache expiration
+    - created_uid/dt: Creation metadata
+    - change_uid/dt: Modification tracking with multilingual support
+    - change_history: Audit trail of modifications
+    - Version tracking: master, major, minor version numbers
+    - work_*: Workflow state attributes
+    - internal_dict: Internal metadata storage
+
+License: GNU General Public License v2 or later, 
+Organization: ZMS Publishing
+"""
 # Imports.
 from OFS.Image import Image, File
+from AccessControl import ClassSecurityInfo
+from ZPublisher import zpublish
 import ZPublisher.HTTPRequest
 import datetime
 import math
@@ -33,9 +97,7 @@ from Products.zms import _blobfields
 from Products.zms import _globals
 from zope.globalrequest import getRequest
 
-# ------------------------------------------------------------------------------
-#  getobjattrdefault
-# ------------------------------------------------------------------------------
+
 def getobjattrdefault(obj, obj_attr, lang):
     request = getattr(obj, 'REQUEST', getRequest())
     v = None
@@ -61,9 +123,6 @@ def getobjattrdefault(obj, obj_attr, lang):
     return v
 
 
-# ------------------------------------------------------------------------------
-#  getobjattr
-# ------------------------------------------------------------------------------
 def getobjattr(self, obj, obj_attr, lang):
   # Get coverage.
   if obj_attr['id'] == 'attr_dc_coverage':
@@ -87,9 +146,7 @@ def getobjattr(self, obj, obj_attr, lang):
     v = getobjattrdefault(obj, obj_attr, lang)
   return v
 
-# ------------------------------------------------------------------------------
-#  setobjattr:
-# ------------------------------------------------------------------------------
+
 def setobjattr(self, obj, obj_attr, value, lang):
   key = self._getObjAttrName(obj_attr, lang)
   # Handle value.
@@ -98,9 +155,7 @@ def setobjattr(self, obj, obj_attr, value, lang):
   # Assign value.
   setattr(obj, key, value)
 
-# ------------------------------------------------------------------------------
-#  cloneobjattr:
-# ------------------------------------------------------------------------------
+
 def cloneobjattr(self, src, dst, obj_attr, lang):
   standard.writeLog( self, "[cloneobjattr]: Clone object-attribute '%s' from '%s' to '%s'"%(obj_attr['id'],str(src),str(dst)))
   # Fetch value.
@@ -124,17 +179,14 @@ def cloneobjattr(self, src, dst, obj_attr, lang):
 
 
 ################################################################################
-################################################################################
-###
-###   class ObjAttrs
-###
-################################################################################
+# class ObjAttrs
 ################################################################################
 class ObjAttrs(object):
 
-    # --------------------------------------------------------------------------
-    #  ObjAttrs.ajaxGetObjOptions:
-    # --------------------------------------------------------------------------
+    security = ClassSecurityInfo()
+    
+    security.declareProtected('View', 'ajaxGetObjOptions')
+    @zpublish
     def ajaxGetObjOptions(self, REQUEST):
       """ ObjAttrs.ajaxGetObjOptions """
       meta_id = REQUEST['obj_id']
@@ -159,28 +211,18 @@ class ObjAttrs(object):
       return '\n'.join(l)
 
 
-    # --------------------------------------------------------------------------
-    #  ObjAttrs.getObjAttrs:
-    #
-    #  Returns object-attributes and resolves meta-dictionaries.
-    # --------------------------------------------------------------------------
     def getObjAttrs(self, meta_id=None):
+      #  Returns object-attributes and resolves meta-dictionaries.
       meta_id = standard.nvl( meta_id, self.meta_id)
       obj_attrs = getattr( self, 'dObjAttrs', {})
       return obj_attrs.get(meta_id, {})
 
 
-    # --------------------------------------------------------------------------
-    #  ObjAttrs.getObjAttr:
-    # --------------------------------------------------------------------------
     def getObjAttr(self, key, meta_id=None):
       obj_attrs = self.getObjAttrs( meta_id)
       return obj_attrs.get(key, {'id':key,'key':key,'xml':False,'multilang':False,'name':'UNKNOWN','datatype':'string','datatype_key':_globals.DT_UNKNOWN})
 
 
-    # --------------------------------------------------------------------------
-    #  ObjAttrs.getObjAttrLabel:
-    # --------------------------------------------------------------------------
     def getObjAttrLabel(self, obj_attr):
       for key in [ 'name', 'id']:
         if key in obj_attr:
@@ -200,16 +242,14 @@ class ObjAttrs(object):
       return obj_attr.get('name', obj_attr['id'].capitalize())
 
 
-    # --------------------------------------------------------------------------
-    #  ObjAttrs.getObjOptions:
-    # --------------------------------------------------------------------------
     def getObjOptions(self, obj_attr, REQUEST):
       optpl = []
       if 'options' in obj_attr:
         opts = []
         obj_attropts = obj_attr['options']
         if isinstance(obj_attropts, list):
-          v = '\n'.join([str(obj_attropts[x*2]) for x in range(len(obj_attropts)//2)])
+          v_pairs = '\n'.join([str(obj_attropts[x*2]) for x in range(len(obj_attropts)//2)])
+          v_lines = '\n'.join([str(x) for x in obj_attropts])
           if len(obj_attropts)==2 and self.getLinkObj(obj_attropts[0], REQUEST):
             ob = self.getLinkObj(obj_attropts[0], REQUEST)
             metaObj = self.getMetaobj(ob.meta_id)
@@ -217,14 +257,28 @@ class ObjAttrs(object):
             res = [{'key':x['key'],'value':x.get('value', x.get('value_%s'%REQUEST['lang']))} for x in res]
             res = standard.sort_list(res, 'value', 'asc')
             opts = [[x['key'], x['value']] for x in res]
-          elif v.find('<dtml-') >= 0 or v.startswith('##') or v.find('<tal:') >= 0:
+          elif standard.dt_executable(v_pairs):
             try:
-              opts = standard.dt_exec(self, v)
+              opts = standard.dt_exec(self, v_pairs)
+            except:
+              opts = standard.writeError(self, '[getObjOptions]: key=%s'%obj_attr['id'])
+          elif standard.dt_executable(v_lines):
+            try:
+              opts = standard.dt_exec(self, v_lines)
             except:
               opts = standard.writeError(self, '[getObjOptions]: key=%s'%obj_attr['id'])
           else:
             for i in range(len(obj_attropts)//2):
               opts.append([obj_attropts[i*2], obj_attropts[i*2+1]])
+        elif isinstance(obj_attropts, str):
+          if standard.dt_executable(obj_attropts):
+            try:
+              opts = standard.dt_exec(self, obj_attropts)
+            except:
+              opts = standard.writeError(self, '[getObjOptions]: key=%s'%obj_attr['id'])
+          else:
+            for option in standard.string_list(obj_attropts, trim=False):
+              opts.append([option, option])
         elif isinstance(obj_attropts, dict):
           for k in obj_attropts.keys():
             opts.append([k, obj_attropts[k]])
@@ -242,9 +296,6 @@ class ObjAttrs(object):
           optpl.append([value, display])
       return optpl
 
-    # --------------------------------------------------------------------------
-    #  ObjAttrs.getObjAttrName:
-    # --------------------------------------------------------------------------
     def _getObjAttrName(self, obj_attr, lang=None):
       attr = obj_attr['id']
       if obj_attr['multilang']:
@@ -257,23 +308,15 @@ class ObjAttrs(object):
       attr = self.REQUEST.get('objAttrNamePrefix', '') + self._getObjAttrName(obj_attr, lang) + self.REQUEST.get('objAttrNameSuffix', '')
       return attr
 
-    # --------------------------------------------------------------------------
-    #  ObjAttrs.isDisabledAttr:
-    # --------------------------------------------------------------------------
     def isDisabledAttr(self, obj_attr, REQUEST):
       lang = standard.nvl(REQUEST.get('lang'), self.getPrimaryLanguage())
       return REQUEST.get(obj_attr['id']+'-disabled', False) or not (obj_attr['multilang'] or REQUEST.get('ZMS_INSERT', None) is not None or self.getDCCoverage(REQUEST).find('.'+lang)>0)
 
 
     ############################################################################
-    #
     #  INPUT-FIELDS
-    #
     ############################################################################
 
-    # --------------------------------------------------------------------------
-    #  ObjAttrs.getObjAttrInput:
-    # --------------------------------------------------------------------------
     def getObjAttrInput(self, fmName, obj_attr, value, REQUEST):
     
       #-- DATATYPE
@@ -339,11 +382,11 @@ class ObjAttrs(object):
       
       #-- Image-Fields.
       elif inputtype == 'image':
-        return self.f_selectImage(self, ob=self, fmName=fmName, elName=elName, value=_blobfields.MyBlobDelegate(value), key=obj_attr['id'], metaObj=metaObj, lang=lang, REQUEST=REQUEST)
+        return self.f_selectImage(self, ob=self, fmName=fmName, elName=elName, enabled=enabled, value=_blobfields.MyBlobDelegate(value), key=obj_attr['id'], metaObj=metaObj, lang=lang, REQUEST=REQUEST)
       
       #-- File-Fields.
       elif inputtype == 'file':
-        return self.f_selectFile(self, ob=self, fmName=fmName, elName=elName, value=_blobfields.MyBlobDelegate(value), key=obj_attr['id'], metaObj=metaObj, lang=lang, REQUEST=REQUEST)
+        return self.f_selectFile(self, ob=self, fmName=fmName, elName=elName, enabled=enabled, value=_blobfields.MyBlobDelegate(value), key=obj_attr['id'], metaObj=metaObj, lang=lang, REQUEST=REQUEST)
       
       #-- Password-Fields.
       if inputtype == 'password':
@@ -426,9 +469,7 @@ class ObjAttrs(object):
             inp.append('&nbsp;'+self.getConfProperty('ZMS.locale.amount.unit', 'EUR'))
           return ''.join(inp)
 
-    # --------------------------------------------------------------------------
-    #  ObjAttrs.getObjInput:
-    # --------------------------------------------------------------------------
+
     def getObjInput(self, key, REQUEST):
       try:
         id = self.id
@@ -446,17 +487,10 @@ class ObjAttrs(object):
         return standard.writeError(self, 'can\'t getObjInput')
 
 
-    """
     ############################################################################
-    #
-    #  Get
-    #
+    # Get
     ############################################################################
-    """
 
-    # --------------------------------------------------------------------------
-    #  ObjAttrs._getObjAttrValue:
-    # --------------------------------------------------------------------------
     def _getObjAttrValue(self, obj_attr, obj_vers, lang):
       
       # Get value.
@@ -507,9 +541,6 @@ class ObjAttrs(object):
       return value
 
 
-    # --------------------------------------------------------------------------
-    #  ObjAttrs.getObjAttrValue:
-    # --------------------------------------------------------------------------
     def getObjAttrValue(self, obj_attr, REQUEST):
       datatype = obj_attr['datatype_key']
       obj_vers = self.getObjVersion(REQUEST)
@@ -529,9 +560,6 @@ class ObjAttrs(object):
       return value
 
 
-    # --------------------------------------------------------------------------
-    #  ObjAttrs.attr_is_modified:
-    # --------------------------------------------------------------------------
     def attr_is_modified(self, key):
       try:
         modified = False
@@ -548,13 +576,8 @@ class ObjAttrs(object):
         standard.writeError(self, '[attr_is_modified]: key=%s'%key)
       return modified
 
-    # --------------------------------------------------------------------------
-    #  ObjAttrs.getObjProperty:
-    #
-    #  Retrieves value for specified property.
-    #
+    #  ObjAttrs.getObjProperty retrieves value for specified property.
     #  @deprecated: use attr(key) instead! 
-    # --------------------------------------------------------------------------
     def getObjProperty(self, key, REQUEST={}, par=None):
       obj_attrs = self.getObjAttrs()
       
@@ -608,9 +631,7 @@ class ObjAttrs(object):
           self.setObjProperty( key, args[0][key], request.get('lang'))
 
 
-    # --------------------------------------------------------------------------
-    #  ObjAttrs.evalMetaobjAttr
-    # --------------------------------------------------------------------------
+
     def evalMetaobjAttr(self, *args, **kwargs):
       request = getattr(self, 'REQUEST', getRequest())
       root = self
@@ -624,9 +645,6 @@ class ObjAttrs(object):
       return root.getMetaobjManager().evalMetaobjAttr(id, key, zmscontext=self, options=kwargs)
 
 
-    # --------------------------------------------------------------------------
-    #  ObjAttrs.evalExtensionPoint
-    # --------------------------------------------------------------------------
     def evalExtensionPoint(self, *args, **kwargs):
       key = args[0]
       default = args[1]
@@ -640,25 +658,15 @@ class ObjAttrs(object):
         return default(self, kwargs)
 
 
-    """
     ############################################################################
-    ###  
-    ###  Active
-    ### 
+    # Active
     ############################################################################
-    """
 
-    # --------------------------------------------------------------------------
-    #  ObjAttrs.is_active:
-    #
-    #  alias for isActive(request)
-    # --------------------------------------------------------------------------
-    def is_active(self):
+    def is_active(self): 
+      # alias for isActive(request)
       return self.isActive(self.REQUEST)
 
-    # --------------------------------------------------------------------------
-    #  ObjAttrs.isActive:
-    # --------------------------------------------------------------------------
+
     def isActive(self, REQUEST):
       b = True
       if self.getType() == 'ZMSRecordSet':
@@ -712,17 +720,10 @@ class ObjAttrs(object):
       return b
 
 
-    """
     ############################################################################
-    #
     #  Set
-    #
     ############################################################################
-    """
-    
-    # --------------------------------------------------------------------------
-    #  ObjAttrs.formatObjAttrValue:
-    # --------------------------------------------------------------------------
+
     def formatObjAttrValue(self, obj_attr, v, lang=None):
       
       #-- DATATYPE
@@ -863,13 +864,9 @@ class ObjAttrs(object):
       return v
 
 
-    # --------------------------------------------------------------------------
-    #  ObjAttrs.setReqProperty:
-    #
-    #  Assigns value to specified property from Request-Object.
-    # --------------------------------------------------------------------------
     def setReqProperty(self, key, REQUEST, forced=0):
-      
+      #  Assigns value to specified property from Request-Object.
+
       #-- REQUEST
       lang = REQUEST['lang']
       
@@ -958,14 +955,9 @@ class ObjAttrs(object):
         self.setObjProperty(key, value, lang)
 
 
-    # --------------------------------------------------------------------------
-    #  ObjAttrs.setObjProperty:
-    #
-    #  Assigns value to specified property.
-    #
-    #  @deprecated: use attr(key,value) instead! 
-    # --------------------------------------------------------------------------
     def setObjProperty(self, key, value, lang=None, forced=0):
+      #  ObjAttrs.setObjProperty assigns value to specified property.
+      #  @deprecated: use attr(key,value) instead! 
       
       #-- Get definition.
       obj_attr = self.getObjAttr(key)
@@ -985,13 +977,7 @@ class ObjAttrs(object):
         setobjattr(self, ob, obj_attr, value, lang)
 
 
-    ############################################################################
-    #  ObjAttrs.preloadObjProperty:
-    #
-    #  Preload property.
-    ############################################################################
     def preloadObjProperty(self, REQUEST, RESPONSE=None):
-      """ ObjAttrs.preloadObjProperty """
       content_type = 'text/plain'
       message = {}
       message['success'] = True
@@ -1054,6 +1040,7 @@ class ObjAttrs(object):
       return message
 
 
+    @zpublish
     def manage_changeTempBlobjProperty(self, lang, key, form_id, action, REQUEST, RESPONSE=None):
       """ ObjAttrs.manage_changeTempBlobjProperty """
       rtn = {}
@@ -1113,6 +1100,11 @@ class ObjAttrs(object):
           blob = pilutil.crop( blob, box)
           rtn['height'] = y2-y0
           rtn['width'] = x1-x0
+        for mirror_action, direction in [('mirror', 'h'), ('flip', 'v')]:
+          if mirror_action in action.split(','):
+            blob = pilutil.mirror( blob, direction)
+        if 'rotate90' in action.split(','):
+          blob = pilutil.rotate( blob, -90, expand=True)
         file.manage_upload(blob.getData())
         rtn['filename'] = blob.getFilename()
         rtn['src'] = src
@@ -1120,6 +1112,7 @@ class ObjAttrs(object):
       return self.str_json(rtn)
 
 
+    @zpublish
     def getTempBlobjPropertyUrl(self, format='json', REQUEST=None, RESPONSE=None):
       """ ObjAttrs.getTempBlobjPropertyUrl """
       rtn = {}
@@ -1166,6 +1159,7 @@ class ObjAttrs(object):
       return rtn
 
 
+    @zpublish
     def clearTempBlobjProperty(self, format='json', REQUEST=None, RESPONSE=None):
       """ ObjAttrs.clearTempBlobjProperty """
       rtn = {}
@@ -1184,19 +1178,11 @@ class ObjAttrs(object):
       return rtn
 
 
-    """
+
     ############################################################################
-    #
-    #  C L O N E
-    #
+    #  CLONE
     ############################################################################
-    """
-    
-    # --------------------------------------------------------------------------
-    #  ObjAttrs.cloneObjAttrs:
-    #
-    #  Clone object-attributes.
-    # --------------------------------------------------------------------------
+
     def cloneObjAttrs(self, src, dst, lang):
       standard.writeBlock( self, "[cloneObjAttrs]: Clone object-attributes from '%s' to '%s'"%(str(src), str(dst)))
       prim_lang = self.getPrimaryLanguage()
@@ -1223,19 +1209,11 @@ class ObjAttrs(object):
 
 
 ################################################################################
+# Class Object Attributes Manager
 ################################################################################
-###
-###   Object Attributes Manager
-###
-################################################################################
-################################################################################
+
 class ObjAttrsManager(object):
 
-    # --------------------------------------------------------------------------
-    #  ObjAttrsManager.synchronizeObjAttr:
-    #
-    #  Synchronizes object-attribute.
-    # --------------------------------------------------------------------------
     def synchronizeObjAttr(self, attr):
       try:
         if attr['type'] in ZMSMetaobjManager.ZMSMetaobjManager.valid_types:
@@ -1362,5 +1340,3 @@ class ObjAttrsManager(object):
           standard.writeError( self, '[synchronizeObjAttrs]: Can\'t process %s'%portalClient.absolute_url())
       
       return '\n'.join(rtn)
-
-################################################################################

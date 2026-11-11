@@ -114,3 +114,13 @@ Shows all **back-references** — objects that link *to* this content node:
   it shows all incoming links that would break.
 - **Remote embedding** requires the target ZMS instance to be accessible
   via HTTP and to expose its REST API endpoints.
+
+
+## Internal Link Resolution
+
+The following flowchart shows what happens when ZMS renders an internal link.
+It focuses on the main execution path in `_zreferableitem.py` and is written to
+be understandable for programming beginners:
+
+![Flowchart](../../apidocs/images/ZMSLinkElement_flowchart.png)
+

@@ -1,0 +1,70 @@
+bt_card:
+  access:
+    insert_custom: '{$}'
+  enabled: 0
+  name: Card
+  package: com.zms.bootstrap
+  revision: 4.1.0
+  type: ZMSObject
+  Attrs:
+    - id: header
+      name: Header (Optional)
+      mandatory: 0
+      multilang: 1
+      repetitive: 0
+      type: string
+    - id: interface0
+      name: interface0
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: interface
+    - id: image
+      name: Image (286x180)
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: image
+    - id: title
+      name: Title
+      mandatory: 0
+      multilang: 1
+      repetitive: 0
+      type: string
+    - id: subtitle
+      name: Subtitle
+      mandatory: 0
+      multilang: 1
+      repetitive: 0
+      type: string
+    - id: text
+      name: Text
+      mandatory: 0
+      multilang: 1
+      repetitive: 0
+      type: text
+    - id: footer
+      name: Footer (Optional)
+      mandatory: 0
+      multilang: 1
+      repetitive: 0
+      type: string
+    - id: links
+      name: Links
+      mandatory: 1
+      multilang: 0
+      repetitive: 0
+      type: bt_link_list
+    - id: icon_clazz
+      name: Icon (Class)
+      mandatory: 0
+      multilang: 1
+      repetitive: 0
+      type: constant
+      custom: far fa-address-card
+    - id: standard_html
+      name: 'Template: Card'
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: zpt

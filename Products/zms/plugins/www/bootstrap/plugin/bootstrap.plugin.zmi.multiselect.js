@@ -1,6 +1,7 @@
 // Hint: To be cached by the browser in sessionStorage
 ZMI.prototype.multiselect = function(context) {
 	let multiselect_index = 0;
+	let title_remove = getZMILangStr('BTN_DELETE');
 	$("select.zmi-select[multiple]:not(.d-none)",context).each(function() {
 		multiselect_index++;
 		var refreshContainer = function($container) {
@@ -31,7 +32,7 @@ ZMI.prototype.multiselect = function(context) {
 		var html = `
 			<div class="zmi-select-container form-inline">
 				<div class="${$select.attr('class').replace('form-control','')}"></div>
-				<div class="btn-group btn-group-sortable mt-2">
+				<div class="btn-group btn-group-sortable mt-1" role="group">
 					<button type="button" ${$select_disabled} 
 						class="btn btn-secondary dropdown-toggle" 
 						data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -75,10 +76,21 @@ ZMI.prototype.multiselect = function(context) {
 		$("a.dropdown-item",$dropdown).click(function() {
 			$(this).addClass("d-none");
 			var data_value = $(this).attr('data-value');
+			var item_text = $(this).text();
 			if ( $select_disabled ) {
-				$container.append(`<div class="btn bg-light mt-2" disabled="disabled">${$(this).text()}</div>`);
+				var $itemDisabled = $('<div class="btn bg-light mt-1 mr-1 pl-1" disabled="disabled" style="cursor:default"></div>');
+				$itemDisabled.text(item_text);
+				$container.append($itemDisabled);
 			} else {
-				$container.append(`<div class="btn btn-light mt-2" data-value="${data_value}"><a href="javascript:;"><i class="fas fa-times"></i></a> ${$(this).text()}</div>`);
+				var $item = $('<div class="btn btn-light mt-1 mr-1 pl-1" disabled="disabled" style="cursor:default"></div>');
+				$item.attr('data-value', data_value);
+				var $removeLink = $('<a href="javascript:;"></a>');
+				var $removeIcon = $('<i class="fas fa-times mx-2"></i>');
+				$removeIcon.attr('title', title_remove);
+				$removeLink.append($removeIcon);
+				$item.append($removeLink);
+				$item.append(document.createTextNode(' ' + item_text));
+				$container.append($item);
 			};
 			$(".btn a:last",$container).click(function() {
 				var $parent = $(this).parent();

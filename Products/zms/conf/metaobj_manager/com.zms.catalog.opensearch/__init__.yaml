@@ -1,0 +1,5 @@
+com.zms.catalog.opensearch:
+  enabled: 1
+  name: com.zms.catalog.opensearch
+  revision: 1.12.1
+  type: ZMSPackage

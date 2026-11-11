@@ -1,101 +1,101 @@
 <!DOCTYPE html>
 <html lang="en" tal:define="standard modules/Products.zms/standard">
 <head tal:replace="structure python:here.zmi_html_head(here,request)">zmi_html_head</head>
-<!-- body tal:attributes="class python:' '.join(['zmi zms',request['lang'],'users config',here.meta_id])" -->
+
 <body tal:attributes="class python:here.zmi_body_class(id='users config')">
 
-<header tal:replace="structure python:here.zmi_body_header(here,request,options=here.customize_manage_options())">zmi_body_header</header>
+	<header tal:replace="structure python:here.zmi_body_header(here,request,options=here.customize_manage_options())">
+		zmi_body_header
+	</header>
 
-<div id="zmi-tab" 
-	tal:define="multilang python:len(here.getLangIds())>1;
-		userDefs python:here.getSecurityUsers();
-		roleDefs python:here.getSecurityRoles();
-		userNames python:here.sort_list(list(userDefs));
-		valid_roles python:here.difference_list(here.getUserDefinedRoles(),['ZMSAdministrator','ZMSEditor','ZMSAuthor','ZMSSubscriber','ZMSUserAdministrator']);
-		langs_optpl python:[[x,here.getLanguageLabel(x)] for x in here.getLanguages(request)];
-		roles_optpl python:[['ZMSAdministrator',here.getZMILangStr('ROLE_ZMSADMINISTRATOR')],
-			['ZMSEditor',here.getZMILangStr('ROLE_ZMSEDITOR')],
-			['ZMSAuthor',here.getZMILangStr('ROLE_ZMSAUTHOR')],
-			['ZMSSubscriber',here.getZMILangStr('ROLE_ZMSSUBSCRIBER')],
-			['ZMSUserAdministrator',here.getZMILangStr('ROLE_ZMSUSERADMINISTRATOR')],
-			];
-		l python:[];
-		dummy0 python:[l.extend(list(x.get('nodes',{}))) for x in userDefs.values()];
-		dummy0 python:[l.extend(list(roleDefs[x])) for x in roleDefs];
-		d python:{};
-		dummy0 python:[here.operator_setitem(d,x,1) for x in l];
-		nodes python:list(d);">
+	<div id="zmi-tab"
+		tal:define="multilang python:len(here.getLangIds())>1;
+			userDefs python:here.getSecurityUsers();
+			roleDefs python:here.getSecurityRoles();
+			userNames python:here.sort_list(list(userDefs));
+			base_roles python:['ZMSAdministrator','ZMSEditor','ZMSAuthor','ZMSSubscriber','ZMSUserAdministrator'];
+			valid_roles python:here.difference_list(here.getUserDefinedRoles(), base_roles);
+			langs_optpl python:[[x,here.getLanguageLabel(x)] for x in here.getLanguages(request)];
+			roles_optpl python:[[role,here.getZMILangStr('ROLE_%s'%role.upper())] for role in base_roles] + [[role,role] for role in valid_roles];
+			nodes python:list(set([x for userDef in userDefs.values() for x in userDef.get('nodes',{})] ));">
 
-	<tal:block tal:content="structure python:here.zmi_breadcrumbs(here,request)">zmi_breadcrumbs</tal:block>
+		<nav aria-label="breadcrumb" tal:replace="structure python:here.zmi_breadcrumbs(here,request)">zmi_breadcrumbs</nav>
 
-	<tal:block tal:repeat="role valid_roles">
-		<tal:block tal:condition="python:role not in [x[0] for x in roles_optpl]">
-			<tal:block tal:define="dummy0 python:roles_optpl.append([role,role])"></tal:block>
-		</tal:block>
-	</tal:block>
+		<form class="form-horizontal card">
 
-	<form class="form-horizontal card">
-		<legend>
-			<i class="fas fa-sitemap" tal:attributes="title python:here.getZMILangStr('TAB_USERSITEMAP')"></i>
-			<tal:block tal:content="python:here.getZMILangStr('TAB_USERSITEMAP')">User Sitemap</tal:block>
-		</legend>
-	<table class="table table-striped table-sm">
-		<tbody>
-		<tal:block tal:repeat="node nodes">
-			<tr tal:define="target python:here.getLinkObj(node)" tal:on-error="structure string: <!-- ERROR: missing nodekey -->">
-				<td>
-					<div class="text-danger alert-danger" tal:condition="python:target is None">
-						<i class="fas fa-exclamation-triangle" tal:attributes="title python:'%s not found'%(nodekey)"></i>
-						<tal:block tal:content="nodekey">the node-key</tal:block>
-					</div>
-					<tal:block tal:condition="python:target is not None" tal:content="structure python:target.zmi_breadcrumbs_obj_path(middot='manage_access')">zmi_breadcrumbs_obj_path</tal:block>
-				</td>
-				<td>
-					<ul style="list-style-type: none;padding-left:none;">
-						<tal:block tal:repeat="roleName python:[x for x in roleDefs if node in roleDefs[x]]">
-							<li tal:define="nodevalue python:roleDefs[roleName][node]">
-								<a tal:attributes="href python:'manage_users?id=%s'%roleName">
-									<i class="fas fa-group" tal:attributes="title python:here.getZMILangStr('ATTR_ROLES')"></i>
-									<tal:block tal:content="roleName">the role-name</tal:block>
-								</a>
-								(<tal:block tal:content="python:', '.join([here.getRoleName(x) for x in nodevalue['roles']])">the roles</tal:block>)
-							</li>
-						</tal:block>
-						<tal:block tal:repeat="userName python:[x for x in userDefs if node in userDefs[x].get('nodes',{})])">
-							<li tal:define="nodevalue python:userDefs[userName]['nodes'][node]">
-								<a tal:attributes="href python:'manage_users?id=%s'%userName">
-									<i class="fas fa-user" tal:attributes="title python:here.getZMILangStr('ATTR_USER')"></i>
-									<tal:block tal:content="userName">the user-name</tal:block>
-								</a>
-								(
-								<tal:block tal:condition="multilang">
-									<tal:block tal:content="python:','.join([here.getLanguageLabel(x) for x in nodevalue.get('langs',[])])">the languages</tal:block> |
+			<legend>
+				<i class="fas fa-sitemap fa-rotate-90 mr-1"></i>
+				<span tal:content="python:here.getZMILangStr('TAB_USERSITEMAP')">User Sitemap</span>
+			</legend>
+			<!--! DEBUG:
+				<pre tal:content="nodes">nodes</pre>
+				<pre tal:content="python:standard.str_json(userDefs, formatted=True)">nodes</pre>
+			-->
+			<table class="table table-striped table-sm table-bordered">
+				<tbody>
+					<tr tal:repeat="node nodes">
+						<td tal:define="target python:here.getLinkObj(node)">
+							<div class="text-danger pl-1" tal:condition="python:target is None">
+								<i class="fas fa-exclamation-triangle"></i><code>Missing Target-Node </code>
+							</div>
+							<nav tal:condition="python:target is not None" 
+								tal:replace="structure python:target.zmi_breadcrumbs_obj_path(middot='manage_access')">
+								zmi_breadcrumbs_obj_path
+							</nav>
+						</td>
+						<td>
+							<ul style="list-style-type:none;padding-left:0;">
+								<tal:block tal:repeat="roleName python:[x for x in roleDefs if node in roleDefs[x]]">
+									<li tal:define="nodevalue python:roleDefs[roleName][node]">
+										<a tal:attributes="href python:'manage_users?id=%s'%roleName">
+											<i class="fas fa-users" tal:attributes="title python:here.getZMILangStr('ATTR_ROLES')"></i>
+											<tal:block tal:content="roleName">the role-name</tal:block>
+										</a>
+										<tal:block tal:define="roles python:nodevalue.get('roles',[])"
+											tal:condition="python:len(roles)>0">
+											(<tal:block tal:content="python:', '.join([here.getRoleName(x) for x in roles])">the roles</tal:block>)
+										</tal:block>
+									</li>
 								</tal:block>
-								<tal:block tal:content="python:', '.join([here.getRoleName(x) for x in here.difference_list(nodevalue.get('roles',[]),['Authenticated'])])">the roles</tal:block>
-								)
-							</li>
-						</tal:block>
-					</ul>
-				</td>
-			</tr>
-		</tal:block>
-		<tr tal:condition="python:len(nodes)<5" tal:repeat="i python:range(5-len(nodes))">
-			<td colspan="2">&nbsp;</td>
-		</tr>
-		</tbody>
-	</table>
+								<tal:block tal:repeat="userName python:[x for x in userDefs if node in userDefs[x].get('nodes',{})]">
+									<li tal:define="nodevalue python:userDefs[userName]['nodes'][node]">
+										<a tal:attributes="href python:'manage_users?id=%s'%userName">
+											<i class="fas fa-user" tal:attributes="title python:here.getZMILangStr('ATTR_USER')"></i>
+											<tal:block tal:content="userName">the user-name</tal:block>
+										</a>
+										<tal:block tal:condition="multilang">
+											<tal:block tal:content="python:','.join([here.getLanguageLabel(x) for x in nodevalue.get('langs',[])])">the languages</tal:block> |
+										</tal:block>
+										<tal:block tal:define="roles python:here.difference_list(nodevalue.get('roles',[]),['Authenticated'])"
+											tal:condition="python:len(roles)>0">
+											(<tal:block tal:content="python:', '.join([here.getRoleName(x) for x in roles])">the roles</tal:block>)
+										</tal:block>
+									</li>
+								</tal:block>
+							</ul>
+						</td>
+					</tr>
+					<tr tal:condition="python:len(nodes)<5" tal:repeat="i python:range(5-len(nodes))">
+						<td class="pl-3 text-muted">&mdash;</td>
+						<td class="pl-3 text-muted">&mdash;</td>
+					</tr>
+				</tbody>
+			</table>
 
-	<div class="form-group row">
-		<div class="controls save">
-			<a class="btn btn-secondary" href="manage_users" title="Back"
-					tal:attributes="href python:'manage_users?lang=%s'%(request['lang']);title python:here.getZMILangStr('TAB_USERS')"
-					tal:content="python:here.getZMILangStr('BACK')">Back</a>
-		</div>
-	</div>
+			<div class="form-group">
+				<div class="controls save">
+					<a class="btn btn-secondary" 
+						href="manage_users" title="Back"
+						tal:attributes="
+							href python:'manage_users?lang=%s'%(request['lang']);
+							title python:here.getZMILangStr('TAB_USERS')"
+						tal:content="python:here.getZMILangStr('BACK')">Back</a>
+				</div>
+			</div>
 
-</form>
+		</form>
 
-</div><!-- #zmi-tab -->
-<footer tal:replace="structure python:here.zmi_body_footer(here,request)">zmi_body_footer</footer>
+	</div><!-- #zmi-tab -->
+	<footer tal:replace="structure python:here.zmi_body_footer(here,request)">zmi_body_footer</footer>
 </body>
 </html>

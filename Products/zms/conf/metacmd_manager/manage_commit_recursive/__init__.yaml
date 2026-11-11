@@ -1,0 +1,21 @@
+manage_commit_recursive:
+  acquired: 0
+  action: '%smanage_executeMetacmd?id=manage_commit_recursive'
+  description: Really want to commit rekursivley all objects of the document 
+    tree starting from here?
+  execution: 1
+  icon_clazz: icon-cogs fas fa-cogs
+  meta_types:
+    - ZMSDocument
+    - ZMSFolder
+    - ZMSTeaserContainer
+    - ZMS
+  name: Commit Rekursively
+  nodes: '{$}'
+  revision: 4.0.0
+  roles:
+    - ZMSAdministrator
+  title: Commits rekursivley all document changes starting with this node
+  Impl:
+    - id: manage_commit_recursive
+      type: Script (Python)

@@ -26,7 +26,7 @@
 	<meta http-equiv="content-type" content="text/html;charset=utf-8" />
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<meta name="generator" content="ZMS5" />
+	<meta name="generator" content="ZMS6" />
 	<title tal:content="structure python:zmscontext.getTitlealt(request)">ZMS</title>
 	<meta tal:attributes="content python:zmscontext.attr('attr_dc_description')" name="description" content="">
 	<meta tal:attributes="content python:zmscontext.attr('attr_dc_subject')" name="keywords" content="">

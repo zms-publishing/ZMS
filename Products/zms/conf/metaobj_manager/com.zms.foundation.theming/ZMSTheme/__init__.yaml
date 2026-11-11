@@ -1,0 +1,13 @@
+ZMSTheme:
+  enabled: 0
+  name: ZMSTheme-Switch
+  package: com.zms.foundation.theming
+  revision: 5.0.1
+  type: ZMSLibrary
+  Attrs:
+    - id: standard_html
+      name: Standard-Html
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: Page Template

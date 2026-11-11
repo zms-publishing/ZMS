@@ -1,27 +1,19 @@
-################################################################################
-# _deprecated.py
-#
-# This program is free software; you can redistribute it and/or
-# modify it under the terms of the GNU General Public License
-# as published by the Free Software Foundation; either version 2
-# of the License, or (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
-################################################################################
+"""
+_deprecatedapi.py - ZMS Deprecated API
 
+Defines DeprecatedAPI for REST API endpoints and HTTP protocol handling.
+It exposes content via JSON/XML, handles authentication, and implements HTTP semantics.
+
+License: GNU General Public License v2 or later,
+Organization: ZMS Publishing
+"""
 # Imports.
 from AccessControl import ClassSecurityInfo
 from AccessControl.class_init import InitializeClass
+from ZPublisher import zpublish
 import re
 # Product Imports.
-from Products.zms import _fileutil
+from Products.zms import _fileutil, _globals
 from Products.zms import _xmllib
 from Products.zms import standard
 
@@ -29,22 +21,13 @@ from Products.zms import standard
 def warn(self,old,new=None):
   import warnings
   warnings.warn('Using <%s@%s>.%s() is deprecated.'
-               ' Use %s() instead.'%(self.meta_id, self.absolute_url(), old, [old, new][new is not None]),
-                 DeprecationWarning, 
-                 stacklevel=2)
+    ' Use %s() instead.'%(self.meta_id, self.absolute_url(), old, [old, new][new is not None]),
+      DeprecationWarning, 
+      stacklevel=2
+  )
 
-################################################################################
-################################################################################
-###
-###   class DeprecatedAPI:
-###
-################################################################################
-################################################################################
 class DeprecatedAPI(object):
 
-  # Create a SecurityInfo for this class. We will use this
-  # in the rest of our class definition to make security
-  # assertions.
   security = ClassSecurityInfo()
 
   f_bo_area = '' 
@@ -98,9 +81,7 @@ class DeprecatedAPI(object):
     ob = self.getDocumentElement()
     return '%s/%s/'%(ob.aq_parent.id, self.absolute_url()[len(ob.aq_parent.absolute_url())+1:])
 
-  """
-  Resolves internal/external links and returns Html. 
-  """
+
   def getLinkHtml( self, url, html='<a href="%s">&raquo;</a>', REQUEST=None): 
     warn(self, 'getLinkHtml', '@deprecated: use own implementation!')
     REQUEST = standard.nvl( REQUEST, self.REQUEST) 
@@ -149,7 +130,6 @@ class DeprecatedAPI(object):
     return text
 
   def zmi_manage_css(self, *args, **kwargs):
-    """ ZMSItem.zmi_manage_css """
     warn(self, 'zmi_manage_css', 'None')
     request = self.REQUEST
     response = request.RESPONSE
@@ -492,8 +472,8 @@ class DeprecatedAPI(object):
   #  ZMSObject.ajaxGetNodes:
   # --------------------------------------------------------------------------
   security.declareProtected('View', 'ajaxGetNodes')
+  @zpublish
   def ajaxGetNodes(self, context=None, lang=None, xml_header=True, REQUEST=None):
-    """ ZMSObject.ajaxGetNodes """
     warn(self, 'ajaxGetNodes', '++rest_api')
     context = standard.nvl(context, self)
     refs = REQUEST.get('refs', [])
@@ -525,12 +505,39 @@ class DeprecatedAPI(object):
     xml += "</pages>"
     return xml
 
-  # --------------------------------------------------------------------------
-  #  ZMSObject.ajaxGetNode:
-  # --------------------------------------------------------------------------
+
   security.declareProtected('View', 'ajaxGetNode')
+  @zpublish
   def ajaxGetNode(self, context=None, lang=None, xml_header=True, meta_types=None, REQUEST=None):
-    """ ZMSObject.ajaxGetNode """
+    """
+    Generate an XML representation of the node with its properties and attributes.
+    
+    This method constructs an XML document containing detailed information about the current
+    ZMS object, including its URL, physical path, access permissions, and optionally its
+    attributes based on configuration parameters.
+    
+    @param context: Context object used for generating absolute URLs and index_html references.
+            If not provided, defaults to self.
+    @type context: C{ZMSObject} or C{None}
+    @param lang: Language identifier for retrieving localized title and titlealt values.
+           If not provided, uses the current language context.
+    @type lang: C{str} or C{None}
+    @param xml_header: Flag to determine whether to include XML declaration header and set
+               appropriate HTTP response headers. When True, sets Content-Type to
+               'text/xml; charset=utf-8' and cache control headers.
+    @type xml_header: C{bool}
+    @param meta_types: Filter criteria for meta types. Currently defined but not actively used
+               in filtering logic.
+    @type meta_types: C{list} or C{None}
+    @param REQUEST: HTTP request object containing form data and response object for setting
+            headers. Required for proper functioning of this method.
+    @type REQUEST: C{HTTPRequest}
+    @return: XML string representation of the node containing element properties, attributes,
+         and optional attribute values based on request parameters.
+    @note: Deprecated - Use the REST API instead. This method is deprecated in favor of modern
+           REST API endpoints (++rest_api).
+    """
+
     warn(self, 'ajaxGetNode', '++rest_api')
     # Build xml.
     xml = ''
@@ -593,8 +600,8 @@ class DeprecatedAPI(object):
   #  ZMSObject.ajaxGetParentNodes:
   # --------------------------------------------------------------------------
   security.declareProtected('View', 'ajaxGetParentNodes')
+  @zpublish
   def ajaxGetParentNodes(self, lang, xml_header=True, meta_types=None, REQUEST=None):
-    """ ZMSObject.ajaxGetParentNodes """
     warn(self, 'ajaxGetParentNodes', '++rest_api')
     # Get context.
     context = self
@@ -635,12 +642,9 @@ class DeprecatedAPI(object):
     # Return xml.
     return xml
 
-  # --------------------------------------------------------------------------
-  #  ZMSObject.ajaxGetChildNodes:
-  # --------------------------------------------------------------------------
   security.declareProtected('View', 'ajaxGetChildNodes')
+  @zpublish
   def ajaxGetChildNodes(self, lang, xml_header=True, meta_types=None, REQUEST=None):
-    """ ZMSObject.ajaxGetChildNodes """
     warn(self, 'ajaxGetChildNodes', '++rest_api')
     # Get context.
     context = self
@@ -709,4 +713,3 @@ class DeprecatedAPI(object):
 # does the right thing with the security assertions.
 InitializeClass(DeprecatedAPI)
 
-################################################################################

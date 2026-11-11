@@ -1,0 +1,18 @@
+manage_zmsindex_reindex:
+  acquired: 0
+  action: '%smanage_executeMetacmd?id=manage_zmsindex_reindex'
+  execution: 0
+  icon_clazz: fas fa-cogs
+  meta_types:
+    - ZMS
+  name: Re-Index All Clients
+  nodes: '{$}'
+  package: com.zms.index
+  revision: 3.2.1
+  roles:
+    - ZMSAdministrator
+  stereotype: zmsindex
+  title: Full Multisite-Reindexing in customisable increments
+  Impl:
+    - id: manage_zmsindex_reindex
+      type: External Method

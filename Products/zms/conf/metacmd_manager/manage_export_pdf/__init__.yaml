@@ -1,0 +1,18 @@
+manage_export_pdf:
+  acquired: 0
+  action: '%smanage_executeMetacmd?id=manage_export_pdf'
+  description: Export current page content as PDF (weasyprint)
+  execution: 0
+  icon_clazz: fas fa-file-pdf text-danger
+  meta_types:
+    - type(ZMSDocument)
+  name: PDF Export
+  nodes: '{$}'
+  package: com.zms.custom.export
+  revision: 1.0.1
+  roles:
+    - ZMSAdministrator
+  title: PDF Export
+  Impl:
+    - id: manage_export_pdf
+      type: External Method

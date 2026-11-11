@@ -56,7 +56,10 @@ def manage_elasticsearch_schematize( self):
 	properties['home_id'] = {'type':'keyword'}
 	properties['created_dt'] = {'type':'date'}
 	properties['change_dt'] = {'type':'date'}
+	properties['start_dt'] = {'type':'date'}
+	properties['end_dt'] = {'type':'date'}
 	properties['indexing_dt'] = {'type':'date'}
+	properties['sortid'] = {'type':'keyword'}
 
 	mappings = {'properties':properties}
 	dictionary = {'mappings':mappings}

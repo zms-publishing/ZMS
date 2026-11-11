@@ -1,24 +1,17 @@
-################################################################################
-# rest_api.py
-#
-# This program is free software; you can redistribute it and/or
-# modify it under the terms of the GNU General Public License
-# as published by the Free Software Foundation; either version 2
-# of the License, or (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
-################################################################################
+"""
+rest_api.py
+
+Defines api, RestApiController for REST API endpoints and HTTP protocol handling.
+It exposes content via JSON/XML, handles authentication, and implements HTTP semantics.
+
+License: GNU General Public License v2 or later,
+Organization: ZMS Publishing
+"""
 
 # Imports.
 import copy
 import json
+from ZPublisher import zpublish
 # Product Imports.
 from Products.zms import _blobfields
 from Products.zms import mock_http
@@ -31,7 +24,6 @@ class api(object):
         If there are decorator arguments, the function
         to be decorated is not passed to the constructor!
         """
-        #--print("Inside __init__()", kwargs)
         self.kwargs = kwargs
 
     def __call__(self, f):
@@ -40,12 +32,8 @@ class api(object):
         once, as part of the decoration process! You can only give
         it a single argument, which is the function object.
         """
-        #--print("Inside __call__()")
         def wrapped_f(*args, **kwargs):
-            #--print("Inside wrapped_f()", args, kwargs)
-            #--print("Decorator arguments:", self.kwargs)
             data = f(*args)
-            #--print("After f(*args)")
             decoration = {x for x in kwargs if kwargs.get(x)}
             if decoration:
                 return {x:self.kwargs.get(x) for x in decoration}, data
@@ -67,6 +55,19 @@ def _get_context(context):
     return monolang, langs
 
 
+def has_access(node, REQUEST=None):
+    """Return True if the current user may view node (View permission or public access)."""
+    request = REQUEST if REQUEST is not None else _get_request(node)
+    if node.getConfProperty('ZMS.private.rest_api_key'):
+        if request.get('rest_api_key') == node.getConfProperty('ZMS.private.rest_api_key'):
+            return True
+    f = getattr(node, 'hasAccess', None)
+    if f is not None:
+        return bool(f(request))
+    user = request.get('AUTHENTICATED_USER')
+    return user is not None and user.has_permission('View', node) in [1, True]
+
+
 def get_meta_data(node):
     data = {}
     data['id'] = node.id
@@ -83,6 +84,11 @@ def get_index_data(node):
     data['uid'] = node.get_uid
     data['getPath'] = node.getPath()
     return data
+
+
+def get_indexschematized_data(node, fileparsing=True):
+    objects = node.getCatalogAdapter().get_catalog_objects(node, fileparsing)
+    return [data for _, data in objects]
 
 
 def get_rest_api_url(url):
@@ -145,14 +151,10 @@ def get_attrs(node):
                     data[id if monolang else '%s_%s'%(id,lang)] = get_attr(node,id)
             else:
                 data[id] = get_attr(node,id)
-    # print("data",data)
     return data
 
-
+@zpublish
 class RestApiController(object):
-    """
-    RestApiController
-    """
 
     def __init__(self, context=None, TraversalRequest=None):
         if context and TraversalRequest:
@@ -162,7 +164,6 @@ class RestApiController(object):
             self.ids = [x for x in self.path_to_handle if x != '++rest_api'] # remove ++rest_api as first element
             while self.ids:
                 id = self.ids[0]
-                print(id,context)
                 if id.startswith('uid:'):
                   context = context.getLinkObj('{$%s}'%id)
                 elif id not in context.getPhysicalPath():
@@ -176,13 +177,30 @@ class RestApiController(object):
         return self
 
     __call____roles__ = None
+
     def __call__(self, REQUEST=None, **kw):
         """"""
         standard.writeBlock(self.context,'__call__: %s'%str(self.ids))
+        if REQUEST is None:
+            REQUEST = _get_request(self.context)
+        if not has_access(self.context, REQUEST):
+            user = REQUEST.get('AUTHENTICATED_USER')
+            REQUEST.RESPONSE.setHeader('Content-Type','application/json')
+            if user is None or user.getUserName() == 'Anonymous User':
+                # raise Unauthorized()
+                return  json.dumps({'error': 'Unauthorized'})
+            # raise Forbidden()
+            return json.dumps({'error': 'Forbidden'})
         if self.method == 'POST':
             if self.ids == ['get_htmldiff']:
                 decoration, data = self.get_htmldiff(self.context, content_type=True)
                 return data
+            elif self.ids == ['llm_chat']:
+                decoration = {'content_type':'application/json'}
+                data = self._handle_llm_chat(REQUEST)
+                REQUEST.RESPONSE.setHeader('Content-Type', decoration['content_type'])
+                REQUEST.RESPONSE.setHeader('Content-Disposition', 'inline;filename="llm_chat.json"')
+                return json.dumps(standard.scalar(data))
             else:
                 return None
         if self.method == 'GET':
@@ -191,6 +209,8 @@ class RestApiController(object):
                 decoration, data = self.zmsindex(self.context, content_type=True)
             elif self.ids == [] and self.context.meta_type == 'ZMSMetamodelProvider':
                 decoration, data = self.metaobj_manager(self.context, content_type=True)
+            elif self.ids == ['get_indexschematized_content']:
+                decoration, data = self.get_indexschematized_content(self.context, content_type=True)
             elif self.ids == ['get_body_content']:
                 decoration, data = self.get_body_content(self.context, content_type=True)
             elif self.ids == ['list_parent_nodes']:
@@ -215,6 +235,17 @@ class RestApiController(object):
                 decoration, data = self.body_content(self.context, content_type=True)
             elif self.ids == [] or self.ids == ['get']:
                 decoration, data = self.get(self.context, content_type=True)
+            elif self.ids == ['llm_chat']:
+                data = self._handle_llm_chat(REQUEST)
+                decoration = {'content_type':'application/json'}
+            elif self.ids == ['llm_provider_info']:
+                connector = self.context.getLLMConnector()
+                data = connector.get_provider_info() if connector is not None else {'error': 'No LLM connector configured.'}
+                decoration = {'content_type':'application/json'}
+            elif self.ids == ['llm_ollama_models']:
+                connector = self.context.getLLMConnector()
+                data = connector.get_ollama_models() if connector is not None else {'error': 'No LLM connector configured.', 'models': []}
+                decoration = {'content_type':'application/json'}
             else:
                 data = {'ERROR':'Not Found','context':str(self.context),'path_to_handle':self.path_to_handle,'ids':self.ids}
             ct = decoration['content_type']
@@ -224,6 +255,39 @@ class RestApiController(object):
                 data = json.dumps(standard.scalar(data))
             return data
         return None
+
+    def _handle_llm_chat(self, REQUEST):
+        def _as_bool(value, default=False):
+            if value is None:
+                return default
+            if isinstance(value, bool):
+                return value
+            return str(value).strip().lower() in ('1', 'true', 'yes', 'on')
+
+        connector = self.context.getLLMConnector()
+        if connector is None:
+            return {'error': 'No LLM connector configured. Add a ZMSLLMConnector to the ZMS root.'}
+        # Accept either a full messages[] array (multi-turn) or a single message string
+        raw_messages = REQUEST.get('messages', '')
+        if raw_messages:
+            try:
+                messages = json.loads(raw_messages) if isinstance(raw_messages, str) else raw_messages
+            except (ValueError, TypeError):
+                messages = [{'role': 'user', 'content': str(raw_messages)}]
+        else:
+            message = REQUEST.get('message', '')
+            messages = [{'role': 'user', 'content': message}]
+
+        preserve_html = _as_bool(REQUEST.get('preserve_html', None), default=False)
+
+        agent_mode = _as_bool(REQUEST.get('agent_mode', '0'), default=False)
+        if agent_mode:
+            return connector.chat_with_tools(messages, self.context, preserve_html=preserve_html)
+        raw = connector.chat(messages, preserve_html=preserve_html)
+        if 'error' in raw:
+            return {'error': raw['error']}
+        msg = raw.get('message') or {}
+        return {'reply': msg.get('content', '')}
 
     @api(tag="zmsindex", pattern="/zmsindex", content_type="application/json")
     def zmsindex(self, context):
@@ -251,9 +315,19 @@ class RestApiController(object):
         request = _get_request(context)
         return context.getBodyContent(request, forced=False)
 
+    @api(tag="content", pattern="/{path}/get_indexschematized_content", method="GET", content_type="application/json")
+    def get_indexschematized_content(self, context):
+        request = _get_request(context)
+        fileparsing = standard.pybool(request.get('fileparsing', 1))
+        docs = get_indexschematized_data(context, fileparsing)
+        return {
+            'total': 1,
+            'docs': docs,
+        }
+
     @api(tag="navigation", pattern="/{path}/list_parent_nodes", method="GET", content_type="application/json")
     def list_parent_nodes(self, context):
-        nodes = context.breadcrumbs_obj_path()
+        nodes = [x for x in context.breadcrumbs_obj_path() if has_access(x)]
         return [get_meta_data(x) for x in nodes]
 
     @api(tag="navigation", pattern="/{path}/list_child_nodes", method="GET", content_type="application/json")
@@ -261,7 +335,7 @@ class RestApiController(object):
         request = _get_request(context)
         id_prefix = request.get('id_prefix','')
         meta_types = [context.PAGES if str(x)==str(context.PAGES) else context.PAGEELEMENTS if str(x)==str(context.PAGEELEMENTS) else x for x in request.get('meta_types').split(',')] if request.get('meta_types') else None
-        nodes = context.getObjChildren(id_prefix, request, meta_types)
+        nodes = [x for x in context.getObjChildren(id_prefix, request, meta_types) if has_access(x)]
         if context.meta_type == 'ZMS':
             nodes.extend(context.getPortalClients())
         return [get_meta_data(x) for x in nodes]
@@ -274,19 +348,19 @@ class RestApiController(object):
             path = '/'+'/'.join(context.REQUEST.steps).split('++rest_api')[0]
             result = context.zcatalog_index({'meta_id': meta_id, 'path': path})
             return [get_index_data(x) for x in result]
-        nodes = context.getTreeNodes(request)
+        nodes = [x for x in context.getTreeNodes(request) if has_access(x)]
         return [get_meta_data(x) for x in nodes]
 
     @api(tag="navigation", pattern="/{path}/get_parent_nodes", method="GET", content_type="application/json")
     def get_parent_nodes(self, context):
-        nodes = context.breadcrumbs_obj_path()
+        nodes = [x for x in context.breadcrumbs_obj_path() if has_access(x)]
         return [get_attrs(x) for x in nodes]
 
     def __get_child_nodes(self, context):
         request = _get_request(context)
         id_prefix = request.get('id_prefix','')
         meta_types = [context.PAGES if str(x)==str(context.PAGES) else context.PAGEELEMENTS if str(x)==str(context.PAGEELEMENTS) else x for x in request.get('meta_types').split(',')] if request.get('meta_types') else None
-        nodes = context.getObjChildren(id_prefix, request, meta_types)
+        nodes = [x for x in context.getObjChildren(id_prefix, request, meta_types) if has_access(x)]
         if context.meta_type == 'ZMS':
             nodes.extend(context.getPortalClients())
         return nodes
@@ -304,7 +378,7 @@ class RestApiController(object):
     @api(tag="navigation", pattern="/{path}/get_tree_nodes", method="GET", content_type="application/json")
     def get_tree_nodes(self, context):
         request = _get_request(context)
-        nodes = context.getTreeNodes(request)
+        nodes = [x for x in context.getTreeNodes(request) if has_access(x)]
         return [get_attrs(x) for x in nodes]
 
     @api(tag="version", pattern="/{path}/get_tags", method="GET", content_type="application/json")

@@ -9,7 +9,7 @@ def manage_repository_gitpull(self, request=None):
 	came_from = request.get('came_from',request['HTTP_REFERER'])
 	if came_from.find('?') > 0:
 		came_from = came_from[:came_from.find('?')]
-	base_path = self.getConfProperty('ZMS.conf.path', self.get_conf_basepath(id=''))
+	base_path = self.get_conf_basepath(id='')
 	git_branch = self.getConfProperty('ZMSRepository.git.server.branch','main').replace('"','').replace(';','')
 
 	html.append('<!DOCTYPE html>')
@@ -80,7 +80,7 @@ def manage_repository_gitpull(self, request=None):
 		html.append('</div><!-- .form-group -->')
 		html.append('<div class="form-group row">')
 		html.append('<div class="controls save">')
-		html.append('<button type="submit" name="btn" class="btn btn-primary" value="BTN_GITPULL">%s</button>'%(self.getZMILangStr('BTN_GITPULL')))
+		html.append('<button type="submit" name="btn" class="btn btn-primary" onclick="$(\'i\',this).attr(\'class\',\'fas fa-spinner fa-spin\')" value="BTN_GITPULL"><i class="fas fa-backward"></i>&nbsp;&nbsp;%s</button>'%(self.getZMILangStr('BTN_GITPULL')))
 		html.append('<button type="submit" name="btn" class="btn btn-secondary btn-default" value="BTN_CANCEL">%s</button>'%(self.getZMILangStr('BTN_CANCEL')))
 		html.append('</div>')
 		html.append('</div><!-- .form-group -->')

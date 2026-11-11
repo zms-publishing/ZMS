@@ -1,0 +1,17 @@
+manage_sitemapxml:
+  acquired: 0
+  action: '%smanage_executeMetacmd?id=manage_sitemapxml'
+  execution: 0
+  icon_clazz: fab fa-google text-danger
+  meta_types:
+    - ZMS
+  name: Generate Google Sitemap
+  nodes: '{$}'
+  package: com.zms.custom.metacmd.seo
+  revision: 5.1.3
+  roles:
+    - ZMSAdministrator
+  title: Generate sitemap.xml for Google
+  Impl:
+    - id: manage_sitemapxml
+      type: External Method

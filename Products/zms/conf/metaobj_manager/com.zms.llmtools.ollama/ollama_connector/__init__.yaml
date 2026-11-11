@@ -1,0 +1,86 @@
+ollama_connector:
+  enabled: 0
+  package: com.zms.llmtools.ollama
+  name: Ollama LLMTools Connector
+  revision: 0.0.1
+  type: ZMSLibrary
+  Attrs:
+    - id: icon_clazz
+      name: Icon-Class (CSS)
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: constant
+      custom: fas fa-robot text-success
+    - id: readme
+      name: README.md
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: resource
+    - id: get_llmtools
+      name: 'MCP: Get Tool Declarations'
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: External Method
+    - id: llmtool_list_content_types
+      name: 'Tool: list_content_types'
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: External Method
+    - id: llmtool_get_content_type
+      name: 'Tool: get_content_type'
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: External Method
+    - id: llmtool_create_content_type
+      name: 'Tool: create_content_type'
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: External Method
+    - id: llmtool_add_attribute
+      name: 'Tool: add_attribute'
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: External Method
+    - id: llmtool_update_attribute_custom
+      name: 'Tool: update_attribute_custom'
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: External Method
+    - id: llmtool_regenerate_standard_html
+      name: 'Tool: regenerate_standard_html'
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: External Method
+    - id: llmtool_reset_standard_html_to_default
+      name: 'Tool: reset_standard_html_to_default'
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: External Method
+    - id: llmtool_delete_content_type
+      name: 'Tool: delete_content_type'
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: External Method
+    - id: llmtool_export_content_type_xml
+      name: 'Tool: export_content_type_xml'
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: External Method
+    - id: llmtool_index_qdrant
+      name: 'Tool: index_qdrant'
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: External Method

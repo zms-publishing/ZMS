@@ -23,12 +23,12 @@ services:
       timeout: 5s
       retries: 10
 
-  zms5:
-    image: zms5:relstorage 
+  zms6:
+    image: zms6:relstorage 
     build:
       context: .
       dockerfile: dockerfile
-    container_name: zms5_relstorage
+    container_name: zms6_relstorage
     ports:
       - "8080:8080"
       - "8081:8081"

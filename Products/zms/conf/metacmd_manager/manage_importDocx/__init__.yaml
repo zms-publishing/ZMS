@@ -1,0 +1,16 @@
+manage_importDocx:
+  acquired: 0
+  action: '%smanage_executeMetacmd?id=manage_importDocx'
+  execution: 0
+  icon_clazz: far fa-file-word
+  meta_types:
+    - type(ZMSDocument)
+  name: DOCX Import...
+  nodes: '{$}'
+  revision: 0.0.0
+  roles:
+    - ZMSAdministrator
+  title: DOCX Import...
+  Impl:
+    - id: manage_importDocx
+      type: External Method

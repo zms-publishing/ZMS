@@ -1,0 +1,82 @@
+elasticsearch_page:
+  access:
+    insert_custom: '{$}'
+  enabled: 1
+  name: elasticsearch-Page
+  package: com.zms.catalog.elasticsearch
+  revision: 1.10.3
+  type: ZMSDocument
+  Attrs:
+    - id: icon_clazz
+      name: Icon (Class)
+      mandatory: 0
+      multilang: 1
+      repetitive: 0
+      type: constant
+      custom: fas fa-search text-danger
+    - id: titlealt
+      name: DC.Title.Alt
+      mandatory: 1
+      multilang: 1
+      repetitive: 0
+      type: titlealt
+    - id: title
+      name: DC.Title
+      mandatory: 1
+      multilang: 1
+      repetitive: 0
+      type: title
+    - id: multisite_search
+      name: Multisite-Search
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: boolean
+      default: '1'
+    - id: multisite_exclusions
+      name: Multisite-Exclusions
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: multiautocomplete
+      keys: |-
+        ##
+        master = context.sites.content
+        zmsclientids = []
+        def getZMSPortalClients(zmsclient):
+        	zmsclientids.append(zmsclient.getHome().id)
+        	for zmsclientid in zmsclient.getPortalClients():
+        		getZMSPortalClients(zmsclientid)
+        	zmsclientids.sort()
+        	return list(zmsclientids)
+        return [(id,id) for id in getZMSPortalClients(zmsclient=master)]
+    - id: script.js
+      name: Script (JS)
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: resource
+    - id: style.css
+      name: Style (CSS)
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: resource
+    - id: handlebars.js
+      name: 'Handlebars: JS 4.7.7'
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: resource
+    - id: elasticsearch_breadcrumbs_obj_path
+      name: Get Object Path from ZMSIndex as HTML
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: Script (Python)
+    - id: standard_html
+      name: 'Template: elasticsearch'
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: zpt

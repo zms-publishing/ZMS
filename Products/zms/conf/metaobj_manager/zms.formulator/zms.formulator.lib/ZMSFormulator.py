@@ -77,32 +77,29 @@ class ZMSFormulator_class:
   def getData(self):
 
     if self.SQLStorage and not self.noStorage:
-      self.engine = create_engine(self.dbconnection + '?charset=utf8mb4')
+      # pool_pre_ping avoids "server has gone away" errors from stale pooled connections
+      self.engine = create_engine(self.dbconnection + '?charset=utf8mb4', pool_pre_ping=True, pool_recycle=3600)
       metadata = MetaData()
       try:
-        self.sqldb = Table(self.this.getId(), metadata, autoload=True, autoload_with=self.engine)
-        if 'ZMS_FRM_USR' not in self.sqldb.columns:
+        self.sqldb = Table(self.this.getId(), metadata, autoload_with=self.engine)
+        if 'ZMS_FRM_USR' not in list(self.sqldb.columns.keys()):
           alt = 'ALTER TABLE %s ADD COLUMN `ZMS_FRM_USR` VARCHAR(128) NULL AFTER `ZMS_FRM_URL`;'%self.this.getId()
           try:
             # Using a with statement ensures that the connection is always released
             # back into the pool at the end of statement (even if an error occurs)
-            with self.engine.connect() as conn:
+            with self.engine.begin() as conn:
               conn.execute(alt)
           except Exception as e:
             raise e
-          finally:
-            conn.close()
-        if 'ZMS_FRM_UID' not in self.sqldb.columns:
+        if 'ZMS_FRM_UID' not in list(self.sqldb.columns.keys()):
           alt = 'ALTER TABLE %s ADD COLUMN `ZMS_FRM_UID` VARCHAR(128) NULL AFTER `ZMS_FRM_OID`;'%self.this.getId()
           try:
             # Using a with statement ensures that the connection is always released
             # back into the pool at the end of statement (even if an error occurs)
-            with self.engine.connect() as conn:
+            with self.engine.begin() as conn:
               conn.execute(alt)
           except Exception as e:
             raise e
-          finally:
-            conn.close()
       except NoSuchTableError:
         self.sqldb = Table(self.this.getId(), metadata,
                            Column('ZMS_FRM_ITM', BigInteger(), primary_key=True),
@@ -127,27 +124,30 @@ class ZMSFormulator_class:
                            Column('ZMS_FRM_RES', Text()),
                            Column('ZMS_FRM_TST', DATETIME(fsp=6)),
                            )
-        metadata.create_all(self.engine)
-      except:
-        return None
+        try:
+          metadata.create_all(self.engine)
+        except (OperationalError, ProgrammingError):
+          # table may have just been created by a concurrent request; only fail if it's really still missing
+          metadata2 = MetaData()
+          try:
+            self.sqldb = Table(self.this.getId(), metadata2, autoload_with=self.engine)
+          except NoSuchTableError:
+            return None
 
-      sel = select([
+      sel = select(
                     self.sqldb.c.ZMS_FRM_TST,
                     self.sqldb.c.ZMS_FRM_KEY,
                     self.sqldb.c.ZMS_FRM_ALT,
-                    self.sqldb.c.ZMS_FRM_RES]
+                    self.sqldb.c.ZMS_FRM_RES
                    ).order_by(self.sqldb.c.ZMS_FRM_KEY)
       try:
         # Using a with statement ensures that the connection is always released
         # back into the pool at the end of statement (even if an error occurs)
-        with self.engine.connect() as conn:
+        with self.engine.begin() as conn:
           res = conn.execute(sel)
+          self._data = res.mappings().all()
       except Exception as e:
         raise e
-      finally:
-        conn.close()
-
-      self._data = res
 
     elif not self.SQLStorage  and not self.noStorage:
       lang = self.this.REQUEST.get('lang', self.this.getPrimaryLanguage())
@@ -164,12 +164,10 @@ class ZMSFormulator_class:
       try:
         # Using a with statement ensures that the connection is always released
         # back into the pool at the end of statement (even if an error occurs)
-        with self.engine.connect() as conn:
+        with self.engine.begin() as conn:
           res = conn.execute(self.sqldb.delete())
       except Exception as e:
         raise e
-      finally:
-        conn.close()
 
       return True
     else:
@@ -263,12 +261,10 @@ class ZMSFormulator_class:
           try:
             # Using a with statement ensures that the connection is always released
             # back into the pool at the end of statement (even if an error occurs)
-            with self.engine.connect() as conn:
+            with self.engine.begin() as conn:
               res = conn.execute(ins)
           except Exception as e:
             raise e
-          finally:
-            conn.close()
 
           self._data = res
 
@@ -459,41 +455,35 @@ class ZMSFormulator_class:
 
     # Handle SQL-Storage
     else:
-      sel = select([self.sqldb.c.ZMS_FRM_TST]).group_by(self.sqldb.c.ZMS_FRM_TST)
+      sel = select(self.sqldb.c.ZMS_FRM_TST).group_by(self.sqldb.c.ZMS_FRM_TST)
       try:
         # Using a with statement ensures that the connection is always released
         # back into the pool at the end of statement (even if an error occurs)
-        with self.engine.connect() as conn:
+        with self.engine.begin() as conn:
           res = conn.execute(sel)
       except Exception as e:
         raise e
-      finally:
-        conn.close()
 
       if frmt=='txt':
         s = '%s entries:\n\n'%res.rowcount
 
-      sel = select([self.sqldb.c.ZMS_FRM_KEY, self.sqldb.c.ZMS_FRM_ORD]).distinct().order_by(self.sqldb.c.ZMS_FRM_ORD, self.sqldb.c.ZMS_FRM_KEY)
+      sel = select(self.sqldb.c.ZMS_FRM_KEY, self.sqldb.c.ZMS_FRM_ORD).distinct().order_by(self.sqldb.c.ZMS_FRM_ORD, self.sqldb.c.ZMS_FRM_KEY)
       try:
         # Using a with statement ensures that the connection is always released
         # back into the pool at the end of statement (even if an error occurs)
-        with self.engine.connect() as conn:
+        with self.engine.begin() as conn:
           res1 = conn.execute(sel)
       except Exception as e:
         raise e
-      finally:
-        conn.close()
 
-      sel = select([self.sqldb.c.ZMS_FRM_KEY, self.sqldb.c.ZMS_FRM_ALT, self.sqldb.c.ZMS_FRM_RES, self.sqldb.c.ZMS_FRM_TST]).order_by(self.sqldb.c.ZMS_FRM_TST, self.sqldb.c.ZMS_FRM_KEY)
+      sel = select(self.sqldb.c.ZMS_FRM_KEY, self.sqldb.c.ZMS_FRM_ALT, self.sqldb.c.ZMS_FRM_RES, self.sqldb.c.ZMS_FRM_TST).order_by(self.sqldb.c.ZMS_FRM_TST, self.sqldb.c.ZMS_FRM_KEY)
       try:
         # Using a with statement ensures that the connection is always released
         # back into the pool at the end of statement (even if an error occurs)
-        with self.engine.connect() as conn:
+        with self.engine.begin() as conn:
           res2 = conn.execute(sel)
       except Exception as e:
         raise e
-      finally:
-        conn.close()
 
       for head in res1:
         header.append(head[0])

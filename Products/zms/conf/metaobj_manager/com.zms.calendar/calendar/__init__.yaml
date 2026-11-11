@@ -1,0 +1,152 @@
+calendar:
+  access:
+    insert_custom: '{$}'
+  enabled: 1
+  name: Calendar
+  package: com.zms.calendar
+  revision: 0.0.6
+  type: ZMSObject
+  Attrs:
+    - id: title
+      name: Title
+      mandatory: 0
+      multilang: 1
+      repetitive: 0
+      type: string
+    - id: icon_clazz
+      name: Icon-Class (CSS)
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: constant
+      custom: fas fa-calendar text-info
+    - id: events
+      name: Calendar-Items
+      mandatory: 1
+      multilang: 0
+      repetitive: 0
+      type: calendar_items
+    - id: default_css
+      name: CSS Defaults
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: constant
+      custom: |-
+        .calendar nav {
+        	display:flex;
+        	flex-direction: row;
+        	align-content: center;
+        	justify-content: space-between;
+        	margin:0 0 -3.5em 0;
+        	padding:0 1em 0 1em;
+        	z-index:100;
+        	line-height:1;
+        }
+        .calendar nav a,
+        .calendar nav a:hover {
+        	text-decoration:none;
+        	display:block;
+        	padding-top:.5em;
+        }
+        .calendar nav i {
+        	color:#b1d8de;
+        	font-size:2em;
+        	border:0px solid white;
+        	line-height:1;
+        	width:1.5em;
+        	height:1.5em;
+        	text-align:center;
+        	padding-top:.275em;
+        	border-radius:50%;
+        	background:#00000033;
+        }
+        .calendar nav i.fa-chevron-left {
+        	padding-right:.15em;
+        }
+        .calendar nav i.fa-chevron-right {
+        	padding-left:.15em;
+        }
+        .calendar nav i:hover {
+        	border-radius:50%;
+        	background:#00000066;
+        	color:white;
+        }
+        .calendar table th.month-head {
+        	background-color:#17a2b8;
+        	color:white;
+        	font-size:2em;
+        	padding: .2em .75rem;
+        	font-weight:normal
+        }
+        .calendar table th.month-head:before {
+        	content:"\f073";
+        	font-family: 'Font Awesome 5 Free';
+        	font-weight: normal;
+        	margin: 0 .5em 0 0;
+        	-moz-osx-font-smoothing: grayscale;
+        	-webkit-font-smoothing: antialiased;
+        	display: inline-block;
+        	font-style: normal;
+        	font-variant: normal;
+        	text-rendering: auto;
+        	line-height: 1;
+        	box-sizing: border-box;
+        	display:inline-block;
+        }
+        .bs3 th.month-head:before {
+        	content: "\e109";
+        	font-family "Glyphicons Halflings";
+        }
+        .calendar .calendar_grid table td {
+        	width:14%;
+        	max-width: 6rem;
+        }
+        .zmi .calendar .calendar_grid table td  {
+        	max-width: calc((80vw / 7) - 1.5em) !important;
+        }
+        .calendar table td * {
+        	max-width:unset !important;
+        }
+        .calendar tr.hilight {
+            background:#d1ecf1 !important;
+        }
+        .calendar table td[data-toggle="tooltip"]:hover {
+        	background-color:#eee;
+        	cursor:pointer;
+        }
+        .calendar table td span.day {
+        	color:#aaa;
+        }
+        .calendar table td p {
+        	width:6rem;
+        	width: calc(842px / 7);
+        	white-space:nowrap;
+        	overflow:hidden;
+        	text-overflow:ellipsis;
+        	margin-top:.5em;
+        }
+    - id: get_events
+      name: Process Events Data
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: py
+    - id: get_calendar
+      name: External Method
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: External Method
+    - id: test__calendar__get_events
+      name: TEST get_events
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: Script (Python)
+    - id: standard_html
+      name: Standard-Template
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: zpt

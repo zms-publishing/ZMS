@@ -52,8 +52,8 @@ for filterIndex in range(100):
             standard.set_session_value(self, sessionkey, '')
             # get value from request
             requestvalue = REQUEST.form.get(requestkey, '')
-            # reset value
-            if REQUEST.get('btn') == 'BTN_RESET':
+            # reset value (the reset button of interface0.zpt sends its translated label)
+            if REQUEST.get('btn') in ['BTN_RESET', self.getZMILangStr('BTN_RESET')]:
               requestvalue = ''
             # set request-/session-values for new index
             requestkey = 'filter%s%i'%(filterStereotype, index)

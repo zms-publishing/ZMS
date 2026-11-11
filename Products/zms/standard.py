@@ -2344,14 +2344,17 @@ def dt_exec(context, v, o={}):
   @rtype: C{any}
   """
   if type(v) is str:
+    if (v.startswith('##') and v.find('return ') > 0) or \
+        v.find('<tal:') >= 0 or \
+        v.find('<dtml-') >= 0:
+      error_msg = check_restricted_inputs(context, value=v)
+      if error_msg:
+        return error_msg
     if v.startswith('##') and v.find('return ') > 0:
-      check_restricted_inputs(context, value=v)
       v = dt_py(context, v, o)
     elif v.find('<tal:') >= 0:
-      check_restricted_inputs(context, value=v)
       v = dt_tal(context, v, dict(o))
     elif v.find('<dtml-') >= 0:
-      check_restricted_inputs(context, value=v)
       v = dt_html(context, v, context.REQUEST)
   return v
 
@@ -2668,12 +2671,17 @@ def is_conf_enabled(context, setting):
 def check_restricted_inputs(context, value, force_restriction=False):
     prop = context.getConfProperty('ZMS.input.exec.restrict')
     if isinstance(prop, str) and prop.strip() != '':
+        used_keywords = []
         for keyword in prop.split():
             if keyword in value:
-                raise zExceptions.MethodNotAllowed(f'Usage of "{keyword}" is forbidden.')
+                used_keywords.append(keyword)
+                # raise zExceptions.MethodNotAllowed(f'Usage of "{keyword}" is forbidden.')
+        return f'ERROR: Usage of [{", ".join(used_keywords)}] is forbidden.'
     else:
         if force_restriction:
-            raise zExceptions.MethodNotAllowed(f'Conf property "ZMS.input.exec.restrict" not set.')
+            # raise zExceptions.MethodNotAllowed(f'Conf property "ZMS.input.exec.restrict" not set.')
+            return f'ERROR: Conf property "ZMS.input.exec.restrict" not set.'
+    return None
 
 
 class initutil(object):

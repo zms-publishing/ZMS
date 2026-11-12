@@ -2347,7 +2347,7 @@ def dt_exec(context, v, o={}):
     if (v.startswith('##') and v.find('return ') > 0) or \
         v.find('<tal:') >= 0 or \
         v.find('<dtml-') >= 0:
-      error_msg = check_restricted_inputs(context, value=v, force_restriction=pybool(os.getenv('ZMS_FORCE_RESTRICTED_INPUTS')))
+      error_msg = _check_restricted_inputs(context, value=v, force_restriction=pybool(os.getenv('ZMS_FORCE_RESTRICTED_INPUTS')))
       if error_msg:
         return error_msg
     if v.startswith('##') and v.find('return ') > 0:
@@ -2668,7 +2668,7 @@ def is_conf_enabled(context, setting):
   return pybool(conf_property)
 
 
-def check_restricted_inputs(context, value, force_restriction=False):
+def _check_restricted_inputs(context, value, force_restriction=False):
     prop = context.getConfProperty('ZMS.input.exec.restrict')
     if isinstance(prop, str) and prop.strip() != '':
         used_keywords = []

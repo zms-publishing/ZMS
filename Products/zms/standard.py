@@ -539,9 +539,9 @@ security.declarePublic('html_quote')
 def html_quote(v, **kwargs):
   """
   Return HTML-escaped string representation of the given value.
-  This function is useful for preventing XSS vulnerabilities by escaping 
-  special characters in user input before rendering it in HTML. 
-  It converts characters like <, >, &, and " to their corresponding HTML 
+  This function is useful for preventing XSS vulnerabilities by escaping
+  special characters in user input before rendering it in HTML.
+  It converts characters like <, >, &, and " to their corresponding HTML
   entities (&lt;, &gt;, &amp;, and &quot; respectively).
 
   @param v: The value to be escaped.
@@ -549,8 +549,8 @@ def html_quote(v, **kwargs):
   @return: The HTML-escaped string representation of the value.
   @rtype: C{str}
 
-  Hint: the kwargs are ignored but allow to be passed for compatibility 
-  with other quote functions, like Zope's DocumentTemplate's html_quote, 
+  Hint: the kwargs are ignored but allow to be passed for compatibility
+  with other quote functions, like Zope's DocumentTemplate's html_quote,
   which may pass additional parameters.
   """
   if not isinstance(v,str):
@@ -1083,8 +1083,8 @@ def getLog(context):
   """
   Get zms_log.
 
-  The ZMS component zms_log is a wrapper for the standard Zope-logger which can be enabled in ZMS-configuration. 
-  If zms_log is enabled, debug-information can be logged with writeLog, writeBlock and writeError. 
+  The ZMS component zms_log is a wrapper for the standard Zope-logger which can be enabled in ZMS-configuration.
+  If zms_log is enabled, debug-information can be logged with writeLog, writeBlock and writeError.
   The log-messages are stored in a log-file on the server and can be viewed in the ZMS-Management-Interface.
 
   @param context: Context
@@ -2344,6 +2344,12 @@ def dt_exec(context, v, o={}):
   @rtype: C{any}
   """
   if type(v) is str:
+    if (v.startswith('##') and v.find('return ') > 0) or \
+        v.find('<tal:') >= 0 or \
+        v.find('<dtml-') >= 0:
+      error_msg = _check_restricted_inputs(context, value=v, force_restriction=pybool(os.getenv('ZMS_FORCE_RESTRICTED_INPUTS')))
+      if error_msg:
+        return error_msg
     if v.startswith('##') and v.find('return ') > 0:
       v = dt_py(context, v, o)
     elif v.find('<tal:') >= 0:
@@ -2660,6 +2666,23 @@ def is_conf_enabled(context, setting):
       return False
 
   return pybool(conf_property)
+
+
+def _check_restricted_inputs(context, value, force_restriction=False):
+    prop = context.getConfProperty('ZMS.input.exec.restrict')
+    if isinstance(prop, str) and prop.strip() != '':
+        used_keywords = []
+        for keyword in prop.split():
+            if keyword in value:
+                used_keywords.append(keyword)
+        if used_keywords:
+            writeBlock(context, f'Usage of [{", ".join(used_keywords)}] is forbidden.')
+            return f'ERROR: Usage of [{", ".join(used_keywords)}] is forbidden.'
+    else:
+        if force_restriction:
+            writeBlock(context, f'Conf property "ZMS.input.exec.restrict" not set.')
+            return f'ERROR: Conf property "ZMS.input.exec.restrict" not set.'
+    return None
 
 
 class initutil(object):

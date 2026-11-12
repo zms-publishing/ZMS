@@ -74,7 +74,7 @@ class ZPublishTest(unittest.TestCase):
                     elif zpublish_mark(func) is False:
                         guarded.append(
                             '%s.%s.%s' % (modinfo.name, cls.__name__, name))
-        # (105 = 4 ajax endpoints in _deprecatedapi + 101 allow-listed
+        # (107 = 4 ajax endpoints in _deprecatedapi + 103 allow-listed
         #  methods decorated with @zpublish in the source.)
         self.assertEqual(107, len(decorated))
         self.assertGreater(len(guarded), 800)

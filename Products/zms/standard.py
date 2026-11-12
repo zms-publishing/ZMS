@@ -2680,7 +2680,6 @@ def check_restricted_inputs(context, value, force_restriction=False):
             return f'ERROR: Usage of [{", ".join(used_keywords)}] is forbidden.'
     else:
         if force_restriction:
-            # raise zExceptions.MethodNotAllowed(f'Conf property "ZMS.input.exec.restrict" not set.')
             writeBlock(context, f'Conf property "ZMS.input.exec.restrict" not set.')
             return f'ERROR: Conf property "ZMS.input.exec.restrict" not set.'
     return None

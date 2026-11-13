@@ -1439,7 +1439,9 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
         entity['columns'] = standard.sort_list(cols, 'index')
         # Set custom table-properties
         for modelTable in [x for x in model if x['id'].upper()==tableName.upper()]:
-          for modelTableProp in [x for x in modelTable if x not in ['columns']]:
+          # not_found is set on the stored model for custom entities (see below)
+          # and must not be copied to an entity that exists in the database.
+          for modelTableProp in [x for x in modelTable if x not in ['columns', 'not_found']]:
             entity[modelTableProp] = modelTable[modelTableProp]
             entity['sort_id'] = entity['label'].upper()
         # Add

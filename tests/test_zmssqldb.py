@@ -547,6 +547,25 @@ class ZMSSqlDbReflectionTest(unittest.TestCase):
     self.assertEqual(['fruit'], [x['id'] for x in entities])
     self.assertEqual(['id', 'name'], sorted(x['id'] for x in entities[0]['columns']))
 
+  def test_enum_values_in_description(self):
+    # A select with stereotype fk.mysqlset takes its options from the text between the
+    # brackets of the description. str() of a MySQL ENUM type is only 'ENUM', which gave
+    # the single option 'ENU'. SQLite has no ENUM, so the reflected table is given here.
+    import sqlalchemy
+    from sqlalchemy.dialects import mysql
+    metadata = sqlalchemy.MetaData()
+    sqlalchemy.Table('item', metadata,
+      sqlalchemy.Column('id', sqlalchemy.Integer, primary_key=True),
+      sqlalchemy.Column('kind', mysql.ENUM('Lump sum', 'Purchase/Reuse')))
+    metadata.reflect = lambda **kwargs: None
+    with mock.patch('sqlalchemy.MetaData', return_value=metadata):
+      entities = zmssqldb.ZMSSqlDb.getEntitiesSQLAlchemyDA(StubSqlDb(self.engine))
+    column = [x for x in entities[0]['columns'] if x['id'] == 'kind'][0]
+    self.assertEqual("ENUM('Lump sum','Purchase/Reuse')", column['description'])
+    rtype = column['description']
+    options = rtype[rtype.find('(')+1:rtype.rfind(')')].replace('\'', '').split(',')
+    self.assertEqual(['Lump sum', 'Purchase/Reuse'], options)
+
 
 class SanitizeSqlParamTest(unittest.TestCase):
   r"""

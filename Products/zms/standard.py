@@ -2672,9 +2672,9 @@ def _check_restricted_inputs(context, value, force_restriction=False):
     prop = context.getConfProperty('ZMS.input.exec.restrict')
     if isinstance(prop, str) and prop.strip() != '':
         used_keywords = []
-        for keyword in prop.split():
-            if keyword in value:
-                used_keywords.append(keyword)
+        for keyword in prop.split(','):
+            if keyword.strip() in value:
+                used_keywords.append(keyword.strip())
         if used_keywords:
             writeBlock(context, f'Usage of [{", ".join(used_keywords)}] is forbidden.')
             return f'ERROR: Usage of [{", ".join(used_keywords)}] is forbidden.'

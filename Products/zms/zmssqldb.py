@@ -1215,6 +1215,10 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
           elif colDescr.find('SET') >= 0:
             colType = 'mysqlset'
             colDescr = 'SET(%s)'%(','.join(list(column.type.values)))
+          elif getattr(column.type, 'enums', None):
+            # str(column.type) is only 'ENUM'. Keep the values as ZMySQLDA does:
+            # a select with stereotype fk.mysqlset reads its options from here.
+            colDescr = 'ENUM(%s)'%(','.join(["'%s'"%x for x in column.type.enums]))
           col = {}
           col['index'] = int(col.get('index', len(cols)))
           col["id"] = colName

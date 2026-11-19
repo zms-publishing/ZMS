@@ -496,11 +496,16 @@ class StubWrapper:
 class StubDA:
   """Stub database adapter for schema reflection tests."""
 
+  meta_type = 'SQLAlchemyDA'
+
   def __init__(self, engine):
     self.engine = engine
 
   def sa_zope_wrapper(self):
     return StubWrapper(self.engine)
+
+  def tpValues(self):
+    return []
 
   def getProperty(self, name):
     return {'dsn': 'sqlite://'}[name]
@@ -546,6 +551,96 @@ class ZMSSqlDbReflectionTest(unittest.TestCase):
     create_engine.assert_not_called()
     self.assertEqual(['fruit'], [x['id'] for x in entities])
     self.assertEqual(['id', 'name'], sorted(x['id'] for x in entities[0]['columns']))
+
+
+# /ZMS5> python3 -m unittest tests.test_zmssqldb.ZMSSqlDbModelTest
+class ZMSSqlDbModelTest(unittest.TestCase):
+  """
+  Unit test for a database table that is also defined in the SQL model.
+
+  getEntities() marks model entries without a database table as custom
+  entities with not_found=1. The flag is set on the parsed model itself,
+  which ZMSSqlDb keeps as self.model and stores persistently. A table that
+  exists in the database later must not inherit the stale flag:
+  recordSet_Init() drops not_found entities, so manage_main fails with
+  IndexError when the table is opened.
+
+  Uses an in-memory SQLite engine, no database server. The test auto-skips
+  if SQLAlchemy is not installed.
+  """
+
+  lang = 'eng'
+
+  def setUp(self):
+    try:
+      import sqlalchemy
+    except ImportError:
+      self.skipTest('SQLAlchemy not installed')
+    self.engine = sqlalchemy.create_engine('sqlite://')
+    self.addCleanup(self.engine.dispose)
+    with self.engine.begin() as connection:
+      connection.execute(sqlalchemy.text('CREATE TABLE fruit (id INTEGER PRIMARY KEY, name VARCHAR(32))'))
+    folder = Folder('myzmsx')
+    folder.REQUEST = mock_http.MockHTTPRequest({
+      'lang': self.lang,
+      'preview': 'preview',
+      'theme': 'conf:aquire',
+      'minimal_init': 1,
+      'content_init': 1,
+    })
+    self.context = zms.initZMS(
+      folder, 'content', 'titlealt', 'title', self.lang, self.lang, folder.REQUEST
+    )
+    self.context.REQUEST.response = self.context.REQUEST.RESPONSE
+    obj_id = 'sql_db_under_test'
+    self.context._setObject(obj_id, zmssqldb.ZMSSqlDb(obj_id, 1))
+    self.sql_db = getattr(self.context, obj_id)
+    self.sql_db.connection_id = 'test_connection'
+    da = StubDA(self.engine)
+    self.sql_db.getDA = lambda: da
+
+  def set_model(self, model):
+    self.sql_db.getModel = lambda: model
+    return model
+
+  def get_entity(self, entity_id):
+    return [x for x in self.sql_db.getEntities() if x['id'] == entity_id][0]
+
+  def test_table_created_after_model(self):
+    import sqlalchemy
+    model = self.set_model([{'id': 'basket', 'label': 'Basket', 'type': 'table', 'columns': []}])
+    # The table does not exist yet: custom entity, the flag lands in the model.
+    self.assertTrue(self.get_entity('basket').get('not_found'))
+    self.assertTrue(model[0].get('not_found'))
+    with self.engine.begin() as connection:
+      connection.execute(sqlalchemy.text('CREATE TABLE basket (id INTEGER PRIMARY KEY, item VARCHAR(20))'))
+    # Next request: the table is found and can be opened.
+    self.sql_db.clearReqBuff()
+    basket = self.get_entity('basket')
+    self.assertFalse(basket.get('not_found'))
+    self.assertEqual(['id', 'item'], sorted(x['id'] for x in basket['columns']))
+
+  def test_existing_table_is_found(self):
+    # Stored model as left behind by an earlier request without the table.
+    self.set_model([{'id': 'fruit', 'label': 'Fruit', 'type': 'table', 'not_found': 1, 'columns': []}])
+    fruit = self.get_entity('fruit')
+    self.assertFalse(fruit.get('not_found'))
+    self.assertEqual('Fruit', fruit['label'])
+    self.assertEqual(['id', 'name'], sorted(x['id'] for x in fruit['columns']))
+
+  def test_record_set_init_for_table(self):
+    import sqlalchemy
+    # A second table, as in a real database: with no table left in the list
+    # recordSet_Init() returns early instead of failing.
+    with self.engine.begin() as connection:
+      connection.execute(sqlalchemy.text('CREATE TABLE vegetable (id INTEGER PRIMARY KEY)'))
+    self.set_model([{'id': 'fruit', 'label': 'Fruit', 'type': 'table', 'not_found': 1, 'columns': []}])
+    request = self.sql_db.REQUEST
+    request.form = {'qentity': 'fruit'}
+    request.set('qentity', 'fruit')
+    self.sql_db.recordSet_Init(request)
+    self.assertEqual('fruit', request.get('qentity'))
+    self.assertEqual(['id', 'name'], sorted(x['id'] for x in request.get('grid_cols')))
 
 
 class SanitizeSqlParamTest(unittest.TestCase):

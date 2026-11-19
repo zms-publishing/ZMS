@@ -2666,6 +2666,10 @@ body.zmi {
 		white-space: nowrap;
 	}
 
+	.form-group.has-error label.control-label {
+		color: #dc3545;
+	}
+
 	.form-horizontal .zmi-select-container.form-inline .zmi-select .btn.btn-light > a:hover:has(i.fa-times) {
 		color: #dc3545;
 	}

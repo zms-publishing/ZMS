@@ -547,6 +547,31 @@ class ZMSSqlDbReflectionTest(unittest.TestCase):
     self.assertEqual(['fruit'], [x['id'] for x in entities])
     self.assertEqual(['id', 'name'], sorted(x['id'] for x in entities[0]['columns']))
 
+  def test_mandatory_from_not_null_columns(self):
+    # NOT NULL without default must be mandatory: the ZMI form check then blocks an
+    # empty value instead of sending an INSERT that MySQL rejects with 1364
+    # ("Field 'vbid' doesn't have a default value"). str(column.type) has no NOT NULL.
+    import sqlalchemy
+    with self.engine.begin() as connection:
+      connection.execute(sqlalchemy.text(
+        'CREATE TABLE contract_has_vb ('
+        'id INTEGER PRIMARY KEY, '
+        'contractid INTEGER NOT NULL, '
+        'vbid INTEGER NOT NULL, '
+        "title VARCHAR(10) NOT NULL DEFAULT '', "
+        'note VARCHAR(255))'))
+    entities = zmssqldb.ZMSSqlDb.getEntitiesSQLAlchemyDA(StubSqlDb(self.engine))
+    entity = [x for x in entities if x['id'] == 'contract_has_vb'][0]
+    columns = {x['id']: x for x in entity['columns']}
+    self.assertEqual(
+      {'id': False, 'contractid': True, 'vbid': True, 'title': False, 'note': False},
+      {k: v['mandatory'] for k, v in columns.items()})
+    # The write path stays as before: '' is stored as NULL for every column.
+    self.assertTrue(all(x['nullable'] for x in columns.values()))
+    # The existing table without NOT NULL has no mandatory column.
+    fruit = [x for x in entities if x['id'] == 'fruit'][0]
+    self.assertFalse(any(x['mandatory'] for x in fruit['columns']))
+
 
 class SanitizeSqlParamTest(unittest.TestCase):
   r"""

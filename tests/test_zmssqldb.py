@@ -526,6 +526,9 @@ class ZMSSqlDbReflectionTest(unittest.TestCase):
   the garbage collector removes the engine, which exhausts max_connections under
   load (1040 Too many connections).
 
+  Views are listed like tables, as with ZMySQLDA. A view that cannot be
+  reflected is skipped and does not hide the tables.
+
   Only an in-memory SQLite engine is needed, no Zope instance and no database server.
   The test auto-skips if SQLAlchemy is not installed.
   """
@@ -546,6 +549,27 @@ class ZMSSqlDbReflectionTest(unittest.TestCase):
     create_engine.assert_not_called()
     self.assertEqual(['fruit'], [x['id'] for x in entities])
     self.assertEqual(['id', 'name'], sorted(x['id'] for x in entities[0]['columns']))
+
+  def test_reflects_views(self):
+    # Without the view, a model entry for it becomes a not_found custom entity,
+    # and opening it in manage_main fails with IndexError in recordSet_Init.
+    import sqlalchemy
+    with self.engine.begin() as connection:
+      connection.execute(sqlalchemy.text('CREATE VIEW fruit_names AS SELECT id, name FROM fruit'))
+    entities = zmssqldb.ZMSSqlDb.getEntitiesSQLAlchemyDA(StubSqlDb(self.engine))
+    self.assertEqual(['fruit', 'fruit_names'], sorted(x['id'] for x in entities))
+    view = [x for x in entities if x['id'] == 'fruit_names'][0]
+    self.assertEqual(['id', 'name'], sorted(x['id'] for x in view['columns']))
+
+  def test_broken_view_is_skipped(self):
+    # A view whose base table is gone must not hide the other tables.
+    import sqlalchemy
+    with self.engine.begin() as connection:
+      connection.execute(sqlalchemy.text('CREATE TABLE tmp (id INTEGER PRIMARY KEY)'))
+      connection.execute(sqlalchemy.text('CREATE VIEW broken AS SELECT id FROM tmp'))
+      connection.execute(sqlalchemy.text('DROP TABLE tmp'))
+    entities = zmssqldb.ZMSSqlDb.getEntitiesSQLAlchemyDA(StubSqlDb(self.engine))
+    self.assertEqual(['fruit'], [x['id'] for x in entities])
 
 
 class SanitizeSqlParamTest(unittest.TestCase):

@@ -21,6 +21,29 @@ class StandardTest(unittest.TestCase):
         v = standard.url_append_params('index.html?a=b',{'c':'d','e':1,'f':[1,2,3]})
         self.assertEqual(expected,v)
 
+    def test_url_inherit_params(self):
+        request = Mock()
+        request.form = {'form_modified':True,'is_new':False,'pageIndex':2,'qsize':20,'ratio':1.5,'qcolumns':['a','b'],'qentity':'person'}
+        v = standard.url_inherit_params('manage_main', request, exclude=['pageIndex'], sep='&')
+        expected = 'manage_main?form_modified%3Aboolean=True&is_new%3Aboolean=False&qsize%3Aint=20&ratio%3Afloat=1.5&qcolumns%3Alist=a&qcolumns%3Alist=b&qentity=person'
+        self.assertEqual(expected,v)
+
+    def test_url_inherit_params_roundtrip(self):
+        # The inherited params must convert back to the same values in ZPublisher
+        # (a bool used to be sent as key:int=True, which raised a ValueError in field2int).
+        from urllib.parse import parse_qsl, urlsplit
+        from ZPublisher.Converters import get_converter
+        request = Mock()
+        request.form = {'form_modified':True,'is_new':False,'qsize':20,'ratio':1.5}
+        url = standard.url_inherit_params('manage_main', request, sep='&')
+        parsed = {}
+        for key, value in parse_qsl(urlsplit(url).query):
+            name, _, typ = key.partition(':')
+            parsed[name] = get_converter(typ)(value)
+        self.assertEqual(request.form, parsed)
+        self.assertIs(parsed['form_modified'], True)
+        self.assertIs(parsed['is_new'], False)
+
     def test_remove_tags(self):
         self.assertEqual('foo bar',standard.remove_tags('foo\n<\tscript\ttype="javascript"\n>window.onload(\'<script>\')</script\t\n>bar'))
         self.assertEqual('foo bar',standard.remove_tags('foo\n<\tstyle\t\n>body {}</style\t\n>bar'))

@@ -433,7 +433,10 @@ def url_inherit_params(url, REQUEST, exclude=[], sep='&amp;'):
             url += '?'
           else:
             url += sep
-          if isinstance(v, int):
+          if isinstance(v, bool):
+            # bool is a subclass of int: check it first, else True becomes key:int=True
+            url += url_quote(key+':boolean') + '=' + url_quote(str(v))
+          elif isinstance(v, int):
             url += url_quote(key+':int') + '=' + url_quote(str(v))
           elif isinstance(v, float):
             url += url_quote(key+':float') + '=' + url_quote(str(v))

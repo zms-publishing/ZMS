@@ -725,6 +725,7 @@ ZMI.prototype.initInputFields = function(container) {
 			});
 			// Mandatory
 			$(".has-error",this).removeClass("has-error");
+			$(".zmi-mandatory-invalid",this).removeClass("is-invalid zmi-mandatory-invalid");
 			$(".form-group label.control-label.mandatory",this).filter(":visible").each(function() {
 				var $label = $(this);
 				var forName = $(this).attr("for");
@@ -759,9 +760,19 @@ ZMI.prototype.initInputFields = function(container) {
 					if (isBlank) {
 						$controlGroup.addClass("has-error");
 						$label.attr("title",getZMILangStr("MSG_REQUIRED").replace(/%s/,labelText));
-						$control.attr("title",getZMILangStr("MSG_REQUIRED").replace(/%s/,labelText)).tooltip({placement:'top'});
+						// A hidden control (e.g. lazy foreign key) is shown by another field.
+						var $shown = $control.is(":visible") ? $control : $(".form-control",$controls).filter(":visible").first();
+						if ($shown.length==0) {
+							$shown = $control;
+						}
+						$shown.addClass("is-invalid zmi-mandatory-invalid");
+						$shown.attr("title",getZMILangStr("MSG_REQUIRED").replace(/%s/,labelText)).tooltip({placement:'top'});
 						if (b) {
-							$control.focus();
+							if ($shown.is(":disabled")) {
+								$(".btn,a",$controls).filter(":visible").first().focus();
+							} else {
+								$shown.focus();
+							}
 						}
 						b = false;
 					}

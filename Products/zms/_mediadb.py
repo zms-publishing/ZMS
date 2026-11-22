@@ -466,7 +466,7 @@ class MediaDb(
         location = self.getLocation()
         if not filename.startswith(location):
           filename = os.path.join(str(location), str(os.path.basename(filename)))
-          if self.structure:
+          if hasattr(self, 'structure') and self.structure:
             filename = self.targetFile(filename)
         if not os.path.isfile(filename):
           raise Exception

@@ -21,7 +21,8 @@
 		<tal:block tal:content="python:metaObjAttr.get('error','').replace('\n','<br>')"></tal:block>
 	</code>
 
-<tal:block tal:condition="python:request.get('action') in ['insert','update','delete'] and request.get('btn')!=here.getZMILangStr('BTN_CANCEL')">
+<tal:block tal:define="global cancelled python:request.get('btn') in ['BTN_CANCEL',here.getZMILangStr('BTN_CANCEL')]"></tal:block>
+<tal:block tal:condition="python:request.get('action') in ['insert','update','delete'] and not cancelled">
 	<tal:block tal:define="global
 		message python:[];
 		values python:{}">
@@ -67,6 +68,9 @@
 
 <tal:block tal:content="structure python:'<script>'"></tal:block>
 $ZMI.registerReady(function() {
+	if (<tal:block tal:replace="python:['false','true'][int(bool(cancelled))]">false</tal:block> && typeof window.parent.zmiModal == "function") {
+		window.parent.zmiModal("hide");
+	}
 	var manage_tabs_message = $("#manage_tabs_message").html();
 	if (typeof manage_tabs_message != "undefined") {
 		window.parent.zmiIframeClose('<tal:block tal:content="request/qcolumn"></tal:block>',manage_tabs_message);

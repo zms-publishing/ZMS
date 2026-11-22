@@ -1,6 +1,6 @@
 # How to make a new ZMS release (PyPI and GitHub)
 
-* update `Products/zms/version.txt` to the desired semantic version (for example `6.0.0`).
+* update `Products/zms/version.txt` to the desired semantic version (for example `6.3.0`).
 * create a release build with `python -m build` (creates both sdist and wheel from `pyproject.toml`).
 * verify package metadata with `python -m twine check dist/*`.
 * test upload to testpypi via `python -m twine upload --verbose --repository-url https://test.pypi.org/legacy/ dist/*`
@@ -12,42 +12,63 @@
 
 ## Publish to PyPI via GitHub Actions
 
-The repository contains the workflow `.github/workflows/pypi_publish.yml`.
-It builds the package and publishes it to PyPI with
-`pypa/gh-action-pypi-publish@release/v1` using GitHub OIDC trusted publishing
-(no PyPI API token in repository secrets).
+Two workflows build the source distribution and wheel, check them with Twine,
+then publish using GitHub OIDC trusted publishing (no PyPI API token is stored in GitHub):
 
-### Workflow triggers
+| Workflow | Destination | Automatic trigger | GitHub environment |
+|---|---|---|---|
+| `.github/workflows/pypi_publish_test.yml` | [TestPyPI](https://test.pypi.org/project/ZMS/) | A prerelease event | `pypitest` |
+| `.github/workflows/pypi_publish.yml` | [PyPI](https://pypi.org/project/ZMS/) | A published release | `pypi` |
 
-Publishing is triggered by one of the following events:
+Both workflows can also be started manually with workflow_dispatch`. The tag-push trigger shown as comments in the production workflow is disabled.
 
-* release published
-* tag push matching `v*` (for example `v6.0.0`) or `*.*.*` (for example `6.0.0`)
-* manual run via `workflow_dispatch`
+### One-time setup
 
-### One-time prerequisites
+1. Configure a Trusted Publisher for this GitHub repository on both PyPI and
+   TestPyPI. Register the corresponding workflow filename on each service:
+   `.github/workflows/pypi_publish.yml` for PyPI and
+   `.github/workflows/pypi_publish_test.yml` for TestPyPI.
+2. Ensure the GitHub environments `pypi` and `pypitest` exist in repository
+   settings. Configure any desired environment protection/approval rules.
+3. If publishing requires environment approval, ensure the release maintainers
+   are allowed to approve the respective deployment.
 
-1. In PyPI project `ZMS`, configure a Trusted Publisher for this GitHub repository and the workflow file `.github/workflows/pypi_publish.yml`.
-2. Ensure the GitHub environment `pypi` exists in the repository settings.
-3. If environment protection rules are enabled, grant release maintainers permission to approve the publish job.
+### Publish the current check-in
 
-### Recommended release flow
+1. Push the intended check-in to GitHub. In the Actions UI, choose the branch
+   that points to that check-in when manually starting a workflow. A manual run
+   builds the selected branch's code; it does not select a commit by hash.
+2. First test it on TestPyPI:
+   - Open **Actions** and select **Publish Python package to TestPyPI**.
+   - Choose **Run workflow**, select the intended branch, then start the run.
+   - Wait for both the build and publish jobs to succeed. The build job runs
+     `python -m build` and `python -m twine check dist/*`.
+   - Verify the package/version on
+     [TestPyPI](https://test.pypi.org/project/ZMS/).
+3. If the test is successful and this is an intended public release, open
+   **Actions**, select **Publish Python package to PyPI**, choose **Run
+   workflow**, select the same branch, and start the run. This uploads to the
+   real PyPI; verify the result at
+   [PyPI](https://pypi.org/project/ZMS/).
+4. Alternatively, publishing a GitHub Release triggers the production workflow.
+   Use a final release (not a prerelease) for this route. Do not rely on a
+   prerelease as a safety barrier: the production workflow listens for the
+   `published` release event, which can also be emitted when a draft release is
+   published.
 
-1. Update `Products/zms/version.txt` to the final release version and commit.
-2. Create and push a release tag (recommended format `vX.Y.Z`):
+The package version is read from `Products/zms/version.txt`; the `+...`
+suffix, if present, is stripped when building the package. For example,
+`6.3.0+6ec0d96` produces version `6.3.0`. PyPI does not allow overwriting an
+already published version, so increment the version before publishing if that
+version is already present on the destination.
 
-	`git tag -a vX.Y.Z -m "Release X.Y.Z"`
+Starting the TestPyPI workflow is not a production release. The production
+workflow publishes to PyPI and should only be run after confirming the version,
+branch, build, and TestPyPI result.
 
-	`git push origin vX.Y.Z`
+## References:
 
-3. Wait for the GitHub Action `Publish Python package to PyPI` to finish successfully.
-4. Verify the uploaded artifacts in the workflow run (`dist/` contains wheel and sdist).
-5. Verify the published package on https://pypi.org/project/ZMS/.
+* [Twine](https://twine.readthedocs.io/en/latest/)
+* [TestPyPi](https://packaging.python.org/guides/using-testpypi/)
+* [PyPI-Project-Naming](https://github.com/zms-publishing/ZMS/pull/495)
 
-### Manual publish fallback
-
-If needed, start the workflow manually in the Actions tab (`workflow_dispatch`).
-Use this only for an intended release commit/tag.
-
-See [the Twine](https://twine.readthedocs.io/en/latest/)
-and [the TestPyPi](https://packaging.python.org/guides/using-testpypi/) documentation for details.

@@ -12,6 +12,7 @@ Organization: ZMS Publishing
 
 # Imports.
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
+from ZPublisher import zpublish
 import copy
 from zope.interface import implementer
 # Product Imports.
@@ -77,6 +78,7 @@ class ZMSMetamodelProvider(
     #  ZMSMetamodelProvider.metaobj_readme:
     #  Serve a metaobj's readme resource as rendered HTML.
     # --------------------------------------------------------------------------
+    @zpublish
     def metaobj_readme(self, REQUEST):
       """Returns a metaobj's readme resource rendered as HTML."""
       meta_id = REQUEST.get('id', '')

@@ -20,7 +20,7 @@ from zope.event import notify
 from zope.lifecycleevent import ObjectModifiedEvent
 from zope.globalrequest import getRequest
 import base64
-import cgi
+import urllib.parse
 import copy
 import fnmatch
 import hashlib
@@ -433,7 +433,10 @@ def url_inherit_params(url, REQUEST, exclude=[], sep='&amp;'):
             url += '?'
           else:
             url += sep
-          if isinstance(v, int):
+          if isinstance(v, bool):
+            # bool is a subclass of int: check it first, else True becomes key:int=True
+            url += url_quote(key+':boolean') + '=' + url_quote(str(v))
+          elif isinstance(v, int):
             url += url_quote(key+':int') + '=' + url_quote(str(v))
           elif isinstance(v, float):
             url += url_quote(key+':float') + '=' + url_quote(str(v))
@@ -498,8 +501,7 @@ def url_encode(url):
   @return: Encoded string
   @rtype: C{str}
   """
-  from urllib.parse import quote_plus
-  return ''.join([quote_plus(x) for x in url])
+  return ''.join([urllib.parse.quote_plus(x) for x in url])
 
 
 security.declarePublic('guess_content_type')
@@ -540,9 +542,9 @@ security.declarePublic('html_quote')
 def html_quote(v, **kwargs):
   """
   Return HTML-escaped string representation of the given value.
-  This function is useful for preventing XSS vulnerabilities by escaping 
-  special characters in user input before rendering it in HTML. 
-  It converts characters like <, >, &, and " to their corresponding HTML 
+  This function is useful for preventing XSS vulnerabilities by escaping
+  special characters in user input before rendering it in HTML.
+  It converts characters like <, >, &, and " to their corresponding HTML
   entities (&lt;, &gt;, &amp;, and &quot; respectively).
 
   @param v: The value to be escaped.
@@ -550,8 +552,8 @@ def html_quote(v, **kwargs):
   @return: The HTML-escaped string representation of the value.
   @rtype: C{str}
 
-  Hint: the kwargs are ignored but allow to be passed for compatibility 
-  with other quote functions, like Zope's DocumentTemplate's html_quote, 
+  Hint: the kwargs are ignored but allow to be passed for compatibility
+  with other quote functions, like Zope's DocumentTemplate's html_quote,
   which may pass additional parameters.
   """
   if not isinstance(v,str):
@@ -997,7 +999,6 @@ def http_import(context, url, method='GET', auth=None, parse_qs=0, timeout=10, h
   @rtype: C{str}
   """
   # Parse URL.
-  import urllib.parse
   u = urllib.parse.urlparse(url)
   writeLog( context, "[http_import.%s]: %s"%(method, str(u)))
   scheme = u[0]
@@ -1065,7 +1066,7 @@ def http_import(context, url, method='GET', auth=None, parse_qs=0, timeout=10, h
     if parse_qs:
       try:
         # return dictionary of value lists
-        data = cgi.parse_qs(data, keep_blank_values=1, strict_parsing=1)
+        data = urllib.parse.parse_qs(data, keep_blank_values=1, strict_parsing=1)
       except:
         writeError(context, '[http_import]: can\'t parse_qs')
     return data
@@ -1085,8 +1086,8 @@ def getLog(context):
   """
   Get zms_log.
 
-  The ZMS component zms_log is a wrapper for the standard Zope-logger which can be enabled in ZMS-configuration. 
-  If zms_log is enabled, debug-information can be logged with writeLog, writeBlock and writeError. 
+  The ZMS component zms_log is a wrapper for the standard Zope-logger which can be enabled in ZMS-configuration.
+  If zms_log is enabled, debug-information can be logged with writeLog, writeBlock and writeError.
   The log-messages are stored in a log-file on the server and can be viewed in the ZMS-Management-Interface.
 
   @param context: Context
@@ -2346,6 +2347,12 @@ def dt_exec(context, v, o={}):
   @rtype: C{any}
   """
   if type(v) is str:
+    if (v.startswith('##') and v.find('return ') > 0) or \
+        v.find('<tal:') >= 0 or \
+        v.find('<dtml-') >= 0:
+      error_msg = _check_restricted_inputs(context, value=v, force_restriction=pybool(os.getenv('ZMS_FORCE_RESTRICTED_INPUTS')))
+      if error_msg:
+        return error_msg
     if v.startswith('##') and v.find('return ') > 0:
       v = dt_py(context, v, o)
     elif v.find('<tal:') >= 0:
@@ -2662,6 +2669,23 @@ def is_conf_enabled(context, setting):
       return False
 
   return pybool(conf_property)
+
+
+def _check_restricted_inputs(context, value, force_restriction=False):
+    prop = context.getConfProperty('ZMS.input.exec.restrict')
+    if isinstance(prop, str) and prop.strip() != '':
+        used_keywords = []
+        for keyword in prop.split(','):
+            if keyword.strip() in value:
+                used_keywords.append(keyword.strip())
+        if used_keywords:
+            writeBlock(context, f'Usage of [{", ".join(used_keywords)}] is forbidden.')
+            return f'ERROR: Usage of [{", ".join(used_keywords)}] is forbidden.'
+    else:
+        if force_restriction:
+            writeBlock(context, f'Conf property "ZMS.input.exec.restrict" not set.')
+            return f'ERROR: Conf property "ZMS.input.exec.restrict" not set.'
+    return None
 
 
 class initutil(object):

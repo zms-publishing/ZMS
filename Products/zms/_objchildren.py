@@ -12,6 +12,7 @@ structure and type constraints.
 License: GNU General Public License v2 or later,
 Organization: ZMS Publishing
 """
+from ZPublisher import zpublish
 # Product Imports.
 from Products.zms import _fileutil
 from Products.zms import standard
@@ -190,6 +191,7 @@ class ObjChildren(object):
       return [x for x in self.getObjChildren(id, REQUEST, meta_types) if x.isVisible(REQUEST)]
 
 
+    @zpublish
     def manage_initObjChild(self, id, type, lang, REQUEST, RESPONSE=None): 
       """Handle ZMI creation of a new child object.
 

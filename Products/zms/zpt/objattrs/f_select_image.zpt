@@ -49,12 +49,28 @@
 								<i class="fas fa-compress"></i>
 							</span>
 						</div>
-						<div class="ZMSGraphic_extEdit_action">
-							<span data-turbolinks="false" class="btn btn-secondary" id="ZMSGraphic_extEdit_crop" title="Crop image">
+						<div class="ZMSGraphic_extEdit_action" title="Crop image">
+							<span class="btn btn-secondary" style="cursor:pointer;width:2.5rem;" id="ZMSGraphic_extEdit_crop">
 								<i class="fas fa-crop"></i>
 							</span>
 						</div>
-						<div class="verticalize" style="transform: rotate(90deg);width:3.5rem;margin-top:2rem;">
+						<div class="ZMSGraphic_extEdit_action" title="Mirror image horizontally">
+							<span class="btn btn-secondary" style="cursor:pointer;width:2.5rem;" id="ZMSGraphic_extEdit_mirror" >
+								<i class="fas fa-arrows-alt-h"></i>
+							</span>
+						</div>
+						<div class="ZMSGraphic_extEdit_action" title="Flip image vertically">
+							<span class="btn btn-secondary" style="cursor:pointer;width:2.5rem;" id="ZMSGraphic_extEdit_flip" >
+								<i class="fas fa-arrows-alt-v"></i>
+							</span>
+						</div>
+						<div class="ZMSGraphic_extEdit_action" title="Rotate image clockwise 90 degrees">
+							<span class="btn btn-secondary" style="cursor:pointer;width:2.5rem;" id="ZMSGraphic_extEdit_rotate90" >
+								<i class="fas fa-redo"></i>
+							</span>
+						</div>
+						<div class="verticalize" title="Scale image"
+							style="transform: rotate(90deg);width:3.5rem;margin-top:2rem;">
 							<input type="range" id="ZMSGraphic_extEdit_slider" name="ZMSGraphic_extEdit_slider"
 								class="custom-range mb-0 mt-4" style="width: auto;"
 								min="0" max="200" step="1" value="100" title="100"

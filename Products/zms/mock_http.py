@@ -16,6 +16,12 @@ class MockUser:
 
     def getId(self):
         return self.id
+
+    def getUserName(self):
+        return self.id
+
+    def has_permission(self, permission, obj):
+        return True
     
 class MockDict:
 

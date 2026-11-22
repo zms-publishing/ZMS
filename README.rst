@@ -49,7 +49,7 @@ and finally "Add ZMS" via web user interface
 http://localhost:8080/manage
 (replace "localhost" with your system's IP address or domain name if no local installation)
 
-More detailed instructions can be found here: https://github.com/zms-publishing/ZMS/blob/main/docs/develop_intro_en.md
+More detailed instructions can be found here: https://github.com/zms-publishing/ZMS/blob/main/docs/d_for_developers.md
 
 
 Prerequisites

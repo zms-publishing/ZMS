@@ -9,6 +9,7 @@ Organization: ZMS Publishing
 """
 # Imports.
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
+from ZPublisher import zpublish
 import time
 # Product Imports.
 from Products.zms import standard
@@ -58,6 +59,7 @@ class ZMSTrashcan(zmscontainerobject.ZMSContainerObject):
       zmscontainerobject.ZMSContainerObject.__init__(self, id, sort_id)
 
 
+    @zpublish
     def manage_changeProperties(self, lang, REQUEST=None): 
       """Handle trashcan property updates from the ZMI.
 

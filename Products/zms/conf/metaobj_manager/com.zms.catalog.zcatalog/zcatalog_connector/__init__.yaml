@@ -6,7 +6,7 @@ zcatalog_connector:
       ger: ZCatalog löschen
   name: ZCatalog-Connector
   package: com.zms.catalog.zcatalog
-  revision: 1.2.1
+  revision: 1.3.1
   type: ZMSLibrary
   Attrs:
     - id: properties

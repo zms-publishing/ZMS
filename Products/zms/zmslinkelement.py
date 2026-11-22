@@ -15,6 +15,7 @@ Organization: ZMS Publishing
 # Imports.
 from AccessControl import ClassSecurityInfo
 from AccessControl.class_init import InitializeClass
+from ZPublisher import zpublish
 import json
 import sys
 # Product Imports.
@@ -156,6 +157,7 @@ class ZMSLinkElement(zmscustom.ZMSCustom):
       rtn = self.getEmbedType() in [ 'recursive']
       return rtn
 
+    @zpublish
     def manage_changeProperties(self, lang, REQUEST, RESPONSE): 
       """
       Update link element properties from the ZMI form submission.

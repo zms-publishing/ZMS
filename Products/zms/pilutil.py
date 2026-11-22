@@ -180,9 +180,10 @@ def crop(img, box, qual=75):
 
 
 security.declarePublic('rotate')
-def rotate(img, direction, qual=75):
+def rotate(img, direction, qual=75, expand=False):
   """
-  Rotate image.
+  Rotate image counter-clockwise by direction degrees.
+  With expand=True the canvas is enlarged to hold the whole image.
   """
   from PIL import Image, ImageFile
   ImageFile.LOAD_TRUNCATED_IMAGES = True
@@ -195,7 +196,7 @@ def rotate(img, direction, qual=75):
   
   # Rotate image
   im = Image.open(filepath)
-  im = im.rotate(direction)
+  im = im.rotate(direction, expand=expand)
   im.convert('RGB').save(filepath, "JPEG", quality=qual, optimize=True)
   
   # Read rotated image from file-system
@@ -211,6 +212,37 @@ def rotate(img, direction, qual=75):
   # Returns resulting image
   image = standard.ImageFromData(context, result['data'], result['filename'])
   return image
+
+
+security.declarePublic('mirror')
+def mirror(img, direction='h', qual=75):
+  """
+  Mirror image horizontally ('h') or vertically ('v').
+  """
+  from PIL import Image, ImageFile, ImageOps
+  ImageFile.LOAD_TRUNCATED_IMAGES = True
+  
+  # Save image in temp-folder
+  context = img.aq_parent
+  tempfolder = standard.getTempFolder(context)
+  filepath = _fileutil.getOSPath('%s/%s'%(tempfolder, img.filename))
+  _fileutil.exportObj(img, filepath)
+  
+  # Mirror image
+  im = Image.open(filepath)
+  im = ImageOps.flip(im) if direction == 'v' else ImageOps.mirror(im)
+  im.convert('RGB').save(filepath, "JPEG", quality=qual)
+  
+  # Read mirrored image from file-system
+  f = open(filepath, 'rb')
+  data = f.read()
+  f.close()
+  
+  # Remove temp-folder and images
+  _fileutil.remove(tempfolder, deep=1)
+  
+  # Returns resulting image
+  return standard.ImageFromData(context, data, img.filename)
 
 
 security.declarePublic('optimize')

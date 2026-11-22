@@ -17,6 +17,7 @@ Organization: ZMS Publishing
 
 # Imports.
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
+from ZPublisher import zpublish
 from Products.ZCatalog import ZCatalog
 from Products.PluginIndexes.FieldIndex.FieldIndex import FieldIndex
 from Products.PluginIndexes.PathIndex.PathIndex import PathIndex
@@ -300,6 +301,7 @@ class ZMSIndex(ZMSItem.ZMSItem):
       catalog.uncatalog_object(node, path)
 
 
+    @zpublish
     def manage_reindex(self, regenerate_all=None, regenerate_duplicates=None, REQUEST=None):
       """
       Rebuild catalog entries for the requested site roots.
@@ -351,6 +353,7 @@ class ZMSIndex(ZMSItem.ZMSItem):
       return self.get_log(log,REQUEST)
 
 
+    @zpublish
     def manage_test(self):
       """
       Compare catalog contents with the live content tree.
@@ -410,6 +413,7 @@ class ZMSIndex(ZMSItem.ZMSItem):
       return self.get_log(log,request)
 
 
+    @zpublish
     def manage_resync(self):
       """
       Rewrite stored inline references and URL fields to current targets.

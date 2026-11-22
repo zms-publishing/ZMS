@@ -40,6 +40,7 @@ Organization: ZMS Publishing
 # Imports.
 from App.Common import package_home
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
+from ZPublisher import zpublish
 from OFS.Folder import Folder
 import collections
 import os
@@ -502,6 +503,7 @@ class ZMS(
       return initZMS(container, id, titlealt, title, lang, manage_lang, REQUEST, minimal_init)
 
 
+    @zpublish
     def manage_addMediaDb(self, location, REQUEST=None, RESPONSE=None):
       """
       Add the media database helper object.

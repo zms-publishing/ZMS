@@ -55,6 +55,15 @@ function ZMSGraphic_extEdit_initialize() {
 			}
 		}
 	});
+	$("#zmiModalZMSGraphic_extEdit_actions #ZMSGraphic_extEdit_mirror").click(function() {
+		ZMSGraphic_extEdit_mirror('mirror');
+	});
+	$("#zmiModalZMSGraphic_extEdit_actions #ZMSGraphic_extEdit_flip").click(function() {
+		ZMSGraphic_extEdit_mirror('flip');
+	});
+	$("#zmiModalZMSGraphic_extEdit_actions #ZMSGraphic_extEdit_rotate90").click(function() {
+		ZMSGraphic_extEdit_rotate90();
+	});
 	$("#zmiModalZMSGraphic_extEdit_actions #ZMSGraphic_extEdit_preview").click(function() {
 		ZMSGraphic_action = 'preview';
 		if (confirm($(this).attr('title')+'?')) {
@@ -62,6 +71,59 @@ function ZMSGraphic_extEdit_initialize() {
 		}
 		ZMSGraphic_action = null;
 	});
+}
+
+/**
+ * Mirror image horizontally (mirror) or vertically (flip).
+ */
+function ZMSGraphic_extEdit_mirror(action) {
+	var params = {'action':action};
+	for (var i in ZMSGraphic_params) {
+		params[i] = ZMSGraphic_params[i];
+	}
+	$ZMI.setCursorWait("ZMSGraphic_extEdit_mirror");
+	$.get('manage_changeTempBlobjProperty',params,
+		function(data){
+			$ZMI.setCursorAuto("ZMSGraphic_extEdit_mirror");
+			if (data.length==0) return;
+			var result = eval('('+data+')');
+			var src = result['src'] + (result['src'].indexOf('?')>=0?'&':'?') + 'ts=' + new Date().getTime();
+			// Dimensions are unchanged by mirroring
+			var w = parseInt($('input#width_'+ZMSGraphic_elName).val());
+			var h = parseInt($('input#height_'+ZMSGraphic_elName).val());
+			ZMSGraphic_extEdit_set(ZMSGraphic_elName,src,result['filename'],w,h);
+			$('.modal-body div#ZMSGraphic_extEdit_image img').attr('src',src);
+			$ZMI.set_form_modified($('input.custom-file-input[id^="img_"]'),$('body'));
+		}
+	);
+}
+
+/**
+ * Rotate image clockwise by 90 degrees (width and height are swapped).
+ */
+function ZMSGraphic_extEdit_rotate90() {
+	var params = {'action':'rotate90'};
+	for (var i in ZMSGraphic_params) {
+		params[i] = ZMSGraphic_params[i];
+	}
+	$ZMI.setCursorWait("ZMSGraphic_extEdit_rotate90");
+	$.get('manage_changeTempBlobjProperty',params,
+		function(data){
+			$ZMI.setCursorAuto("ZMSGraphic_extEdit_rotate90");
+			if (data.length==0) return;
+			var result = eval('('+data+')');
+			var src = result['src'] + (result['src'].indexOf('?')>=0?'&':'?') + 'ts=' + new Date().getTime();
+			var w = parseInt($('input#height_'+ZMSGraphic_elName).val());
+			var h = parseInt($('input#width_'+ZMSGraphic_elName).val());
+			ZMSGraphic_extEdit_set(ZMSGraphic_elName,src,result['filename'],w,h);
+			$('input#ZMSGraphic_extEdit_width').val(w);
+			$('input#ZMSGraphic_extEdit_height').val(h);
+			ZMSGraphic_act_width = w;
+			ZMSGraphic_act_height = h;
+			$('.modal-body div#ZMSGraphic_extEdit_image img').attr('src',src).css('width','');
+			$ZMI.set_form_modified($('input.custom-file-input[id^="img_"]'),$('body'));
+		}
+	);
 }
 
 function toggle_cropper_gui(e) {
@@ -365,4 +427,4 @@ function get_img_preview_size_class(e, viewport_max=0.8) {
 		$(e).addClass('contain');
 		$(e).removeClass('inherit');
 	}
-}
+}

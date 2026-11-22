@@ -11,6 +11,7 @@ Organization: ZMS Publishing
 
 # Imports.
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
+from ZPublisher import zpublish
 import copy
 import time
 from datetime import datetime, timezone
@@ -348,7 +349,19 @@ class ZMSZCatalogAdapter(ZMSItem.ZMSItem):
     # --------------------------------------------------------------------------
     def _getAttrIds(self):
       """Implement '_getAttrIds'."""
-      return ['uid', 'id', 'meta_id', 'home_id', 'loc', 'path', 'index_html'] + self.getAttrIds()
+      return [
+          'uid', 
+          'id', 
+          'meta_id', 
+          'home_id', 
+          'loc', 
+          'path', 
+          'index_html',
+          'created_dt',
+          'change_dt',
+          'start_dt',
+          'end_dt',
+          'indexing_dt'] + self.getAttrIds()
 
     def getAttrIds(self):
       """Return attrids."""
@@ -493,6 +506,7 @@ class ZMSZCatalogAdapter(ZMSItem.ZMSItem):
     #
     #  Change properties.
     ############################################################################
+    @zpublish
     def manage_changeProperties(self, btn, lang, REQUEST, RESPONSE):
         """ ZMSZCatalogAdapter.manage_changeProperties """
         message = ''

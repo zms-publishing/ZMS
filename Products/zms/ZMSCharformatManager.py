@@ -9,6 +9,7 @@ Organization: ZMS Publishing
 """
 # Imports.
 import copy
+from ZPublisher import zpublish
 # Product Imports.
 from Products.zms import standard
 
@@ -139,6 +140,7 @@ class ZMSCharformatManager(object):
       return newId
 
 
+    @zpublish
     def manage_changeCharformat(self, lang, btn, REQUEST, RESPONSE):
       """Handle ZMI actions for creating, editing, and deleting char formats.
 

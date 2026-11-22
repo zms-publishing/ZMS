@@ -1,0 +1,7 @@
+<tal:block tal:repeat="manage_lang python:here.get_manage_langs()">
+	<a class="dropdown-item" 
+		tal:attributes="href python:'?lang=%s&manage_lang=%s'%(request['lang'],manage_lang)">
+		<i class="far fa-check-square" tal:attributes="class python:manage_lang==request.get('manage_lang',here.get_manage_lang()) and 'far fa-check-square' or 'far fa-square'"></i>
+		<tal:block tal:content="python:here.getLangStr('LANG',manage_lang)">language</tal:block>
+	</a>
+</tal:block>

@@ -94,7 +94,7 @@ RUN curl -fsSL https://code-server.dev/install.sh | sh
 USER zope
 WORKDIR /home/zope/
 
-ENV ZOPE_VERSION=6.1
+ENV ZOPE_VERSION=6.3
 ENV ZMS_BRANCH=main
 ENV VIRTUAL_ENV=${VENV_DIR:-/home/zope/venv}
 ENV SHELL=/bin/bash
@@ -117,10 +117,10 @@ RUN pip install itsdangerous
 RUN mkwsgiinstance -d . -u admin:admin
 
 # Mount Zope Instance Data
-COPY ./etc etc
-COPY ./var var
-COPY ./Extensions Extensions
-COPY ./import import
+# COPY ./etc etc
+# COPY ./var var
+# COPY ./Extensions Extensions
+# COPY ./import import
 
 # Expose Ports:
 # 8888 = VSCode-Server (Zope instance runs by VSCode launch)

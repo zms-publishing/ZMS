@@ -76,8 +76,8 @@ def recreateZCatalog(context, lang):
     index_type = context.getConfProperty('ZCatalog.TextIndexType','ZCTextIndex')
     if index_name in ['zcat_index_home_id','zcat_index_meta_id','zcat_index_uid']:
       index_type = KeywordIndex(index_name)
-    elif attr_type == 'date':
-      index_type = DateIndex(attr_id)
+    elif attr_type == 'date' or attr_id in ['created_dt', 'change_dt', 'start_dt', 'end_dt', 'indexing_dt']:
+      index_type = DateIndex(index_name)
     extra = None
     if index_type == 'ZCTextIndex':
       extra = Empty()

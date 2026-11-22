@@ -21,6 +21,7 @@ import requests
 
 LOGGER = logging.getLogger("ZMSReindex")
 logging.basicConfig(level=logging.INFO)
+REST_API_KEY = None
 
 
 # ======================================================================
@@ -141,7 +142,10 @@ class ZMSIndexSchematizedReindexer:
 		def fetch_children(path):
 			rest_path = path.strip("/")
 			url = f"{self.base_url}/++rest_api/{rest_path}/list_child_nodes"
-			response = requests.get(url, timeout=60)
+			if REST_API_KEY:
+				response = requests.get(url, params={'rest_api_key': REST_API_KEY}, timeout=60)
+			else:
+				response = requests.get(url, timeout=60)
 			response.raise_for_status()
 			return response.json()
 
@@ -554,25 +558,54 @@ def start(self):
 	page_size = int(request.get("page_size", 1))
 	fileparsing = bool(request.get("fileparsing", False))
 
+	search_client = None
 	try:
-		os_client = catalog_connector.opensearch_get_client(catalog_connector)
+		if catalog_connector.getId() == "opensearch_connector":
+			search_client = catalog_connector.opensearch_get_client(catalog_connector)
+		if catalog_connector.getId() == "elasticsearch_connector":
+			search_client = catalog_connector.elasticsearch_get_client(catalog_connector)
 	except Exception:
-		os_client = None
+		pass
+
 	index_name = root.getHome().id
 
 	def index_cleaner(index_home_id, started_at):
 		# Removes the client's documents that were not reindexed since started_at
-		if os_client is None:
-			raise RuntimeError("OpenSearch client not available")
-		query = {"query": {"bool": {
-			"filter": [
-				{"term": {"home_id": index_home_id}},
-				{"range": {"indexing_dt": {"lt": started_at}}},
-			],
-		}}}
-		response = os_client.delete_by_query(
-			index=index_name, body=query, refresh=True, conflicts="proceed")
-		return response.get("deleted", 0)
+		if search_client is None:
+			if catalog_connector.getId() == "zcatalog_connector":
+				return 0
+			# --------------------------------------------------------------------------------
+			#	TODO: Implement ZCatalog cleanup for documents not reindexed since started_at
+			# --------------------------------------------------------------------------------
+			# 	root = catalog_connector.getRootElement()
+			# 	lang = root.getPrimaryLanguage()
+			# 	cat_id = 'catalog_%s'%lang
+			# 	catalog = getattr(root, cat_id, None)
+			# 	query = {
+			# 		"zcat_index_home_id": index_home_id,
+			# 		"zcat_index_indexing_dt": {"query": "range", "value": {"lt": started_at}}
+			# 	}
+			# 	response = catalog.search(query=query)
+			# 	for brain in response:
+			# 		obj = brain.getObject()
+			# 		if obj is not None:
+			# 			catalog.delete(obj)
+			# 	return len(response)
+			# else:
+			# 	raise RuntimeError("Search client not available")
+			else:
+				raise RuntimeError("OpenSearch client not available")
+		else:
+			# OpenSearch and Elasticsearch clients
+			query = {"query": {"bool": {
+				"filter": [
+					{"term": {"home_id": index_home_id}},
+					{"range": {"indexing_dt": {"lt": started_at}}},
+				],
+			}}}
+			response = search_client.delete_by_query(
+				index=index_name, body=query, refresh=True, conflicts="proceed")
+			return response.get("deleted", 0)
 
 	global RUN_IN_PROGRESS, RUN_LOCK_FD, RUN_JOB
  
@@ -818,6 +851,9 @@ def manage_reindex_content_bg(self):
 	Zope imports are inside this function.
 	"""
 	from Products.zms import standard
+
+	global REST_API_KEY
+	REST_API_KEY = self.getConfProperty('ZMS.private.rest_api_key')
 
 	request = self.REQUEST
 	if request.get("status") == "1":

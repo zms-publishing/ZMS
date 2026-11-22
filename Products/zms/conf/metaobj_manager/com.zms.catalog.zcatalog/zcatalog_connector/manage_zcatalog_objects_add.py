@@ -1,5 +1,7 @@
 id = 'zcatalog_connector'
 from Products.zms import standard
+import datetime
+from DateTime import DateTime
 
 def getZCatalog(context, lang):
 	cat_id = 'catalog_%s'%lang
@@ -26,6 +28,8 @@ def catalog_object(zcatalog, adapter, node, data):
 		value = data.get(attr_id)
 		if value in ['None', None]:
 			value = ''
+		elif isinstance(value, datetime.datetime):
+			value = DateTime(value)
 		elif isinstance(value, str):
 			if wght != 1:
 				value = (value.strip() + ' ') * wght
@@ -55,5 +59,8 @@ def manage_zcatalog_objects_add( self, objects):
 		if 'ZMS_ENV_ZCATALOG_%s'%lang.upper() not in request:
 			request['ZMS_ENV_ZCATALOG_%s'%lang.upper()] = getZCatalog(self, lang)
 		zcatalog = request['ZMS_ENV_ZCATALOG_%s'%lang.upper()]
-		success += catalog_object(zcatalog, adapter, node, data)
+		try:
+			success += catalog_object(zcatalog, adapter, node, data)
+		except:
+			failed += 1
 	return success, failed

@@ -57,7 +57,10 @@ def zcatalog_query( self, REQUEST=None):
     if index.find('zcat_index_')==0:
       query = copy.deepcopy(prototype)
       query[index] = umlaut_quote(self, q)
-      qr = zcatalog(query)
+      try:
+        qr = zcatalog(query)
+      except:
+        qr = [] 
       standard.writeLog( self, "[zcatalog_query]: %s=%i"%(str(query), len(qr)))
       for item in qr:
         if item not in items:

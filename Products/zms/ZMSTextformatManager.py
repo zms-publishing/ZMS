@@ -11,6 +11,7 @@ License: GNU General Public License v2 or later,
 Organization: ZMS Publishing
 """
 import copy
+from ZPublisher import zpublish
 
 from Products.zms import ZMSTextformat
 from Products.zms import standard
@@ -107,6 +108,7 @@ class ZMSTextformatManager(object):
       return self.textformats[i]
 
 
+    @zpublish
     def manage_changeTextformat(self, lang, btn, REQUEST, RESPONSE):
       """Handle add/edit/delete/import/export actions for text-format entries."""
       message = ''

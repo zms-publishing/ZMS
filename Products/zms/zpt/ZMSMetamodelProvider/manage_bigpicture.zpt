@@ -271,6 +271,13 @@ HTML: Big Picture Page
 		color:#354f67;
 		text-decoration:none;
 		opacity:0.75;
+		&:hover, * {
+			cursor:pointer;
+		}
+	}
+	.box > .objid:has(a:hover) {
+		background:#b6e5bd;
+		cursor:pointer;
 	}
 	.box > .objid a .objid {
 		font-weight:bold;

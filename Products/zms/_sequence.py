@@ -10,6 +10,7 @@ Organization: ZMS Publishing
 
 # Imports.
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
+from ZPublisher import zpublish
 # Product Imports.
 from Products.zms import standard
 from Products.zms import ZMSItem
@@ -76,6 +77,7 @@ class Sequence(ZMSItem.ZMSItem):
       """
       return self.value
 
+    @zpublish
     def manage_changeProperties(self, submit, currentvalue, REQUEST, RESPONSE): 
       """Handle ZMI actions for updating or advancing the sequence value."""
       

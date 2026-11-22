@@ -18,6 +18,7 @@ import copy
 import io
 import time
 import zipfile
+from ZPublisher import zpublish
 # Product Imports.
 from Products.zms import standard
 from Products.zms import zopeutil
@@ -1279,6 +1280,7 @@ class ZMSMetaobjManager(object):
       self.model = self.model.copy()
 
 
+    @zpublish
     def manage_ajaxChangeProperties(self, id, REQUEST, RESPONSE=None):
       """
       Update editable object properties from AJAX form values.
@@ -1323,6 +1325,7 @@ class ZMSMetaobjManager(object):
         return xml
 
 
+    @zpublish
     def manage_changeProperties(self, lang, btn='', key='all', REQUEST=None, RESPONSE=None):
         """
         Handle meta-object manager actions from the ZMI properties form.
@@ -1647,6 +1650,7 @@ class ZMSMetaobjManager(object):
         return message
 
 
+    @zpublish
     def manage_create_default_zpt(self, id, target_id='standard_html', attrs=None, REQUEST=None, RESPONSE=None):
       """
       Create and optionally return default standard_html ZPT code.

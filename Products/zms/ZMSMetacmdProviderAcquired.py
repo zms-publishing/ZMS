@@ -10,6 +10,7 @@ Organization: ZMS Publishing
 
 # Imports.
 from zope.interface import implementer
+from ZPublisher import zpublish
 # Product Imports.
 from Products.zms import IZMSMetacmdProvider, ZMSMetacmdProvider
 
@@ -33,6 +34,7 @@ class ZMSMetacmdProviderAcquired(
       """
       self.id = 'metacmd_manager'
 
+    @zpublish
     def getMetaCmdDescription(self, id):
       """Return a metacommand description from the portal master.
 

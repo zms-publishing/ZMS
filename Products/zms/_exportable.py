@@ -15,6 +15,7 @@ Organization: ZMS Publishing
 # Imports.
 from AccessControl import ClassSecurityInfo
 from AccessControl.class_init import InitializeClass
+from ZPublisher import zpublish
 import codecs
 import copy
 import os
@@ -302,6 +303,7 @@ class Exportable(_filtermanager.FilterItem):
     security = ClassSecurityInfo()
 
 
+    @zpublish
     def manage_export(self, export_format, lang, REQUEST, RESPONSE):
       """
       Export the current object in one of the configured formats.

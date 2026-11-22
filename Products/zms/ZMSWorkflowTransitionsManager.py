@@ -9,6 +9,7 @@ Organization: ZMS Publishing
 """
 # Imports.
 import copy
+from ZPublisher import zpublish
 # Product Imports.
 from Products.zms import standard
 from Products.zms import zopeutil
@@ -101,6 +102,7 @@ class ZMSWorkflowTransitionsManager(object):
     return transition
 
 
+  @zpublish
   def manage_changeTransitions(self, lang, btn='', key='', REQUEST=None, RESPONSE=None):
     """ ZMSWorkflowTransitionsManager.manage_changeTransitions """
     message = ''

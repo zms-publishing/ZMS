@@ -1180,6 +1180,18 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
       metadata = MetaData()
       # reflect db schema to MetaData
       metadata.reflect(bind=engine)
+      # Views are not reflected by default (views=False). Add them one by one,
+      # so that a broken view does not hide all tables of the connection.
+      try:
+        view_names = inspect(engine).get_view_names()
+      except Exception:
+        view_names = []
+      for view_name in view_names:
+        if view_name not in metadata.tables:
+          try:
+            Table(view_name, metadata, autoload_with=engine)
+          except Exception:
+            standard.writeError(self, '[getEntitiesSQLAlchemyDA]: cannot reflect view %s' % view_name)
       entities = []
       for tablename in metadata.tables:
         table = metadata.tables[tablename]
@@ -1443,7 +1455,9 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
         entity['columns'] = standard.sort_list(cols, 'index')
         # Set custom table-properties
         for modelTable in [x for x in model if x['id'].upper()==tableName.upper()]:
-          for modelTableProp in [x for x in modelTable if x not in ['columns']]:
+          # not_found is set on the stored model for custom entities (see below)
+          # and must not be copied to an entity that exists in the database.
+          for modelTableProp in [x for x in modelTable if x not in ['columns', 'not_found']]:
             entity[modelTableProp] = modelTable[modelTableProp]
             entity['sort_id'] = entity['label'].upper()
         # Add

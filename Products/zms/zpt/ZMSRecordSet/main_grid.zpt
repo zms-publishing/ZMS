@@ -16,7 +16,7 @@
 		pageStart ctx/pageStart;
 		row_select_name ctx/row_select_name;
 		request_qsize ctx/request_qsize;
-		pageIndex python:request.get('pageIndex', ctx.get('pageIndex', 0));">
+		pageIndex ctx/pageIndex;">
 
 	<!--! PAGINATION-PRE -->
 	<div class="d-flex justify-content-between pagination-pre">
@@ -44,9 +44,7 @@
 				tal:attributes="
 					data-grid-cols ctx/cols_count;
 					data-grid-cols-texttype ctx/cols_count_texttype;
-					style python:'--grid-cols: %d;;--grid-cols-texttype: %d' % (ctx['cols_count'], ctx['cols_count_texttype']);
-					data-req-qindex python:request.get('qindex',-1);
-					data-req-form-qindex python:request.form.get('qindex',-1)">
+					style python:'--grid-cols: %d;;--grid-cols-texttype: %d' % (ctx['cols_count'], ctx['cols_count_texttype'])">
 				<colgroup>
 					<col class="zmi-datatype-action" />
 					<col tal:repeat="metaObjAttr metaObjAttrs" tal:attributes="class python:'zmi-datatype-%s'%(metaObjAttr.get('type','string'))" />
@@ -112,7 +110,7 @@
 					<tal:block tal:repeat="row ctx/rows"
 						><tr tal:attributes="
 							id python:'tr_%i'%row.get('qindex',-1); 
-							class python:(int(row.get('qindex',-1))==int(request.form.get('qindex', -1))) and 'zmi-selected' or None">
+							class python:row.get('selected') and 'zmi-selected' or None">
 							<td class="zmi-datatype-action">
 								<div class="btn-group" tal:attributes="title python:row.get('title','')">
 									<span class="checkbox btn btn-secondary text-nowrap">

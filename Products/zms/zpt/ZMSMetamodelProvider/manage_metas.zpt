@@ -91,7 +91,7 @@
 		<th class="meta-mandatory" tal:attributes="title python:here.getZMILangStr('ATTR_MANDATORY')"><i class="fas fa-exclamation-circle"></i></th>
 		<th class="meta-multilang" tal:attributes="title python:here.getZMILangStr('ATTR_MULTILANG')"><i class="fas fa-globe"></i></th>
 		<th class="meta-repetitive" tal:attributes="title python:here.getZMILangStr('ATTR_REPETITIVE')"><i class="fas fa-list-ol"></i></th>
-		<th></th>
+		<th class="meta-default">Default</th>
 		<th class="meta-usage">Usage</th>
 
 	</tr>

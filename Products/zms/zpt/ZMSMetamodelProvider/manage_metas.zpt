@@ -92,6 +92,8 @@
 		<th class="meta-multilang" tal:attributes="title python:here.getZMILangStr('ATTR_MULTILANG')"><i class="fas fa-globe"></i></th>
 		<th class="meta-repetitive" tal:attributes="title python:here.getZMILangStr('ATTR_REPETITIVE')"><i class="fas fa-list-ol"></i></th>
 		<th></th>
+		<th class="meta-usage">Usage</th>
+
 	</tr>
 	</thead>
 	<tbody tal:define="metadictAttrIds python:here.getMetadictAttrs()">
@@ -168,7 +170,18 @@
 			</td>
 		</tal:block>
 		</tal:block>
+		<td class="meta-usage" title="Attribute Usage">
+			<select class="form-control form-control-sm" name="attr_usage" multiple="multiple" size="1">
+				<option 
+					tal:repeat="metaobj_id python:[metaobj_id for metaobj_id in here.getMetaobjIds(sort=True) if here.getMetaobj(metaobj_id).get('type') in ['ZMSDocument', 'ZMSObject']]" 
+					tal:attributes="value metaobj_id;selected python:['','selected'][int(metadictAttr['id'] in here.getMetaobjAttrIds(metaobj_id, types=[]))]"
+					tal:content="python:here.display_type(meta_id=metaobj_id)">
+					metaobj_id
+				</option>
+			</select>
+		</td>
 	</tr>
+
 	<tr class="row_insert form-group">
 		<td class="meta-sort text-right"><span class="btn btn-add mr-1 btn-secondary btn-sm" onclick="javascript:add_new_row(this)"><i class="fas fa-plus"></i></span></td>
 		<td class="meta-id"><input class="form-control form-control-sm" type="text" name="attr_id" disabled="disabled" /></td>
@@ -185,7 +198,9 @@
 		<td class="meta-multilang"><input type="checkbox" name="attr_multilang:int" value="1" disabled="disabled" /></td>
 		<td class="meta-repetitive"><input type="checkbox" name="attr_repetitive:int" value="1" disabled="disabled" /></td>
 		<td>&nbsp;</td>
+		<td>&nbsp;</td>
 	</tr>
+
 	</tbody>
 	</table>
 	<div class="controls save">

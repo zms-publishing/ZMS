@@ -1,7 +1,7 @@
 {
 	"folders": [
 		{
-			"name": "ZMS6",
+			"name": "ZMS",
 			"path": "../"
 		},
 		{
@@ -72,7 +72,9 @@
 				"packageManager": "ms-python.python:pip"
 			}
 		],
-		"chat.agentHost.byokModels.enabled": true
+		"chat.agentHost.byokModels.enabled": true,
+		"git-graph.view.location": "scm"
+
 	},
 
 	"launch": {

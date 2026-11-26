@@ -91,84 +91,109 @@
 		<th class="meta-mandatory" tal:attributes="title python:here.getZMILangStr('ATTR_MANDATORY')"><i class="fas fa-exclamation-circle"></i></th>
 		<th class="meta-multilang" tal:attributes="title python:here.getZMILangStr('ATTR_MULTILANG')"><i class="fas fa-globe"></i></th>
 		<th class="meta-repetitive" tal:attributes="title python:here.getZMILangStr('ATTR_REPETITIVE')"><i class="fas fa-list-ol"></i></th>
-		<th></th>
+		<th class="meta-default">Default</th>
+		<th class="meta-usage">Usage</th>
+
 	</tr>
 	</thead>
 	<tbody tal:define="metadictAttrIds python:here.getMetadictAttrs()">
 	<tr tal:repeat="metadictAttrId metadictAttrIds" class="form-group">
-		<tal:block tal:define="global metadictAttr python:here.getMetadictAttr(metadictAttrId)">
-		<td class="meta-sort">
-			<input type="hidden" name="old_ids:list" tal:attributes="value python:metadictAttr['id']" />
-			<div class="input-group input-group-sm"
-				tal:attributes="class python: here.getPortalMaster() is not None and 'input-group input-group-sm justify-content-end' or default">
-				<div class="input-group-prepend input-group-sm">
-					<span tal:condition="python:metadictAttr.get('acquired',None)" class="btn mr-1">
-						<i class="fas fa-share fa-flip-vertical" title="acquired"></i>
-					</span>
-				</div>
-				<select class="zmi-sort form-control-sm"
-					tal:attributes="onchange python:'zmiFormSubmit(this,{btn:\'move_to\',id:\'%s\',\'pos:int\':this.selectedIndex})'%metadictAttrId">
-					<option tal:repeat="i python:range(0,len(metadictAttrIds))" tal:attributes="selected python:['','selected'][int(i==metadictAttrIds.index(metadictAttrId))]" tal:content="python:i+1">i+1</option>
-				</select>
-				<div class="input-group-append">
-					<a class="btn btn-secondary"
-						hx-get="manage_changeMetaProperties"
-						hx-target="#zmi_manage_tabs_message"
-						hx-indicator="body"
-						hx-confirm="Do you really want to delete this object?"
-						hx-on:htmx:after-request="remove_row(this)"
-						tal:attributes="
-							hx-get python:'manage_changeMetaProperties?btn=BTN_DELETE&target=zmi_manage_tabs_message&lang=%s&id=%s'%(request.get('lang',here.getPrimaryLanguage()),metadictAttr['id']);
-							hx-confirm python:here.getZMILangStr('MSG_CONFIRM_DELOBJ');
-							title python:here.getZMILangStr('BTN_DELETE')">
-						<i class="fas fa-times"></i>
-					</a>
-				</div>
-			</div>
-		</td>
-		<td class="meta-id">
-			<tal:block tal:on-error="python: request.set('meta_id_usage','ERROR Missing Referenced Meta-Objects')"
-				tal:define="meta_ids python:request.set('meta_id_usage',', '.join([xx for xx in here.getMetaobjIds() if metadictAttrId in [x['type'] for x in here.getMetaobjAttrs(xx)]]));">
-			</tal:block>
-			<input class="form-control form-control-sm" type="text"
-				tal:attributes="name python:'attr_id_%s'%metadictAttr['id'];
-					value python:metadictAttr['id'];
-					title python:'Used by: ' + request.get('meta_id_usage','Unknown');
-					disabled python:['','disabled'][int(metadictAttr.get('acquired',0))]" />
-		</td>
-		<td class="meta-name">
-			<input class="form-control form-control-sm" type="text" tal:attributes="name python:'attr_name_%s'%metadictAttr['id']; value python:metadictAttr['name']; disabled python:['','disabled'][int(metadictAttr.get('acquired',0))]"/>
-		</td>
-		<td class="meta-type">
-			<select class="form-control form-control-sm"
-				tal:define="attr_type python:metadictAttr.get('type')"
-				tal:attributes="name python:'attr_type_%s'%metadictAttr['id']; disabled python:['','disabled'][int(metadictAttr.get('acquired',0))]">
-				<option tal:attributes="value attr_type" selected="selected" tal:content="attr_type">datatype</option>
-			</select>
-		</td>
-		<tal:block tal:condition="python:metadictAttr['type'] in ['method']">
-			<td colspan="4"><div class="single-line"><textarea class="form-control form-control-sm" tal:attributes="name python:'attr_custom_%s'%metadictAttr['id']; title python:'%s (%s)'%(metadictAttr['id'],metadictAttr['type']); disabled python:['','disabled'][int(metadictAttr.get('acquired',0))]" tal:content="python:metadictAttr['custom']"></textarea></div></td>
-		</tal:block>
-		<tal:block tal:condition="not:python:metadictAttr['type'] in ['method']">
-			<td class="meta-mandatory"><input type="checkbox" tal:attributes="name python:'attr_mandatory_%s:int'%metadictAttr['id']; checked python:['','checked'][int(metadictAttr.get('mandatory',0)==1)]; disabled python:['','disabled'][int(metadictAttr.get('acquired',0))]" value="1" /></td>
-			<td class="meta-multilang"><input type="checkbox" tal:attributes="name python:'attr_multilang_%s:int'%metadictAttr['id']; checked python:['','checked'][int(metadictAttr.get('multilang',0)==1)]; disabled python:['','disabled'][int(metadictAttr.get('acquired',0))]" value="1" /></td>
-			<td class="meta-repetitive"><input type="checkbox" tal:attributes="name python:'attr_repetitive_%s:int'%metadictAttr['id']; checked python:['','checked'][int(metadictAttr.get('repetitive',0)==1)]; disabled python:['','disabled'][int(metadictAttr.get('acquired',0))]" value="1" /></td>
-			<td class="meta-default">
-				<div class="single-line" tal:condition="python:metadictAttr['type'] in ['autocomplete','multiautocomplete','multiselect','select']">
-					<tal:block><i class="fas fa-key"></i></tal:block>
-					<textarea class="form-control form-control-sm" tal:attributes="name python:'attr_keys_%s'%metadictAttr['id']; title python:here.getZMILangStr('ATTR_KEYS'); disabled python:['','disabled'][int(metadictAttr.get('acquired',0))]" tal:content="python:'\n'.join(metadictAttr['keys'])">keys</textarea>
-				</div>
-				<div tal:condition="python:metadictAttr['type'] in ['boolean']">
-					<select tal:attributes="name python:'attr_default_%s'%metadictAttr['id']; title python:'Default'; class python:' '.join(['zmi-element-default','form-control-sm','form-control form-control-sm']); disabled python:['','disabled'][int(metadictAttr.get('acquired',0))]">
-						<tal:block tal:repeat="option python:[True,False]">
-							<option tal:attributes="value python:int(option); selected python:['','selected'][int(str(metadictAttr.get('default',''))==str(int(option)))]" tal:content="option">option</option>
-						</tal:block>
+		<tal:block tal:define="metadictAttr python:here.getMetadictAttr(metadictAttrId)">
+			<td class="meta-sort">
+				<input type="hidden" name="old_ids:list" tal:attributes="value python:metadictAttr['id']" />
+				<div class="input-group input-group-sm"
+					tal:attributes="class python: here.getPortalMaster() is not None and 'input-group input-group-sm justify-content-end' or default">
+					<div class="input-group-prepend input-group-sm">
+						<span tal:condition="python:metadictAttr.get('acquired',None)" class="btn mr-1">
+							<i class="fas fa-share fa-flip-vertical" title="acquired"></i>
+						</span>
+					</div>
+					<select class="zmi-sort form-control-sm"
+						tal:attributes="onchange python:'zmiFormSubmit(this,{btn:\'move_to\',id:\'%s\',\'pos:int\':this.selectedIndex})'%metadictAttrId">
+						<option tal:repeat="i python:range(0,len(metadictAttrIds))" tal:attributes="selected python:['','selected'][int(i==metadictAttrIds.index(metadictAttrId))]" tal:content="python:i+1">i+1</option>
 					</select>
+					<div class="input-group-append">
+						<a class="btn btn-secondary"
+							hx-get="manage_changeMetaProperties"
+							hx-target="#zmi_manage_tabs_message"
+							hx-indicator="body"
+							hx-confirm="Do you really want to delete this object?"
+							hx-on:htmx:after-request="remove_row(this)"
+							tal:attributes="
+								hx-get python:'manage_changeMetaProperties?btn=BTN_DELETE&target=zmi_manage_tabs_message&lang=%s&id=%s'%(request.get('lang',here.getPrimaryLanguage()),metadictAttr['id']);
+								hx-confirm python:here.getZMILangStr('MSG_CONFIRM_DELOBJ');
+								title python:here.getZMILangStr('BTN_DELETE')">
+							<i class="fas fa-times"></i>
+						</a>
+					</div>
+				</div>
+			</td>
+			<td class="meta-id">
+				<tal:block tal:on-error="python: request.set('meta_id_usage','ERROR Missing Referenced Meta-Objects')"
+					tal:define="meta_ids python:request.set('meta_id_usage',', '.join([xx for xx in here.getMetaobjIds() if metadictAttrId in [x['type'] for x in here.getMetaobjAttrs(xx)]]));">
+				</tal:block>
+				<input class="form-control form-control-sm" type="text"
+					tal:attributes="name python:'attr_id_%s'%metadictAttr['id'];
+						value python:metadictAttr['id'];
+						title python:'Used by: ' + request.get('meta_id_usage','Unknown');
+						disabled python:['','disabled'][int(metadictAttr.get('acquired',0))]" />
+			</td>
+			<td class="meta-name">
+				<input class="form-control form-control-sm" type="text" tal:attributes="name python:'attr_name_%s'%metadictAttr['id']; value python:metadictAttr['name']; disabled python:['','disabled'][int(metadictAttr.get('acquired',0))]"/>
+			</td>
+			<td class="meta-type">
+				<select class="form-control form-control-sm"
+					tal:define="attr_type python:metadictAttr.get('type')"
+					tal:attributes="name python:'attr_type_%s'%metadictAttr['id']; disabled python:['','disabled'][int(metadictAttr.get('acquired',0))]">
+					<option tal:attributes="value attr_type" selected="selected" tal:content="attr_type">datatype</option>
+				</select>
+			</td>
+			<tal:block tal:condition="python:metadictAttr['type'] in ['method']">
+				<td colspan="4"><div class="single-line"><textarea class="form-control form-control-sm" tal:attributes="name python:'attr_custom_%s'%metadictAttr['id']; title python:'%s (%s)'%(metadictAttr['id'],metadictAttr['type']); disabled python:['','disabled'][int(metadictAttr.get('acquired',0))]" tal:content="python:metadictAttr['custom']"></textarea></div></td>
+			</tal:block>
+			<tal:block tal:condition="not:python:metadictAttr['type'] in ['method']">
+				<td class="meta-mandatory"><input type="checkbox" tal:attributes="name python:'attr_mandatory_%s:int'%metadictAttr['id']; checked python:['','checked'][int(metadictAttr.get('mandatory',0)==1)]; disabled python:['','disabled'][int(metadictAttr.get('acquired',0))]" value="1" /></td>
+				<td class="meta-multilang"><input type="checkbox" tal:attributes="name python:'attr_multilang_%s:int'%metadictAttr['id']; checked python:['','checked'][int(metadictAttr.get('multilang',0)==1)]; disabled python:['','disabled'][int(metadictAttr.get('acquired',0))]" value="1" /></td>
+				<td class="meta-repetitive"><input type="checkbox" tal:attributes="name python:'attr_repetitive_%s:int'%metadictAttr['id']; checked python:['','checked'][int(metadictAttr.get('repetitive',0)==1)]; disabled python:['','disabled'][int(metadictAttr.get('acquired',0))]" value="1" /></td>
+				<td class="meta-default">
+					<div class="single-line" tal:condition="python:metadictAttr['type'] in ['autocomplete','multiautocomplete','multiselect','select']">
+						<tal:block><i class="fas fa-key"></i></tal:block>
+						<textarea class="form-control form-control-sm" tal:attributes="name python:'attr_keys_%s'%metadictAttr['id']; title python:here.getZMILangStr('ATTR_KEYS'); disabled python:['','disabled'][int(metadictAttr.get('acquired',0))]" tal:content="python:'\n'.join(metadictAttr['keys'])">keys</textarea>
+					</div>
+					<div tal:condition="python:metadictAttr['type'] in ['boolean']">
+						<select tal:attributes="name python:'attr_default_%s'%metadictAttr['id']; title python:'Default'; class python:' '.join(['zmi-element-default','form-control-sm','form-control form-control-sm']); disabled python:['','disabled'][int(metadictAttr.get('acquired',0))]">
+							<tal:block tal:repeat="option python:[True,False]">
+								<option tal:attributes="value python:int(option); selected python:['','selected'][int(str(metadictAttr.get('default',''))==str(int(option)))]" tal:content="option">option</option>
+							</tal:block>
+						</select>
+					</div>
+				</td>
+			</tal:block>
+			<td class="meta-usage" title="Attribute is used in schemas" style="overflow: visible !important;">
+				<div class="btn-group dropleft"
+					tal:define="using_metaobj_ids python:[metaobj_id for metaobj_id in here.getMetaobjIds(sort=True) if (here.getMetaobj(metaobj_id).get('type') in ['ZMSDocument', 'ZMSObject']) and (metadictAttr['id'] in here.getMetaobjAttrIds(metaobj_id, types=[]))]"
+					tal:condition="python:len(using_metaobj_ids) > 0">
+					<button type="button" class="btn btn-secondary btn-sm dropdown-toggle" 
+						style="width: 3rem;"
+						data-toggle="dropdown" aria-expanded="false"
+						tal:content="python:len(using_metaobj_ids)">
+						3
+					</button>
+					<div class="dropdown-menu">
+						<tal:block tal:repeat="metaobj_id python:using_metaobj_ids">
+							<a class="dropdown-item" target="_blank" 
+								tal:attributes="title metaobj_id;
+									href python:here.getDocumentElement().absolute_url() + '/metaobj_manager/manage_main?id=' + metaobj_id"
+								tal:content="python:here.display_type(meta_id=metaobj_id)">
+								metaobj_id
+							</a>
+						</tal:block>
+					</div>
 				</div>
 			</td>
 		</tal:block>
-		</tal:block>
 	</tr>
+
 	<tr class="row_insert form-group">
 		<td class="meta-sort text-right"><span class="btn btn-add mr-1 btn-secondary btn-sm" onclick="javascript:add_new_row(this)"><i class="fas fa-plus"></i></span></td>
 		<td class="meta-id"><input class="form-control form-control-sm" type="text" name="attr_id" disabled="disabled" /></td>
@@ -185,7 +210,9 @@
 		<td class="meta-multilang"><input type="checkbox" name="attr_multilang:int" value="1" disabled="disabled" /></td>
 		<td class="meta-repetitive"><input type="checkbox" name="attr_repetitive:int" value="1" disabled="disabled" /></td>
 		<td>&nbsp;</td>
+		<td>&nbsp;</td>
 	</tr>
+
 	</tbody>
 	</table>
 	<div class="controls save">

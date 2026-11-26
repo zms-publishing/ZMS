@@ -171,7 +171,6 @@ function zmiRicheditInsertTab( fmName, elName) {
 			</span>
 		</div><!-- .float-left -->
 
-		<div class="clearfix"></div>
 
 	</div>
 	<div class="col-sm-12">

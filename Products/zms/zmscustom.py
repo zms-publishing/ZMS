@@ -23,6 +23,14 @@ from Products.zms import standard
 from Products.zms import zmscontainerobject
 
 
+def _as_int(value, default):
+  """Return C{int(value)}, or C{default} if the value is no valid integer."""
+  try:
+    return int(value)
+  except (TypeError, ValueError):
+    return default
+
+
 def parseXmlString(self, file):
   """
   Import record-set rows from an XML payload into the current object.
@@ -392,7 +400,25 @@ class ZMSCustom(zmscontainerobject.ZMSContainerObject):
 
 
     def getRecordSetMainGridContext(self, options, request):
-      """Build rendering context for C{zpt/ZMSRecordSet/main_grid.zpt}."""
+      """
+      Build rendering context for C{zpt/ZMSRecordSet/main_grid.zpt}.
+
+      @param options: Dictionary of options for rendering the record set main grid.
+      @param request: The current request object.
+      @return: Dictionary containing the context for rendering the record set main grid.
+      @note: The context includes pagination information, filtered and sorted records, 
+      and other options necessary for rendering the main grid. Most important option-keys are:
+        - size: number of dataset-rows (length)
+        - pageSize: amount of data rows per page (default 20)
+        - pageIndex: index-number of current page (starting with 0) 
+        - pageStart: dataset index-number of first data-row on current page
+        - pageEnd:  dataset index-number of last data-row on current page
+        - selected_value: value of the data-row to hilight, compared with the
+          row value (C{__id__}, i.e. the primary key for ZMSSqlDb, otherwise the
+          index in C{records}). Only the caller knows which grid the edited row
+          belongs to, so the grid never reads it from the request; without this
+          option no row is hilighted (e.g. details grids, nested grids).
+      """
       form_action = options.get('form_action', 'manage_changeRecordSet')
       input_target = options.get('input_target', '')
       meta_obj_attr_ids = options.get('metaObjAttrIds', [])
@@ -407,18 +433,21 @@ class ZMSCustom(zmscontainerobject.ZMSContainerObject):
       size = options.get('size', len(filtered_records))
       total = options.get('total', len(records))
 
-      page_size = request.get('qsize', 20)
+      page_size = _as_int(request.get('qsize', 20), 20)
       if page_size <= 0:
         page_size = 20
       page_count = size // page_size
-      page_index = request.get('pageIndex', int(request.get('qindex', -1)) // page_size)
-      page_index = page_index if page_index >= 0 and page_index <= page_count else 0
+      page_index = _as_int(request.get('pageIndex'), _as_int(request.get('qindex'), -1) // page_size)
+      page_index = max(0, min(page_index, page_count))
       page_start = page_index * page_size
       page_end = min(page_start + page_size, size)
       offset = options.get('offset', page_start)
 
       record_handler = options.get('record_handler')
       selected_values = [str(x) for x in request.get('qindices', [])]
+      selected_value = options.get('selected_value')
+      if selected_value is not None and str(selected_value) not in ('', '-1'):
+        selected_values.append(str(selected_value))
       rows = []
       for rindex in range(max(0, page_end - page_start)):
         index = offset + rindex
@@ -436,7 +465,7 @@ class ZMSCustom(zmscontainerobject.ZMSContainerObject):
           'qindex': qindex,
           'record': row_record,
           'value': value,
-          'selected': str(value) == str(request.get('qindex')) or str(value) in selected_values,
+          'selected': str(value) in selected_values,
           'params': dict(url_params, **row_record.get('params', {})),
           'title': (
             self.getLangFmtDate(row_record.get('_change_dt')) + ' ' +
@@ -469,7 +498,7 @@ class ZMSCustom(zmscontainerobject.ZMSContainerObject):
         'cols_count': len(meta_obj_attrs) + 1,
         'cols_count_texttype': len([x.get('id', '') for x in meta_obj_attrs if x.get('type', 'string') == 'text']),
         'pagination': self.zmi_pagination(size=size, pageSize=page_size, pageIndex=page_index),
-        'request_qsize': request.get('qsize', 10),
+        'request_qsize': page_size,
         'row_select_name': ['qindices:list', 'qindex'][int('select' in actions)],
       }
 
@@ -712,6 +741,8 @@ class ZMSCustom(zmscontainerobject.ZMSContainerObject):
       target = REQUEST.get('target', 'manage_main')
       params = {'lang':lang}
       t0 = time.time()
+      # Row to hilight in the grid after saving.
+      edited_row = None
       
       if (action or btn) and (btn not in ['BTN_CANCEL', 'BTN_BACK']):
         try:
@@ -739,7 +770,7 @@ class ZMSCustom(zmscontainerobject.ZMSContainerObject):
                   value = len(res_abs)
                 row[metaObjAttr['id']] = value
             res_abs.append(row)
-            params['qindex'] = len(res_abs)-1
+            edited_row = row
             message = self.getZMILangStr('MSG_INSERTED')%self.getZMILangStr('ATTR_RECORD')
           elif action == 'update':
             row = res_abs[REQUEST['qindex']]
@@ -760,7 +791,7 @@ class ZMSCustom(zmscontainerobject.ZMSContainerObject):
                 if set:
                   row[metaObjAttr['id']] = value
             res_abs[REQUEST['qindex']] = row
-            params['qindex'] = REQUEST['qindex']
+            edited_row = row
             message = self.getZMILangStr('MSG_CHANGED')
           elif action == 'delete':
             rows = [res_abs[int(x)] for x in REQUEST.get('qindices', [])]
@@ -786,7 +817,7 @@ class ZMSCustom(zmscontainerobject.ZMSContainerObject):
             newpos = REQUEST['newpos']
             row = res_abs[REQUEST['qindex']]
             row['sort_id'] = row['sort_id']+(newpos-pos)*15
-            params['qindex'] = REQUEST['qindex']+(newpos-pos)
+            edited_row = row
             message = self.getZMILangStr('MSG_MOVEDOBJTOPOS')%('%s %i'%(self.getZMILangStr('ATTR_RECORD'), pos), newpos)
           # Normalize sort-ids.
           if 'sort_id' in metaObjAttrIds:
@@ -794,6 +825,9 @@ class ZMSCustom(zmscontainerobject.ZMSContainerObject):
             for i in range(len(res_abs)):
               row = res_abs[i]
               row['sort_id'] = i+1
+          # Sorting may have moved the edited row: look it up by identity.
+          if edited_row is not None:
+            params['qindex'] = [i for i, x in enumerate(res_abs) if x is edited_row][0]
           self.setObjProperty(metaObj['attrs'][0]['id'], res_abs, lang)
           
           ##### VersionManager ####
@@ -804,6 +838,12 @@ class ZMSCustom(zmscontainerobject.ZMSContainerObject):
         
         message += ' (in '+str(int((time.time()-t0)*100.0)/100.0)+' secs.)'
       
+      elif btn in ['BTN_CANCEL', 'BTN_BACK']:
+        # Back to the grid page of the row opened in the form, hilighted.
+        qindex = _as_int(REQUEST.get('qindex'), -1)
+        if qindex >= 0 and 'qindex=' not in target:
+          params['qindex'] = qindex
+
       # Return with message.
       params[messagekey] = message
       target = standard.url_append_params( target, params)

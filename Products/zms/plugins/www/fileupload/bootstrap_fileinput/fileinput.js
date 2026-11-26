@@ -1709,7 +1709,7 @@
                         'data="{data}" type="' + mime + '"' + tStyle + '>\n' + $h.DEFAULT_PREVIEW + '\n</object>\n';
                 }, defBtnCss1 = 'btn btn-sm btn-kv ' + $h.defaultButtonCss();
             tMain1 = '{preview}\n' +
-                '<div class="kv-upload-progress kv-hidden"></div><div class="clearfix"></div>\n' +
+                '<div class="kv-upload-progress kv-hidden"></div>\n' +
                 '<div class="file-caption {class}">\n' +
                 '  <div class="input-group {inputGroupClass}">\n' +
                 '      {caption}\n<span class="file-caption-icon"></span>\n' +
@@ -1722,12 +1722,12 @@
                 ($h.isBs(5) ? '' : '    </div>\n') +
                 '  </div>';
             '</div>';
-            tMain2 = '{preview}\n<div class="kv-upload-progress kv-hidden"></div>\n<div class="clearfix"></div>\n' +
+            tMain2 = '{preview}\n<div class="kv-upload-progress kv-hidden"></div>\n' +
                 '<span class="{class}">{remove}\n{cancel}\n{upload}\n{browse}\n</span>';
             tPreview = '<div class="file-preview {class}">\n' +
                 '  {close}' +
-                '  <div class="{dropClass} clearfix">\n' +
-                '    <div class="file-preview-thumbnails clearfix">\n' +
+                '  <div class="{dropClass}">\n' +
+                '    <div class="file-preview-thumbnails">\n' +
                 '    </div>\n' +
                 '    <div class="file-preview-status text-center text-success"></div>\n' +
                 '    <div class="kv-fileinput-error"></div>\n' +
@@ -1783,7 +1783,7 @@
                 '    </div>\n' +
                 '</div>\n' +
                 '{drag}\n' +
-                '<div class="clearfix"></div>';
+                '';
             //noinspection HtmlUnknownAttribute
             tActionDelete = '<button type="button" class="kv-file-remove {removeClass}" ' +
                 'title="{removeTitle}" {dataUrl}{dataKey}>{removeIcon}</button>\n';

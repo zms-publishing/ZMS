@@ -1721,21 +1721,21 @@ def operator_itemgetter(key, val, dictionary):
 
 
 def _localfs_permitted(context, ospath, permission='read'):
+  # writeLog(context, 'Checking localfs permissions for path: %s' % ospath)
   if context is None:
-    return True
+    raise zExceptions.Unauthorized('Missing context parameter in localfs function.')
   permitted = False
   perms = re.findall(r'[^,;\s]+', context.getConfProperty('ZMS.localfs_%s'%permission,''))
-  # Check if there are any permissions defined for the given action.
-  if perms:
-    perms.append(getTempFolder(context))
-    perms.append(package_home(globals()))
-    mediadb = context.getMediaDb()
-    if mediadb:
-        perms.append(mediadb.getLocation())
-    for perm in map(lambda x: x.strip(), perms):
-        permitted = permitted or ( len( perm) > 0 and ospath.lower().startswith( _fileutil.absoluteOSPath(perm).lower()))
-    if not permitted:
-        raise zExceptions.Unauthorized
+  perms.append(getTempFolder(context))
+  if  permission=='read':
+      perms.append(package_home(globals()))
+  mediadb = context.getMediaDb()
+  if mediadb:
+      perms.append(mediadb.getLocation())
+  for perm in map(lambda x: x.strip(), perms):
+      permitted = permitted or ( len( perm) > 0 and ospath.lower().startswith( _fileutil.absoluteOSPath(perm).lower()))
+  if not permitted:
+      raise zExceptions.Unauthorized('Missing permission settings for accessing localfs function.')
   return True
 
 

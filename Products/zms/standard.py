@@ -1723,7 +1723,7 @@ def operator_itemgetter(key, val, dictionary):
 def _localfs_permitted(context, ospath, permission='read'):
   # writeLog(context, 'Checking localfs permissions for path: %s' % ospath)
   if context is None:
-    raise zExceptions.Unauthorized('Missing context parameter in localfs function.')
+    raise ValueError('Missing context parameter in localfs function.')
   permitted = False
   perms = re.findall(r'[^,;\s]+', context.getConfProperty('ZMS.localfs_%s'%permission,''))
   perms.append(getTempFolder(context))

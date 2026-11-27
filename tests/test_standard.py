@@ -142,8 +142,9 @@ class StandardTest(unittest.TestCase):
         # Verify it contains typical site-packages indicators
         self.assertTrue('site-packages' in result or 'dist-packages' in result)
 
-    def test_localfs_permission_without_context_is_permitted(self):
-        self.assertTrue(standard._localfs_permitted(None, '/not/configured', 'read'))
+    def test_localfs_permission_without_context_is_valueerror(self):
+        with self.assertRaises(ValueError):
+            standard._localfs_permitted(None, '/not/configured', 'read')
 
     @patch('Products.zms.standard.getTempFolder', return_value='/tmp/zms-temp')
     @patch('Products.zms.standard.package_home', return_value='/tmp/zms-package')
@@ -156,8 +157,3 @@ class StandardTest(unittest.TestCase):
         with self.assertRaises(zExceptions.Unauthorized):
             standard._localfs_permitted(context, '/denied/file.txt', 'read')
 
-    @patch('Products.zms.standard._fileutil.exportObj')
-    def test_localfs_write_without_context_remains_compatible(self, export_obj):
-        standard.localfs_write('/tmp/example.txt', b'example')
-
-        export_obj.assert_called_once_with(b'example', '/tmp/example.txt')

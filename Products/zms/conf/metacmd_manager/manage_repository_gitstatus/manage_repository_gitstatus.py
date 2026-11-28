@@ -25,7 +25,7 @@ def manage_repository_gitstatus( self ):
 		base_path = self.get_conf_basepath(id='')
 		base_status = ''
 		try:
-			standard.localfs_readPath(base_path)
+			standard.localfs_readPath(base_path, context=self)
 		except:
 			base_status = standard.writeError(self,'can\'t read base_path')
 

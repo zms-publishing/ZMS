@@ -2220,7 +2220,7 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
         for r in self.query( sqlStatement)['records']:
           filename = r['v']
           try:
-            standard.localfs_remove(path+filename)
+            standard.localfs_remove(path+filename, context=self)
           except: pass
           value = ''
           if column.get('nullable'):

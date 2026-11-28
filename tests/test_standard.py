@@ -3,6 +3,7 @@
 import unittest
 import json
 import time
+import zExceptions
 from unittest.mock import Mock, MagicMock, patch
 from Products.zms import standard
 from Products.zms import zms
@@ -140,3 +141,20 @@ class StandardTest(unittest.TestCase):
         self.assertTrue(len(result) > 0)
         # Verify it contains typical site-packages indicators
         self.assertTrue('site-packages' in result or 'dist-packages' in result)
+
+    def test_localfs_permission_without_context_is_valueerror(self):
+        with self.assertRaises(ValueError):
+            standard._localfs_permitted(None, '/not/configured', 'read')
+
+    @patch('Products.zms.standard.getTempFolder', return_value='/tmp/zms-temp')
+    @patch('Products.zms.standard.package_home', return_value='/tmp/zms-package')
+    def test_localfs_permission_uses_context_configuration(self, _, __):
+        context = Mock()
+        context.getConfProperty.return_value = '/allowed'
+        context.getMediaDb.return_value = None
+
+        self.assertTrue(standard._localfs_permitted(context, '/allowed/file.txt', 'read'))
+        with self.assertRaises(zExceptions.Forbidden) as exc:
+            standard._localfs_permitted(context, '/denied/file.txt', 'read')
+        self.assertEqual(exc.exception.status, 403)
+

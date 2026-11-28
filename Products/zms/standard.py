@@ -1705,14 +1705,49 @@ def operator_delattr(a, b):
 
 security.declarePublic('operator_itemgetter')
 def operator_itemgetter(key, val, dictionary):
+  """
+  Checks whether any dictionary in an iterable has the given value for a key.
+  @param key: Key to retrieve
+  @type key: C{any}
+  @param val: Value to search for
+  @type val: C{any}
+  @param dictionary: Iterable of dictionaries
+  @type dictionary: C{iterable}
+  @rtype: C{bool}
+  """
+  if val in map(operator.itemgetter(key), dictionary):
+      return True
+  return False
 
-    if val in map(operator.itemgetter(key), dictionary):
-        return True
-    return False
+
+def _localfs_permitted(context, ospath, permission='read'):
+  # writeLog(context, 'Checking localfs permissions for path: %s' % ospath)
+  if context is None:
+    raise ValueError('Missing context parameter in localfs function.')
+  permitted = False
+  perms = re.findall(r'[^,;\s]+', context.getConfProperty('ZMS.localfs_%s'%permission,''))
+  perms.append(getTempFolder(context))
+  if  permission=='read':
+      perms.append(package_home(globals()))
+  mediadb = context.getMediaDb()
+  if mediadb:
+      perms.append(mediadb.getLocation())
+  candidate = os.path.realpath(ospath)
+  for perm in map(lambda x: x.strip(), perms):
+      allowed = os.path.realpath(perm)
+      try:
+          if os.path.commonpath([candidate, allowed]) == allowed:
+              permitted = True
+              break
+      except ValueError:
+          pass
+  if not permitted:
+    raise zExceptions.Forbidden('The given path is not enabled.')
+  return True
 
 
 security.declarePublic('localfs_read')
-def localfs_read(filename, mode='b', cache='public, max-age=3600', REQUEST=None):
+def localfs_read(filename, mode='b', cache='public, max-age=3600', REQUEST=None, context=None):
   """
   Reads file from local file-system.
   You must grant permissions for reading from local file-system to
@@ -1725,6 +1760,8 @@ def localfs_read(filename, mode='b', cache='public, max-age=3600', REQUEST=None)
   @type cache C{bool}
   @param REQUEST: the triggering request
   @type REQUEST: C{ZPublisher.HTTPRequest}
+  @param context: ZMS context used to check configured filesystem permissions
+  @type context: C{ZMSObject}
   @return: Contents of file
   @rtype: C{string} or C{filestream_iterator}
   """
@@ -1734,6 +1771,8 @@ def localfs_read(filename, mode='b', cache='public, max-age=3600', REQUEST=None)
     pass
   # Get absolute filename.
   filename = _fileutil.absoluteOSPath(filename)
+  # Check if reading from this path is permitted.
+  _localfs_permitted(context, filename, 'read')
   # Read file.
   if isinstance(mode, dict):
     fdata, mt, enc, fsize = _fileutil.readFile( filename, mode.get('mode', 'b'), mode.get('threshold', -1))
@@ -1748,35 +1787,43 @@ def localfs_read(filename, mode='b', cache='public, max-age=3600', REQUEST=None)
 
 
 security.declarePublic('localfs_write')
-def localfs_write(filename, v, mode='b'):
+def localfs_write(filename, v, mode='b', context=None):
   """
   Writes value to file to local file-system.
   @param filename: the filename.
   @type filename: C{str}
   @param mode: the mode (b=binary).
   @type mode: C{str}
+  @param context: ZMS context used to check configured filesystem permissions
+  @type context: C{ZMSObject}
   """
   # Get absolute filename.
   filename = _fileutil.absoluteOSPath(filename)
   # Write file.
+  _localfs_permitted(context, filename, 'write')
   return _fileutil.exportObj( v, filename)
 
 
 security.declarePublic('localfs_remove')
-def localfs_remove(path, deep=0):
+def localfs_remove(path, deep=0, context=None):
   """
   Removes file from local file-system.
+  @param context: ZMS context used to check configured filesystem permissions
+  @type context: C{ZMSObject}
   """
   # Get absolute filename.
   filename = _fileutil.absoluteOSPath(path)
   # Remove file.
+  _localfs_permitted(context, filename, 'write')
   _fileutil.remove( path, deep)
 
 
 security.declarePublic('localfs_readPath')
-def localfs_readPath(filename, data=False, recursive=False, REQUEST=None):
+def localfs_readPath(filename, data=False, recursive=False, REQUEST=None, context=None):
   """
   Reads path from local file-system.
+  @param context: ZMS context used to check configured filesystem permissions
+  @type context: C{ZMSObject}
   @rtype: C{list}
   """
   try:
@@ -1785,6 +1832,7 @@ def localfs_readPath(filename, data=False, recursive=False, REQUEST=None):
     pass
   # Get absolute filename.
   filename = _fileutil.absoluteOSPath(filename)
+  _localfs_permitted(context, filename, 'read')
   # Read path.
   return _fileutil.readPath(filename, data, recursive)
 

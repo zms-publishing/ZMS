@@ -1732,10 +1732,17 @@ def _localfs_permitted(context, ospath, permission='read'):
   mediadb = context.getMediaDb()
   if mediadb:
       perms.append(mediadb.getLocation())
+  candidate = os.path.realpath(ospath)
   for perm in map(lambda x: x.strip(), perms):
-      permitted = permitted or ( len( perm) > 0 and ospath.lower().startswith( _fileutil.absoluteOSPath(perm).lower()))
+      allowed = os.path.realpath(perm)
+      try:
+          if os.path.commonpath([candidate, allowed]) == allowed:
+              permitted = True
+              break
+      except ValueError:
+          pass
   if not permitted:
-      raise zExceptions.Unauthorized('Missing permission settings for accessing localfs function.')
+    raise zExceptions.Forbidden('The given path is not enabled.')
   return True
 
 

@@ -154,6 +154,7 @@ class StandardTest(unittest.TestCase):
         context.getMediaDb.return_value = None
 
         self.assertTrue(standard._localfs_permitted(context, '/allowed/file.txt', 'read'))
-        with self.assertRaises(zExceptions.Unauthorized):
+        with self.assertRaises(zExceptions.Forbidden) as exc:
             standard._localfs_permitted(context, '/denied/file.txt', 'read')
+        self.assertEqual(exc.exception.status, 403)
 
